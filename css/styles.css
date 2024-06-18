@@ -1,5 +1,7 @@
+
 /* Estilos básicos */
 /* ENCABEZADO */
+
 .header {
     display: flex;
     align-items: center;
@@ -11,28 +13,46 @@
 
 h1 {
     color: #ffffff; /* Establece el color del texto del encabezado */
-    height: 50px;
-    width: 50px;
-    font-size: 50px;
+    height: 2.5rem;
+    width: 2.5rem;
+    font-size: 2.5rem;
     margin: 0; /* Elimina el margen predeterminado del h1 */
-    margin-left: 20px;
+    margin-left: 0.8rem;
 }
 
 .logo {
     margin-right: 10px; /* Margen entre el logo y el título */
     width: 100px;
     height: 100px;
+} 
+
+.menu ul {
+    list-style-type: none; /* Elimina los puntos de la lista */
+    margin: 0; /* Elimina el margen predeterminado */
+    padding: 0; /* Elimina el relleno predeterminado */
+    display: flex;
+    margin-left: 62.5rem;
+
 }
 
-
 /* CUERPO DE LA PAGINA */
+
 body {
     font-family: Arial, sans-serif; /* Establece la fuente del texto */
     background-color: #C6D4EA; /* Establece el color de fondo */
     margin: 0px; /* Establece los márgenes del cuerpo */
 }
 
+h2 {
+    margin-left: 8.75rem;
+    margin-top: 5rem;
+    font-size: 2.375rem;
+}
+
 p {
-    font-size: 20px; /* Establece el tamaño de la fuente del párrafo */
-    line-height: 1.5; /* Establece la altura de línea */
+    font-size: 1.25rem; /* Establece el tamaño de la fuente del párrafo */
+    line-height: 2rem; /* Establece la altura de línea */
+    margin-left: 5rem;  /* Distancia entre el lado izquierdo de la pagina y el texto*/
+    max-width: 31.25rem;
+    text-align: justify;
 }
