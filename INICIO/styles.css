@@ -17,6 +17,8 @@ h1 {
     font-size: 2.5rem;
     margin: 0rem; /* Elimina el margen predeterminado del h1 */
     margin-left: 0.8rem;
+    font-style: oblique;
+    font-family: ;
 }
 
 .logo {
@@ -115,7 +117,7 @@ p {
 /* PIE DE PAGINA*/
 
 footer {
-    background-color: #fff; /* Color de fondo del pie de página */
+    background-color: #6FA1D3; /* Color de fondo del pie de página */
     color: #000000; /* Color del texto */
     position: fixed; /* Fija el pie de página en la parte inferior de la ventana */
     left: 0;
@@ -124,16 +126,15 @@ footer {
 }
 
 footer h1{
-    font-size: 2rem;
+    font-size: 1rem;
 }
 footer p {
     font-size: 0.6rem;
-    margin: 0;
     width: 100%;
     display: flex;
     max-width: 80%;
     margin-left: 10%;
     margin-right: 10%;
-    margin-top: 2%;
-    margin-bottom: 2%;
+    margin-top: 0%;
+    margin-bottom: 0%;
 }
