@@ -97,6 +97,7 @@ body {
     margin: 0rem; /* Establece los márgenes del cuerpo */
 }
 
+<<<<<<< Updated upstream
 h2 {
     margin-left: 8.75rem;
     margin-top: 5rem;
@@ -108,10 +109,34 @@ p {
     line-height: 2rem; /* Establece la altura de línea */
     margin-left: 5rem;  /* Distancia entre el lado izquierdo de la pagina y el texto*/
     max-width: 31.25rem;
+=======
+.container-qs {
+    position: flex;
+    margin-right: 5%;
+    margin-top: 5%;
+    margin-left: 5%;
+    display: inline-block;
+    background-color: white;
+    width: 500px;
+    height: 500px;
+
+}
+
+.container-qs h1 {   /* ¿Quienes somos?*/
+    font-size: 3.4rem;
+    text-align: center;
+}
+
+.container-qs p {
+    font-size: 1.7rem;
+>>>>>>> Stashed changes
     text-align: justify;
+    margin-left: 5%;
+    margin-right: 5%;
 }
 
 
+<<<<<<< Updated upstream
 
 
 /* PIE DE PAGINA*/
@@ -137,4 +162,35 @@ footer p {
     margin-right: 10%;
     margin-top: 0%;
     margin-bottom: 0%;
+=======
+.container-login {
+    position: flex;
+    margin-left: 5%;
+    margin-top: 5%;
+    margin-right: 5%;
+    display: inline-block;
+    background-color: white;
+    vertical-align: top;
+    width: 500px;
+    height: 500px;
+    border: 2px yellowgreen solid;
+}
+
+.container-login h2{
+    font-size: 3rem;
+    text-align: center;
+}
+
+
+.container-login label {
+    font-size: 1rem;
+    padding: 0px;
+    text-align: justify;
+}
+input {
+    width: 40%;
+    height: 25px;
+    
+    
+>>>>>>> Stashed changes
 }
