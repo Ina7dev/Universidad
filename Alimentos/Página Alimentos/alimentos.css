@@ -1,6 +1,7 @@
 /* Todo el cuerpo */
 .body {
     background-color: #C6D4EA;
+    list-style: none;
 }
 
 /* El cuerpo */
@@ -28,11 +29,17 @@
     left: 0%;
     right: 0%;
     justify-content: left;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 0;
     border-color: #6FA1D3;
     border-style: solid;
-    columns: auto;
 }
 
 .texto_footer {
     margin-left: 1rem;
+}
+
+.lista_contactos {
+    margin-left: 2rem;
 }
