@@ -1,1 +1,14 @@
-a
+
+/* Todo el cuerpo */
+#contenedor_principal {
+    display: flex;
+    justify-content: center;
+    background-color: aqua;
+    color: black;
+    border-style: dotted; /* Borrar después */
+}
+
+#filtros {
+    margin-right: 30rem;
+    border-style: dotted; /* Borrar después */
+}
