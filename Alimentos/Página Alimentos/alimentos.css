@@ -1,9 +1,12 @@
-
 /* Todo el cuerpo */
+.body {
+    background-color: #C6D4EA;
+}
+
+/* El cuerpo */
 #contenedor_principal {
     display: flex;
     justify-content: center;
-    background-color: aqua;
     color: black;
     border-style: dotted; /* Borrar después */
 }
@@ -11,4 +14,25 @@
 #filtros {
     margin-right: 30rem;
     border-style: dotted; /* Borrar después */
+}
+
+#alimentos {
+    border-style: dotted; /* Borrar después */
+}
+
+
+/*Footer*/
+#footer {
+    position: absolute;  /* Posición Absoluta en 0%, al fondo */
+    bottom: 0%;
+    left: 0%;
+    right: 0%;
+    justify-content: left;
+    border-color: #6FA1D3;
+    border-style: solid;
+    columns: auto;
+}
+
+.texto_footer {
+    margin-left: 1rem;
 }
