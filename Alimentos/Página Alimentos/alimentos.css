@@ -4,6 +4,8 @@
     list-style: none;
 }
 
+
+
 /* El cuerpo */
 #contenedor_principal {
     display: flex;
@@ -12,14 +14,29 @@
     border-style: dotted; /* Borrar después */
 }
 
+
+
 #filtros {
     margin-right: 30rem;
     border-style: dotted; /* Borrar después */
 }
 
+
+
 #alimentos {
     border-style: dotted; /* Borrar después */
+    background-color: #F5F5F5;
+    flex-direction: column;
 }
+
+.productos {
+    border-style: solid;
+    border-color: #6FA1D3;
+}
+
+
+
+
 
 
 /*Footer*/
