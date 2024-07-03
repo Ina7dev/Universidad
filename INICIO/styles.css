@@ -122,6 +122,73 @@ input {
     width: 60%;
     height: 25px;
     margin-bottom: 30px;
-
     
 }
+
+form .boton-1{
+    background: #6FA1D3;
+    height: 40px;
+    width: 180px;
+    font-size: 18px;
+    font-family: "Inter", sans-serif;
+    border-color: black;
+    border-radius: 10px;
+}
+/* FOOTER CHAVAAL */
+
+#footer {
+    margin: 0;
+    background-color: #6FA1D3;
+}
+.texto_footer {
+    margin-left: 1rem;
+    text-align: justify;
+    padding: 60px 0px 0px 60px;
+    margin: 0;
+}
+
+#texto_terminos {
+    margin-right: 1rem;
+    padding: 20px;
+}
+
+.lista_contactos {
+    margin: 0;
+    padding: 0px 0px 10px 60px;
+}
+
+.texto_terminos{
+    margin: 0;
+    padding: 20px 0px 0px 60px;
+}
+
+footer h3{
+    margin: 0;
+    padding: 20px 0px 20px 60px;
+}
+ #hr1{
+    background: #ffff;
+    height: 2px;
+    border: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+hr{
+    background: #ffff;
+    height: 2px;
+    border: 0;
+    width: 100%;
+    margin-top: 8rem;
+    margin-bottom: 0;
+}
+footer hr {
+    background: #ffff;
+    height: 2px;
+    border: 0;
+    width: 100%;
+    margin-top: 2rem;
+    margin-bottom: 0;
+}
+
+
