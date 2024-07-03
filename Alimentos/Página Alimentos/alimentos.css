@@ -7,7 +7,7 @@
 /* El cuerpo */
 #contenedor_principal {
     display: flex;
-    justify-content: center;
+    flex-direction: row;
     color: black;
     border-style: dotted; /* Borrar después */
 }
@@ -24,7 +24,6 @@
 
 /*Footer*/
 #footer {
-    position: absolute;  /* Posición Absoluta en 0%, al fondo */
     bottom: 0%;
     left: 0%;
     right: 0%;
@@ -34,6 +33,7 @@
     border-bottom: 0;
     border-color: #6FA1D3;
     border-style: solid;
+    margin-top: 2rem;
 }
 
 .texto_footer {
