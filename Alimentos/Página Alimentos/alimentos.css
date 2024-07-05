@@ -2,6 +2,7 @@
 .body {
     background-color: #C6D4EA;
     list-style: none;
+    font-family: "Inter";
 }
 
 
@@ -12,28 +13,29 @@
     flex-direction: row;
     color: black;
     border-style: dotted; /* Borrar después */
+    margin-top: 2rem;
 }
 
 
 
 #filtros {
-    margin-right: 30rem;
+    margin-right: 2rem;
     border-style: dotted; /* Borrar después */
+    width: 50%;
 }
 
 
 
 #alimentos {
-    border-style: dotted; /* Borrar después */
-    background-color: #F5F5F5;
     flex-direction: column;
+    width: 100%;
 }
 
 .productos {
     border-style: solid;
     border-color: #6FA1D3;
+    background-color: #F5F5F5;
 }
-
 
 
 
