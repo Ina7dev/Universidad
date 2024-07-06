@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jueee.cl</title>
     <link rel="stylesheet" href="alimentos.css">
+
     <script src="https://kit.fontawesome.com/a0c7883972.js" crossorigin="anonymous"></script>   <!-- Se está usando Font Awesome -->
 
+    <!-- Font de Google -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
@@ -16,28 +18,79 @@
 
     <div id="contenedor_principal">
 
+
         <div id="filtros">
 
-            <b>Ubicación:</b>
+            <form><b>Ubicación: </b>
+                
+                <select>
+                    <option>Castro</option>
+                    <option>Ancud</option>
+                    <option>Chonchi</option>
+                    <option>Curaco de Vélez</option>
+                    <option>Dalcahue</option>
+                    <option>Puqueldón</option>
+                    <option>Queilen</option>
+                    <option>Quellón</option>
+                    <option>Quemchi</option>
+                    <option>Quinchao</option>
+                </select>
+            
+            </form>
 
+            <br>
+
+            <div class="titulos_filtros" id="valoracion">
+
+                <form>Valoración: 
+                    <select>
+                        <option>Mayor a Menor</option>
+                        <option>Menor a Mayor</option>
+                    </select>
+                </form>
+    
+            </div>
+
+            <div class="titulos_filtros" id="tipodecomida">
+
+                <form>Tipo de Comida: 
+                    <select>
+                        <option>Dulce</option>
+                        <option>Salada</option>
+                        <option>Amarga</option>
+                        <option>Ácida</option>
+                        <option>Picante</option>
+                    </select>
+                </form>
+    
+            </div>
+
+            <div class="titulos_filtros">
+                Delivery: 
+                <input type="checkbox" name="delivery" id="delivery">
+            </div>
+            
         </div>
 
 
 
         <div id="alimentos">
 
-            <b>Alimentos:</b>
+            <div id="titulo_alimentos"><b>Alimentos:</b></div>
 
             <div class="productos">
-                Producto 1
+                <div class="texto_productos">Producto 1</div>
+                <!-- Aquí va una imagen -->
             </div>
 
             <div class="productos">
-                Producto 2
+                <div class="texto_productos">Producto 2</div>
+                <!-- Aquí va una imagen -->
             </div>
             
             <div class="productos">
-                Producto 3
+                <div class="texto_productos">Producto 3</div>
+                <!-- Aquí va una imagen -->
             </div>
 
         </div>
