@@ -1,1 +1,37 @@
-# a
+/* Header */
+.header {
+    display: flex;
+    background-color: #6FA1D3;
+}
+
+.contenedor_header {
+    flex-direction: row;
+}
+
+#logo {
+    width: 8rem;
+    height: 8rem;
+    margin-right: 2rem;
+}
+
+#jueeelogo {
+    width: 14rem;
+    height: 5rem;
+    margin-top: 2rem;
+    margin-right: 40rem;
+}
+
+
+#botones {
+    margin-top: 3rem;
+    margin-bottom: 2rem;
+}
+
+.boton {
+    margin-left: 2rem;
+}
+
+#icono_ingresar {
+    margin-top: 3rem;
+    margin-left: 5px;
+}
