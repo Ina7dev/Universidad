@@ -1,3 +1,12 @@
+/* Todo el cuerpo */
+.body {
+    background-color: #C6D4EA;
+    list-style: none;
+    font-family: "Inter";
+    margin: 0%;
+}
+
+
 /* Header */
 .header {
     display: flex;
@@ -34,4 +43,32 @@
 #icono_ingresar {
     margin-top: 3rem;
     margin-left: 5px;
+}
+
+
+/*Footer*/
+#footer {
+    bottom: 0%;
+    left: 0%;
+    right: 0%;
+    justify-content: left;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 0;
+    border-color: #6FA1D3;
+    border-style: solid;
+    margin-top: 2rem;
+}
+
+.texto_footer {
+    margin-left: 1rem;
+    text-align: justify;
+}
+
+#texto_terminos {
+    margin-right: 1rem;
+}
+
+.lista_contactos {
+    margin-left: 2rem;
 }
