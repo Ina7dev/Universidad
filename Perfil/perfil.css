@@ -30,7 +30,6 @@
     margin-right: 40rem;
 }
 
-
 #botones {
     margin-top: 3rem;
     margin-bottom: 2rem;
@@ -43,6 +42,33 @@
 #icono_ingresar {
     margin-top: 3rem;
     margin-left: 5px;
+}
+
+
+/* Filtros */
+#perfil {
+    margin-left: 1rem;
+    margin-right: 2rem;
+    width: 50%;
+}
+
+
+/*Cuerpo*/
+#cuerpo {
+    margin: 2rem;
+    border-style: solid;
+    border-color: #6FA1D3;
+    background-color: #F5F5F5;
+    display: flex;
+    flex-direction: row;
+}
+
+.imagen {
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    margin-right: 5rem;
+    border-style: solid;
+    border: #6FA1D3;
 }
 
 
