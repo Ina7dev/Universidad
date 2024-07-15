@@ -54,19 +54,27 @@
     border-color: #6FA1D3;
     background-color: #F5F5F5;
     display: flex;
-    flex-direction: row;
 }
 
 .imagen_productos {
-    margin-top: 1rem;
     margin-bottom: 2rem;
     margin-right: 3rem;
     margin-left: 1rem;
 }
 
+#contenedor {
+    flex-grow: 1;
+}
+
 .producto {
     display: flex;
     display: row;
+    margin-top: 1rem;
+    border-bottom: #6FA1D3;
+    border-style: solid;
+    border-top: none;
+    border-right: none;
+    border-left: none;
 }
 
 
