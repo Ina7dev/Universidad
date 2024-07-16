@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jueee.cl</title>
-    <link rel="stylesheet" href="alimentos.css">
+    <link rel="stylesheet" href="perfil.css">
 
     <script src="https://kit.fontawesome.com/a0c7883972.js" crossorigin="anonymous"></script>   <!-- Se está usando Font Awesome -->
 
@@ -42,86 +42,82 @@
     </header>
 
 
+    <div id="cuerpo">
 
-    <div id="contenedor_principal">
 
+        <div id="imagen_local">
 
-        <div id="filtros">
+            <img src="src\imagenplaceholder.png">
 
-            <form><b>Ubicación: </b>
-                
-                <select>
-                    <option>Castro</option>
-                    <option>Ancud</option>
-                    <option>Chonchi</option>
-                    <option>Curaco de Vélez</option>
-                    <option>Dalcahue</option>
-                    <option>Puqueldón</option>
-                    <option>Queilen</option>
-                    <option>Quellón</option>
-                    <option>Quemchi</option>
-                    <option>Quinchao</option>
-                </select>
             
-            </form>
-
-            <br>
-            <b>Filtros:</b>
-            <br>
-
-            <div class="titulos_filtros" id="valoracion">
-
-                <form>Valoración: 
-                    <select>
-                        <option>Mayor a Menor</option>
-                        <option>Menor a Mayor</option>
-                    </select>
-                </form>
-    
-            </div>
-
-            <div class="titulos_filtros" id="tipodecomida">
-
-                <form>Tipo de Comida: 
-                    <select>
-                        <option>Dulce</option>
-                        <option>Salada</option>
-                        <option>Amarga</option>
-                        <option>Picante</option>
-                    </select>
-                </form>
-    
-            </div>
-
-            <div class="titulos_filtros">
-                Delivery: 
-                <input type="checkbox" name="delivery" id="delivery">
-            </div>
             
         </div>
+        
+        <div class="informacion">
 
-
-
-        <div id="alimentos">
-
-            <div id="titulo_alimentos"><b>Alimentos:</b></div>
-
-            <div class="productos">
-                <img src="src\imagenplaceholder.png" class="imagen_productos">
-            </div>
-
-            <div class="productos">
-                <img src="src\imagenplaceholder.png" class="imagen_productos">
-            </div>
-            
-            <div class="productos">
-                <img src="src\imagenplaceholder.png" class="imagen_productos">
-            </div>
+            <h2>{Nombre}</h2>
+            <h3>Ubicación:  {Ubicación}</h3>
 
         </div>
 
     </div>
-    
+
+    <div id="productos">
+
+        <h3 id="titulo_productos">Productos:</h3>
+
+        <div class="producto_lista">
+            <div class="producto_de_la_lista">
+                <img src="src\imagenplaceholder.png" class="imagen">
+                
+                <div>
+                    <h3>{Nombre}</h3>
+                    <h4>{Descripción}</h4>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="producto_lista">
+            <div class="producto_de_la_lista">
+                <img src="src\imagenplaceholder.png" class="imagen">
+                
+                <div>
+                    <h3>{Nombre}</h3>
+                    <h4>{Descripción}</h4>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="producto_lista">
+            <div class="producto_de_la_lista">
+                <img src="src\imagenplaceholder.png" class="imagen">
+                
+                <div>
+                    <h3>{Nombre}</h3>
+                    <h4>{Descripción}</h4>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="producto_lista">
+            <div class="producto_de_la_lista">
+                <img src="src\imagenplaceholder.png" class="imagen">
+                
+                <div>
+                    <h3>{Nombre}</h3>
+                    <h4>{Descripción}</h4>
+                </div>
+
+            </div>
+        </div>
+
+        ‎
+        ‎
+
+    </div>
 
 
     <footer id="footer">
@@ -147,6 +143,6 @@
     
     </footer>
 
-</body>
 
+</body>
 </html>
