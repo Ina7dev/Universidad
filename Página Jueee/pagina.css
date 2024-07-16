@@ -8,44 +8,56 @@
 
 
 /* Header */
-.header {
-    display: flex;
+
+.header{
     background-color: #6FA1D3;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-between; /* Espacio entre logo y menú */
+    align-items: center;
+
 }
 
-.contenedor_header {
+.container-logo {
+    display: flex;
+    align-items: center;
+    padding: 20px 20px 20px 20px;
+    justify-content: center;
+}
+.menu-logo{
+    width: 6rem;
+    height: 6rem;
+    padding: 0px 20px;
+}
+.titulo-logo{
+        width: 14rem;
+        height: 5rem;
+    }
+
+
+.container-menu {
+    display: flex; /* Alinear botones en fila */
+    height: 70px;
+    width: auto;
     flex-direction: row;
-}
+    justify-content: center;
+    margin-right: 20px;
 
-#logo {
-    width: 8rem;
-    height: 8rem;
-    margin-right: 2rem;
-}
+    }
 
-#jueeelogo {
-    width: 14rem;
-    height: 5rem;
-    margin-top: 2rem;
-    margin-right: 40rem;
-}
-
-
-#botones {
-    margin-top: 3rem;
-    margin-bottom: 2rem;
-}
-
-.boton {
-    margin-left: 2rem;
-}
-
-#icono_ingresar {
-    margin-top: 3rem;
-    margin-left: 5px;
-    list-style: none;
-}
-
+.header-button {
+    background-color: #ffffff; /* Color de fondo del botón */
+    color: black; /* Color del texto */
+    border-radius: 4px; /* Bordes redondeados */
+    padding: 10px 15px; /* Espaciado interno */
+    margin-left: 20px; /* Espacio entre botones */
+    cursor: pointer; /* Cursor de puntero */
+    width: 200px;
+    font-size: 20px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    }
 
 /* Cuerpo */
 #cuerpo {

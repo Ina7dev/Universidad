@@ -90,26 +90,26 @@ body {
 }
 .container-name{
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
 }
 .container-apellido{
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
 }
 
 .container-name input{
-        width: 50%;
+        width: 80%;
         height: 20px;
-        margin-left: 10px
+
 
 }
 
 .container-apellido input{
-        width: 50%;
+        width: 80%;
         height: 20px;
-        margin-left: 10px;
+
 }
 
 .container-form{
@@ -119,7 +119,7 @@ body {
 
         width: 20rem;
         height: 20px;
-        margin-left: 10px;
+
 }
 
 form .boton-1{
@@ -136,4 +136,63 @@ form .boton-1{
 .boton-1 {
     margin-top: 20px;
     color: white;
+}
+
+/* FOOTER CHAVAAL */
+
+#footer {
+    margin: 0;
+    background-color: #6FA1D3;
+}
+.texto_footer {
+    margin-left: 1rem;
+    text-align: justify;
+    padding: 60px 0px 0px 60px;
+    margin: 0;
+}
+
+#texto_terminos {
+    margin-right: 1rem;
+    padding: 20px;
+}
+
+.lista_contactos {
+    margin: 0;
+    padding: 0px 0px 10px 60px;
+}
+
+.texto_terminos{
+    margin: 0;
+    padding: 20px 0px 0px 60px;
+}
+
+footer h3{
+    margin: 0;
+    padding: 20px 0px 20px 60px;
+}
+
+/* Lineas */
+#hr1{
+    background: #ffff;
+    height: 2px;
+    border: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+hr{
+    background: #ffff;
+    height: 2px;
+    border: 0;
+    width: 100%;
+    margin-top: 8rem;
+    margin-bottom: 0;
+}
+footer hr {
+    background: #ffff;
+    height: 2px;
+    border: 0;
+    width: 100%;
+    margin-top: 2rem;
+    margin-bottom: 0;
 }

@@ -17,19 +17,15 @@
 .menu-logo{
     width: 6rem;
     height: 6rem;
-    padding: 0px 20px;
+    padding-left: 10px;
 }
 
-.header a1 {
-    font-size: 4rem;
-    margin: 0;
-    color: white;
-    font-family: "Inter", sans-serif;
-    font-weight: 700;
-    font-style: oblique;
-
+.titulo-logo {
+    width: 14rem;
+    height: 5rem;
+    margin-top: 2rem;
+    padding-right: 10px;
 }
-
 /* CUERPO DE PAGINA*/
 body {
     background-color: #C6D4EA;
@@ -40,8 +36,10 @@ body {
 
 
 .container-general{
-    max-width: none;
-    align-content: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
 }
 
 .container-qs {
@@ -172,6 +170,11 @@ footer h3{
     margin: 0;
     padding: 20px 0px 20px 60px;
 }
+
+
+
+
+/* Lineas */
  #hr1{
     background: #ffff;
     height: 2px;

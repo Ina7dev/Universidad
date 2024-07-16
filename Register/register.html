@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
     <link rel="stylesheet" href="register.css">
@@ -12,6 +13,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a0c7883972.js" crossorigin="anonymous"></script>   <!-- Se está usando Font Awesome -->
 </head>
 <body>
 
@@ -30,6 +32,7 @@
         </div>
         
     </header>
+    <hr id="hr1">
         <div class="container-general">
             <div class="container-login">
 
@@ -39,27 +42,27 @@
                         <div class="container-name">
 
                             <label for="name">Nombre:</label>
-                            <input type="text" id="name" required>
+                            <input type="text" id="name" required placeholder="Ingrese su nombre.">
 
                         </div>
                         <div class="container-apellido">
 
                             <label for="last-name">Apellido:</label>
-                            <input type="text" id="last-name" required>
+                            <input type="text" id="last-name" required placeholder="Ingrese su apellido.">
 
                         </div>
                     </div>
                     <div class="container-form">
                         <label for="email">Correo Electronico:</label>
-                        <input type="text" id="email" required>
+                        <input type="text" id="email" required placeholder="Ingrese su correo electronico.">
                     </div>
                     <div class="container-form">
                         <label for="password">Contraseña:</label>
-                        <input type="password" id="password" required>
+                        <input type="password" id="password" required placeholder="Ingrese una contraseña.">
                     </div>
                     <div class="container-form">
                         <label for="confirm-password">Confirmar Contraseña:</label>
-                        <input type="password" id="confirm-password" name="confirm-password" required>
+                        <input type="password" id="confirm-password" name="confirm-password" required placeholder="Vuelve a ingresar la contraseña">
                     </div>
                     <div>
 
@@ -73,5 +76,28 @@
 
             </div>
         </div>
+
+    <hr>
+    <footer id="footer">
+    
+            <h2 class="texto_footer">Términos y Condiciones</h2>
+            <p class="texto_terminos">Al usar nuestra plataforma de recomendación y venta de comida, aceptas estos términos y condiciones, que pueden cambiar; revisa periódicamente las actualizaciones. Regístrate con información veraz y protege tu cuenta. Garantizamos la calidad de los productos que recomendamos; contáctanos si un producto no cumple con los estándares. Fomentamos el respeto mutuo y no toleramos comportamientos abusivos. No se permite contenido fraudulento, violación de derechos de propiedad intelectual o actividades ilegales. Las transacciones son directas entre usuarios, y aunque ayudamos con la intermediación de interacción entre cliente y vendedor, no somos responsables de problemas en las transacciones, excepto en lo relacionado con la calidad de nuestros productos recomendados. El contenido de la plataforma es nuestra propiedad. No garantizamos que la plataforma esté libre de errores y no somos responsables de daños. Aceptas indemnizarnos por reclamaciones derivadas del mal uso de la plataforma. Podemos cancelar tu cuenta por violaciones a estos términos. Contáctanos en contacto.jueee@gmail.com para cualquier pregunta.</p>
+            <hr>
+            <h3>Contactos:</h3>
+    
+                <li class="lista_contactos">
+                    <span class="fa fa-envelope"></span><b>‎ Correo Electronico:</b> contacto.jueee@gmail.com
+                </li>
+                <li class="lista_contactos">
+                    <span class="fa-brands fa-facebook"></span><b>‎ Facebook:</b> Jueee.cl
+                </li>
+                <li class="lista_contactos">
+                    <span class="fa-brands fa-twitter"></span><b>‎ Twitter | X:</b> @Jueee.cl
+                </li>
+                <li class="lista_contactos">
+                    <span class="fa-brands fa-instagram"></span><b>‎ Instagram:</b> Jueee.cl
+                </li>        
+            
+    </footer>
 </body>
 </html>
