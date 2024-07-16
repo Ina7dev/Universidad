@@ -30,24 +30,29 @@
 body {
     background-color: #C6D4EA;
     margin: 0px;
+    
 }
 .container-general{
     display: flex;
-    justify-content: center; /* Centrado horizontal */
-    align-items: center; /* Centrado vertical */
-    margin-top: 2rem;
-
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
 }
+
+
+
 .container-login {
-    margin: 0;
+    margin-top: 4rem;
     display: flex;
     background-color: white;
-    width: 500px;
-    height: 500px;
+    width: 600px;
+    height: 600px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     justify-content: center;
     align-items: center;
+    
 
 }
 
@@ -115,4 +120,20 @@ body {
         width: 20rem;
         height: 20px;
         margin-left: 10px;
+}
+
+form .boton-1{
+    background: #6FA1D3;
+    height: 40px;
+    width: 180px;
+    font-size: 18px;
+    font-family: "Inter", sans-serif;
+    border-color: black;
+    border-radius: 10px;
+
+}
+
+.boton-1 {
+    margin-top: 20px;
+    color: white;
 }
