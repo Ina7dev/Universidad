@@ -134,6 +134,12 @@ form .boton-1{
     border-color: black;
     border-radius: 10px;
 }
+
+.boton-1 {
+    color: white;
+}
+
+
 /* FOOTER CHAVAAL */
 
 #footer {
