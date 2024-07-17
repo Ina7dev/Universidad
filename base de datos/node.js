@@ -1,12 +1,15 @@
 const mysql = require ("mysql")
-const connection = mysql.createConnection({
-    host:"127.0.0.1",
-    user:"root",
-    password:"root",
-    database:"world"
+let conexion = mysql.createConnection({
+    host: "localhost",
+    database: "world",
+    user: "root",
+    password: "qwmgxpSRg7vn"
 })
-connection.connect((err)=>{
-    if(err) throw err
-    console.log("la conexion se a establecido correctamente")
-})
-connection.end
+conexion.connect(function(err){
+    if(err){
+        throw err;
+    }else{
+        console.log("conecion lograda")
+
+    }
+});
