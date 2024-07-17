@@ -26,6 +26,7 @@
     margin-top: 2rem;
     padding-right: 10px;
 }
+
 /* CUERPO DE PAGINA*/
 body {
     background-color: #C6D4EA;
@@ -143,6 +144,7 @@ form .boton-1{
 #footer {
     margin: 0;
     background-color: #6FA1D3;
+    list-style: none;
 }
 .texto_footer {
     margin-left: 1rem;
