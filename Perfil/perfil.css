@@ -123,29 +123,64 @@
 
 
 
-/*Footer*/
-#footer {
-    bottom: 0%;
-    left: 0%;
-    right: 0%;
-    justify-content: left;
-    border-left: 0;
-    border-right: 0;
-    border-bottom: 0;
-    border-color: #6FA1D3;
-    border-style: solid;
-    margin-top: 2rem;
-}
+/* FOOTER CHAVAAL */
 
+#footer {
+    margin: 0;
+    background-color: #6FA1D3;
+}
 .texto_footer {
     margin-left: 1rem;
     text-align: justify;
+    padding: 60px 0px 0px 60px;
+    margin: 0;
 }
 
 #texto_terminos {
     margin-right: 1rem;
+    padding: 20px;
 }
 
 .lista_contactos {
-    margin-left: 2rem;
+    margin: 0;
+    padding: 0px 0px 10px 60px;
+}
+
+.texto_terminos{
+    margin: 0;
+    padding: 20px 0px 0px 60px;
+}
+
+footer h3{
+    margin: 0;
+    padding: 20px 0px 20px 60px;
+}
+
+
+
+
+/* Lineas */
+ #hr1{
+    background: #ffff;
+    height: 2px;
+    border: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+hr{
+    background: #ffff;
+    height: 2px;
+    border: 0;
+    width: 100%;
+    margin-top: 8rem;
+    margin-bottom: 0;
+}
+footer hr {
+    background: #ffff;
+    height: 2px;
+    border: 0;
+    width: 100%;
+    margin-top: 2rem;
+    margin-bottom: 0;
 }
