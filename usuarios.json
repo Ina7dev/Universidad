@@ -1,0 +1,14 @@
+{
+    "admin@hotel.com": {
+        "password": "admin123",
+        "rol": "admin"
+    },
+    "cliente@hotel.com": {
+        "password": "cliente456",
+        "rol": "usuario"
+    },
+    "hola@gmail.com": {
+        "password": "1234",
+        "rol": "usuario"
+    }
+}
