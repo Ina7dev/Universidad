@@ -1,230 +1,368 @@
-import tkinter as tk  # Para la creación de interfaces gráficas
-from tkinter import ttk # Para widgets más avanzados de tkinter (como estilos modernos)
-from tkinter import messagebox # Para mostrar cuadros de diálogo
-import json  # Para manejar el archivo JSON de usuarios
-import os # Para verificar la existencia de archivos
+from .users import User
+from .gestion_rol import ventanaCRUDroles, cargarRoles
+import tkinter as tk
+from tkinter import ttk
+from tkinter import messagebox
+import json
+import os
+import re
 
+class gestionRecepcionistas:
+    def __init__(self):
+        self.archivo = "recepcionistas.json"
 
+    def cargar(self):
+        if os.path.exists(self.archivo):
+            with open(self.archivo, 'r') as f:
+                return json.load(f)
+        return {}
 
-def cargar_usuarios():
-    """
-    Carga los usuarios desde el archivo JSON, si existe
-    """
-    if os.path.exists('usuarios.json'):
-        with open('usuarios.json', 'r') as archivo:
-            return json.load(archivo)
-    return {}
+    def guardar(self, data):
+        with open(self.archivo, 'w') as f:
+            json.dump(data, f, indent=4)
 
-def guardar_usuarios(usuarios):
-    """
-    Guarda el diccionario de usuarios en el archivo JSON
-    """
-    with open('usuarios.json', 'w') as archivo:
-        json.dump(usuarios, archivo, indent=4)
+class gestionUsuarios:
+    def __init__(self):
+        self.archivo = "usuarios.json"
 
-def registrarse():
-    """
-    Abre una ventana para que nuevos usuarios se registren con su correo y contraseña.
-    El rol asignado será siempre 'usuario'.
-    """
-    ventana_registro = tk.Toplevel()
-    ventana_registro.title("Registrarse")
-    ventana_registro.geometry("300x250")
+    def cargar(self):
+        if os.path.exists(self.archivo):
+            with open(self.archivo, 'r') as f:
+                return json.load(f)
+        return {}
 
-    tk.Label(ventana_registro, text="Correo:").pack(pady=5)
-    correo_entry = tk.Entry(ventana_registro)
-    correo_entry.pack()
+    def guardar(self, data):
+        with open(self.archivo, 'w') as f:
+            json.dump(data, f, indent=4)
 
-    tk.Label(ventana_registro, text="Contraseña:").pack(pady=5)
-    contra_entry = tk.Entry(ventana_registro, show="*")
-    contra_entry.pack()
+def verificacion(text):
+    regex = r'^[\w\.-]+@[\w\.-]+\.\w{2,}$'
+    return re.match(regex, text)
 
-    def guardar_registro():
-        correo = correo_entry.get().strip()
-        contra = contra_entry.get().strip()
-        usuarios = cargar_usuarios()
+def buscar_correo(correo, dict):
+    for data in dict.values():
+        if correo == data.get("email"):
+            return True
+    return False
 
-        if correo in usuarios:
+class ventanaRegistro:
+    def __init__(self, user_manager):
+        self.user_manager = user_manager
+        self.window = tk.Toplevel()
+        self.window.title("Registrarse")
+        self.window.geometry("400x250")
+
+        tk.Label(self.window, text="Nombre completo:").pack(pady=5)
+        self.nombre_entry = tk.Entry(self.window)
+        self.nombre_entry.pack()
+        
+        tk.Label(self.window, text="Correo:").pack(pady=5)
+        self.correo_entry = tk.Entry(self.window)
+        self.correo_entry.pack()
+
+        tk.Label(self.window, text="Contraseña:").pack(pady=5)
+        self.contra_entry = tk.Entry(self.window, show="*")
+        self.contra_entry.pack()
+
+        tk.Button(self.window, text="Aceptar", command=self.guardar).pack(pady=10)
+    
+    def guardar(self): 
+        nombre = self.nombre_entry.get()
+        correo = self.correo_entry.get().strip()
+        contra = self.contra_entry.get().strip()
+        usuarios = self.user_manager.cargar()
+
+        if buscar_correo(correo, usuarios):
             messagebox.showwarning("Error", "Este correo ya está registrado.")
-        elif correo and contra:
-            usuarios[correo] = {
-                "password": contra,
-                "rol": "usuario"
-            }
-            guardar_usuarios(usuarios)
-            messagebox.showinfo("Éxito", "Cuenta creada exitosamente.")
-            ventana_registro.destroy()
         else:
-            messagebox.showwarning("Campos vacíos", "Completa todos los campos.")
+            if not verificacion(correo):
+                messagebox.showwarning("Error", "Correo invalido")
+            else:
+                if len(contra) < 7: 
+                    messagebox.showwarning("Error", "contraseña invalida")
+                elif correo and contra:
+                    user = User(name=nombre, email=correo, password=contra)
+                    usuarios[user.name] = user.get_user()
+                    self.user_manager.guardar(usuarios)
+                    messagebox.showinfo("Éxito", "Cuenta creada exitosamente.")
+                    self.window.destroy()
+                else:
+                    messagebox.showwarning("Campos vacíos", "Completa todos los campos.")
 
-    tk.Button(ventana_registro, text="Registrarse", command=guardar_registro).pack(pady=10)
+class ventanaCRUDrecepcionistas:
+    def __init__(self, recepcionista_manager):
+        self.recepcionista_manager = recepcionista_manager
+        self.ventana = tk.Toplevel()
+        self.ventana.title("Gestión de Recepcionistas")
+        self.ventana.geometry("800x500")
+        self.recepcionistas = self.recepcionista_manager.cargar()
+
+        self.tree = ttk.Treeview(self.ventana, columns=("ID", "Nombre", "Email"), show='headings')
+        self.tree.heading("ID", text="ID")
+        self.tree.heading("Nombre", text="Nombre")
+        self.tree.heading("Email", text="Email")
+        self.tree.pack(pady=10, fill='both', expand=True)
+
+        self.actualizar_tabla()
+
+        frame_botones = tk.Frame(self.ventana)
+        frame_botones.pack(pady=10)
+
+        tk.Button(frame_botones, text="Agregar", command=self.agregar_recepcionista).grid(row=0, column=0, padx=5)
+        tk.Button(frame_botones, text="Editar", command=self.editar_recepcionista).grid(row=0, column=1, padx=5)
+        tk.Button(frame_botones, text="Eliminar", command=self.eliminar_recepcionista).grid(row=0, column=2, padx=5)
+
+    def actualizar_tabla(self):
+        self.tree.delete(*self.tree.get_children())
+        for id_recep, data in self.recepcionistas.items():
+            self.tree.insert("", "end", values=(id_recep, data["nombre"], data["email"]))
+
+    def agregar_recepcionista(self):
+        ventana = tk.Toplevel(self.ventana)
+        ventana.title("Agregar Recepcionista")
+
+        tk.Label(ventana, text="ID:").pack()
+        id_entry = tk.Entry(ventana)
+        id_entry.pack()
+
+        tk.Label(ventana, text="Nombre:").pack()
+        nombre_entry = tk.Entry(ventana)
+        nombre_entry.pack()
+
+        tk.Label(ventana, text="Email:").pack()
+        email_entry = tk.Entry(ventana)
+        email_entry.pack()
 
 
-
-def abrir_crud_usuarios():
-    """
-    Abre una ventana con el sistema CRUD (Crear, Leer, Editar, Eliminar)
-    para la gestión de usuarios. Solo accesible por administradores
-    """
-    ventana_crud = tk.Toplevel()
-    ventana_crud.title("Gestión de Usuarios")
-    ventana_crud.geometry("600x400")
-
-    usuarios = cargar_usuarios()
-
-    # Tabla para mostrar usuarios con columnas de correo, contraseña y rol
-    tree = ttk.Treeview(ventana_crud, columns=("Correo", "Contraseña", "Rol"), show='headings')
-    tree.heading("Correo", text="Correo")
-    tree.heading("Contraseña", text="Contraseña")
-    tree.heading("Rol", text="Rol")
-    tree.pack(pady=10, fill='both', expand=True)
-
-    def actualizar_tabla():
-        """
-        Limpia y vuelve a llenar la tabla con los datos actuales de usuarios
-        """
-        tree.delete(*tree.get_children())
-        for correo, data in usuarios.items():
-            tree.insert("", "end", values=(correo, data["password"], data["rol"]))
-
-    actualizar_tabla()
-
-    def agregar_usuario():
-        """
-        Abre una subventana para ingresar un nuevo usuario
-        """
         def guardar_nuevo():
-            nuevo_correo = correo_entry.get().strip()
-            nueva_contra = contra_entry.get().strip()
-            nuevo_rol = rol_combobox.get()
+            id_recep = id_entry.get().strip()
+            nombre = nombre_entry.get().strip()
+            email = email_entry.get().strip()
 
-            if nuevo_correo and nueva_contra and nuevo_rol:
-                usuarios[nuevo_correo] = {
-                    "password": nueva_contra,
-                    "rol": nuevo_rol
-                }
-                guardar_usuarios(usuarios)
-                actualizar_tabla()
-                ventana_agregar.destroy()
+            
+            if id_recep and nombre and email:
+                if id_recep in self.recepcionistas:
+                    messagebox.showwarning("Error", "Este ID ya está registrado")
+                else:
+                    self.recepcionistas[id_recep] = {
+                        "nombre": nombre,
+                        "email": email,
+                    }
+                    self.recepcionista_manager.guardar(self.recepcionistas)
+                    self.actualizar_tabla()
+                    ventana.destroy()
+            else:
+                messagebox.showwarning("Error", "Todos los campos son obligatorios")
 
-        ventana_agregar = tk.Toplevel(ventana_crud)
-        ventana_agregar.title("Agregar Usuario")
+        tk.Button(ventana, text="Guardar", command=guardar_nuevo).pack(pady=5)
 
-        tk.Label(ventana_agregar, text="Correo:").pack()
-        correo_entry = tk.Entry(ventana_agregar)
+    def eliminar_recepcionista(self):
+        seleccion = self.tree.selection()
+        if seleccion:
+            id_recep = self.tree.item(seleccion[0])['values'][0]
+            if messagebox.askyesno("Confirmar", f"¿Eliminar al recepcionista {id_recep}?"):
+                del self.recepcionistas[id_recep]
+                self.recepcionista_manager.guardar(self.recepcionistas)
+                self.actualizar_tabla()
+
+    def editar_recepcionista(self):
+        seleccion = self.tree.selection()
+        if seleccion:
+            id_recep = self.tree.item(seleccion[0])['values'][0]
+            datos = self.recepcionistas[id_recep]
+
+            ventana = tk.Toplevel(self.ventana)
+            ventana.title("Editar Recepcionista")
+
+            tk.Label(ventana, text=f"ID: {id_recep}").pack()
+            
+            tk.Label(ventana, text="Nombre:").pack()
+            nombre_entry = tk.Entry(ventana)
+            nombre_entry.insert(0, datos["nombre"])
+            nombre_entry.pack()
+
+            tk.Label(ventana, text="Email:").pack()
+            email_entry = tk.Entry(ventana)
+            email_entry.insert(0, datos["email"])
+            email_entry.pack()
+
+
+
+            def guardar_edicion():
+                nuevo_nombre = nombre_entry.get().strip()
+                nuevo_email = email_entry.get().strip()
+
+                
+                if nuevo_nombre and nuevo_email:
+                    self.recepcionistas[id_recep] = {
+                        "nombre": nuevo_nombre,
+                        "email": nuevo_email,
+                    }
+                    self.recepcionista_manager.guardar(self.recepcionistas)
+                    self.actualizar_tabla()
+                    ventana.destroy()
+                else:
+                    messagebox.showwarning("Error", "Todos los campos son obligatorios")
+
+            tk.Button(ventana, text="Guardar Cambios", command=guardar_edicion).pack(pady=5)
+
+    
+
+class ventanaCRUDusuarios:
+    def __init__(self, user_manager):
+        self.user_manager = user_manager
+        self.ventana = tk.Toplevel()
+        self.ventana.title("Gestión de Usuarios")
+        self.ventana.geometry("800x400")
+        self.usuarios = self.user_manager.cargar()
+
+        self.tree = ttk.Treeview(self.ventana, columns=("Nombre" ,"Correo", "Contraseña", "Rol"), show='headings')
+        
+        self.tree.heading("Nombre", text="Nombre")
+        self.tree.heading("Correo", text="Correo")
+        self.tree.heading("Contraseña", text="Contraseña")
+        self.tree.heading("Rol", text="Rol")
+        self.tree.pack(pady=10, fill='both', expand=True)
+
+        self.actualizar_tabla()
+
+        frame_botones = tk.Frame(self.ventana)
+        frame_botones.pack(pady=10)
+
+        tk.Button(frame_botones, text="Agregar", command=self.agregar_usuario).grid(row=0, column=0, padx=5)
+        tk.Button(frame_botones, text="Editar", command=self.editar_usuario).grid(row=0, column=1, padx=5)
+        tk.Button(frame_botones, text="Eliminar", command=self.eliminar_usuario).grid(row=0, column=2, padx=5)
+
+    def actualizar_tabla(self):
+        self.tree.delete(*self.tree.get_children())
+        for nombre, data in self.usuarios.items():
+            self.tree.insert("", "end", values=(nombre, data["email"] , data["password"], data["rol"]))
+
+    def agregar_usuario(self):
+        ventana = tk.Toplevel(self.ventana)
+        ventana.title("Agregar Usuario")
+
+
+        tk.Label(ventana, text="Nombre:").pack()
+        Nombre_entry = tk.Entry(ventana)
+        Nombre_entry.pack()
+
+        tk.Label(ventana, text="Correo:").pack()
+        correo_entry = tk.Entry(ventana)
         correo_entry.pack()
 
-        tk.Label(ventana_agregar, text="Contraseña:").pack()
-        contra_entry = tk.Entry(ventana_agregar)
+        tk.Label(ventana, text="Contraseña:").pack()
+        contra_entry = tk.Entry(ventana)
         contra_entry.pack()
 
-        tk.Label(ventana_agregar, text="Rol:").pack()
-        rol_combobox = ttk.Combobox(ventana_agregar, values=["admin", "usuario"])
+        tk.Label(ventana, text="Rol:").pack()
+        rol_combobox = ttk.Combobox(ventana, values=[rol for rol in cargarRoles().keys()])
         rol_combobox.set("usuario")
         rol_combobox.pack()
 
-        tk.Button(ventana_agregar, text="Guardar", command=guardar_nuevo).pack(pady=5)
+        def guardar_nuevo():
+            Nombre = Nombre_entry.get()
+            correo = correo_entry.get().strip()
+            contra = contra_entry.get().strip()
+            rol = rol_combobox.get()
+            if correo and contra and rol and Nombre:
+                self.usuarios[Nombre] = {"email": correo , "password": contra, "rol": rol}
+                self.user_manager.guardar(self.usuarios)
+                self.actualizar_tabla()
+                ventana.destroy()
 
-    def eliminar_usuario():
-        """
-        Elimina un usuario seleccionado de la tabla
-        """
-        seleccion = tree.selection()
+        tk.Button(ventana, text="Guardar", command=guardar_nuevo).pack(pady=5)
+
+    def eliminar_usuario(self):
+        seleccion = self.tree.selection()
         if seleccion:
-            correo = tree.item(seleccion[0])['values'][0]
+            correo = self.tree.item(seleccion[0])['values'][0]
             if messagebox.askyesno("Confirmar", f"¿Eliminar a {correo}?"):
-                del usuarios[correo]
-                guardar_usuarios(usuarios)
-                actualizar_tabla()
+                del self.usuarios[correo]
+                self.user_manager.guardar(self.usuarios)
+                self.actualizar_tabla()
 
-    def editar_usuario():
-        """
-        Abre una subventana para editar la contraseña o el rol del usuario seleccionado
-        """
-        seleccion = tree.selection()
+    def editar_usuario(self):
+        seleccion = self.tree.selection()
         if seleccion:
-            correo_seleccionado = tree.item(seleccion[0])['values'][0]
-            datos = usuarios[correo_seleccionado]
+            Nombre = self.tree.item(seleccion[0])['values'][0]
+            datos = self.usuarios[Nombre]
 
-            def guardar_edicion():
-                nueva_contra = nueva_contra_entry.get()
-                nuevo_rol = rol_combobox.get()
-                usuarios[correo_seleccionado] = {
-                    "password": nueva_contra,
-                    "rol": nuevo_rol
-                }
-                guardar_usuarios(usuarios)
-                actualizar_tabla()
-                ventana_editar.destroy()
+            ventana = tk.Toplevel(self.ventana)
+            ventana.title("Editar Usuario")
 
-            ventana_editar = tk.Toplevel(ventana_crud)
-            ventana_editar.title("Editar Usuario")
+            tk.Label(ventana, text=f"Nombre: {Nombre}").pack()
+            
 
-            tk.Label(ventana_editar, text=f"Correo: {correo_seleccionado}").pack()
-            tk.Label(ventana_editar, text="Nueva Contraseña:").pack()
-            nueva_contra_entry = tk.Entry(ventana_editar)
-            nueva_contra_entry.insert(0, datos["password"])
-            nueva_contra_entry.pack()
+            tk.Label(ventana, text="Nueva Contraseña:").pack()
+            contra_entry = tk.Entry(ventana)
+            contra_entry.insert(0, datos["password"])
+            contra_entry.pack()
 
-            tk.Label(ventana_editar, text="Rol:").pack()
-            rol_combobox = ttk.Combobox(ventana_editar, values=["admin", "usuario"])
+            tk.Label(ventana, text="Rol:").pack()
+            rol_combobox = ttk.Combobox(ventana, values=[rol for rol in cargarRoles().keys()])
             rol_combobox.set(datos["rol"])
             rol_combobox.pack()
 
-            tk.Button(ventana_editar, text="Guardar Cambios", command=guardar_edicion).pack(pady=5)
+            def guardar_edicion():
+                nueva_contra = contra_entry.get()
+                nuevo_rol = rol_combobox.get()
+                self.usuarios[Nombre] = {"email": datos["email"] ,"password": nueva_contra , "rol": nuevo_rol}
+                self.user_manager.guardar(self.usuarios)
+                self.actualizar_tabla()
+                ventana.destroy()
 
-    # Botones CRUD en la parte inferior de la ventana
-    frame_botones = tk.Frame(ventana_crud)
-    frame_botones.pack(pady=10)
+            tk.Button(ventana, text="Guardar Cambios", command=guardar_edicion).pack(pady=5)
+    
+class ventanaAcceso:
+    def __init__(self, parent):
+        self.parent = parent
+        self.user_manager = gestionUsuarios()
+        self.recepcionista_manager = gestionRecepcionistas()
 
-    tk.Button(frame_botones, text="Agregar", command=agregar_usuario).grid(row=0, column=0, padx=5)
-    tk.Button(frame_botones, text="Editar", command=editar_usuario).grid(row=0, column=1, padx=5)
-    tk.Button(frame_botones, text="Eliminar", command=eliminar_usuario).grid(row=0, column=2, padx=5)
+        self.frame = ttk.Frame(parent)
+        self.frame.place(relx=0.5, rely=0.5, anchor="center")
 
+        ttk.Label(self.frame, text="Inicio", font=("Arial", 18)).grid(column=0, row=0, columnspan=2, pady=10)
+        ttk.Label(self.frame, text="Usuario", font=("Arial", 12)).grid(column=0, row=1, columnspan=2, pady=10)
+        self.user_entry = ttk.Entry(self.frame, width=30)
+        self.user_entry.grid(row=2, column=1, pady=5)
 
+        ttk.Label(self.frame, text="Contraseña", font=("Arial", 12)).grid(column=0, row=3, columnspan=2, pady=10)
+        self.pass_entry = ttk.Entry(self.frame, width=30, show="*")
+        self.pass_entry.grid(row=4, column=1, pady=5)
 
-def Autentication(parent):
-    """
-    Genera el formulario de login donde el usuario ingresa su correo y contraseña
-    Verifica el rol y da acceso según corresponda
-    """
-    Loginframe = ttk.Frame(parent)
-    Loginframe.place(relx=0.5, rely=0.5, anchor="center")
+        ttk.Button(self.frame, text="Aceptar", command=self.verificar).grid(column=0, row=5, columnspan=2, pady=10)
+        ttk.Button(self.frame, text="Registrarse", command=lambda: ventanaRegistro(self.user_manager)).grid(column=0, row=6, columnspan=2, pady=5)
 
-    # Etiquetas y campos de texto
-    ttk.Label(Loginframe, text="Inicio", font=("Arial", 18)).grid(column=0, row=0, columnspan=2, pady=10)
-    ttk.Label(Loginframe, text="Usuario", font=("Arial", 12)).grid(column=0, row=1, columnspan=2, pady=10)
-    userEntry = ttk.Entry(Loginframe, width=30)
-    userEntry.grid(row=2, column=1, pady=5)
+    def verificar(self):
+        usuarios = self.user_manager.cargar()
+        email = self.user_entry.get().strip()
+        password = self.pass_entry.get().strip()
+        login = False     
+        logged_user = {}
+        
+        for name, dato in usuarios.items():
+            if email == dato["email"]: 
+                if password == dato["password"]:
+                    logged_user = dato
+                    login = True
+                    break
 
-    ttk.Label(Loginframe, text="Contraseña", font=("Arial", 12)).grid(column=0, row=3, columnspan=2, pady=10)
-    passEntry = ttk.Entry(Loginframe, width=30)
-    passEntry.grid(row=4, column=1, pady=5)
-
-    # Función que se ejecuta al presionar "Aceptar"
-    def Verify():
-        """
-        Verifica si el usuario existe y si la contraseña es correcta
-        Redirige según el rol ('admin' o 'usuario')
-        """
-        usuarios = cargar_usuarios()
-        email = userEntry.get().strip()
-        password = passEntry.get().strip()
-
-        if email in usuarios and usuarios[email]["password"] == password:
-            rol = usuarios[email]["rol"]
-            messagebox.showinfo("Inicio de sesión correcto", f"Bienvenido ({rol})")
-
-            if rol == "admin":
-                abrir_crud_usuarios()
+        if login: 
+            messagebox.showinfo("Inicio de sesión correcto", f"Bienvenido ({name})")
+            if logged_user["rol"] == "admin":
+                menu_admin = tk.Toplevel()
+                menu_admin.title("Menú de Administrador")
+                menu_admin.geometry("300x200")
+                
+                tk.Button(menu_admin, text="Gestión de Usuarios", 
+                        command=lambda: ventanaCRUDusuarios(self.user_manager)).pack(pady=10)
+                tk.Button(menu_admin, text="Gestión de Recepcionistas", 
+                        command=lambda: ventanaCRUDrecepcionistas(self.recepcionista_manager)).pack(pady=10)
+                tk.Button(menu_admin, text="Gestión de Roles", 
+                        command=lambda: ventanaCRUDroles()).pack(pady=10)
             else:
-                messagebox.showinfo("Acceso limitado", "Este usuario no tiene permisos para modificar usuarios.")
+                messagebox.showinfo("Acceso limitado", "Este usuario no tiene permisos administrativos.")
         else:
             messagebox.showinfo("Inicio de sesión inválido", "Usuario o contraseña incorrectos")
-
-    # Botón de inicio de sesión
-    ttk.Button(Loginframe, text="Aceptar", command=Verify).grid(column=0, row=5, columnspan=2, pady=10)
-    #Botón de registro
-    ttk.Button(Loginframe, text="Registrarse", command=registrarse).grid(column=0, row=6, columnspan=2, pady=5)
-
-

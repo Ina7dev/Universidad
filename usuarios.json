@@ -1,14 +1,27 @@
 {
-    "admin@hotel.com": {
+    "admin": {
+        "email": "admin@hotel.com",
         "password": "admin123",
         "rol": "admin"
     },
-    "cliente@hotel.com": {
+    "cliente": {
+        "email": "cliente@hotel.com",
         "password": "cliente456",
         "rol": "usuario"
     },
     "hola@gmail.com": {
+        "email": "hola@gmail.com",
         "password": "1234",
+        "rol": "usuario"
+    },
+    "ad": {
+        "email": "asd",
+        "password": "a",
+        "rol": "admin"
+    },
+    "ad2": {
+        "email": "asd",
+        "password": "a",
         "rol": "usuario"
     }
 }
