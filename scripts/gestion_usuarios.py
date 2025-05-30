@@ -1,6 +1,6 @@
 from .users import User
+from .gestion_clientes import ventanaCRUDclientes,ventanaCliente
 from .gestion_rol import ventanaCRUDroles, cargarRoles
-from .gestion_clientes import ventanaCRUDclientes
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
@@ -85,6 +85,20 @@ class ventanaRegistro:
                     user = User(name=nombre, email=correo, password=contra)
                     usuarios[user.name] = user.get_user()
                     self.user_manager.guardar(usuarios)
+                    try:
+                        with open("clientes.json", "r") as f:
+                            clientes=json.load(f)
+                    except FileNotFoundError:
+                        clientes={}
+
+                    clientes[correo]={
+                        "nombre": nombre,
+                        "correo": correo,
+                        "telefono": "No asignado"
+                    }
+
+                    with open("clientes.json", "w") as f:
+                        json.dump(clientes, f, indent=4)
                     messagebox.showinfo("Éxito", "Cuenta creada exitosamente.")
                     self.window.destroy()
                 else:
@@ -215,7 +229,6 @@ class ventanaCRUDrecepcionistas:
             tk.Button(ventana, text="Guardar Cambios", command=guardar_edicion).pack(pady=5)
 
     
-
 
 class ventanaCRUDusuarios:
     def __init__(self, user_manager):
@@ -365,14 +378,15 @@ class ventanaAcceso:
                     break
 
         if login:
-            messagebox.showinfo("Inicio de sesión correcto", f"Bienvenido ({name})")
+            messagebox.showinfo("Inicio de sesión correcto", f"Bienvenido {name}")
             for widget in self.parent.winfo_children():
                 widget.destroy()
-            if logged_user.get("rol") == "admin":                
+            if logged_user.get("rol") == "admin":
                 menu_admin = tk.Toplevel()
                 menu_admin.title("Menú de Administrador")
                 menu_admin.geometry("300x200")
-                tk.Button(menu_admin, text="Gestión de Clientes", command=ventanaCRUDclientes).pack(pady=10)
+                tk.Button(menu_admin, text="Gestión de Clientes",
+                        command=ventanaCRUDclientes).pack(pady=10)
                 tk.Button(menu_admin, text="Gestión de Usuarios", 
                         command=lambda: ventanaCRUDusuarios(self.user_manager)).pack(pady=10)
                 tk.Button(menu_admin, text="Gestión de Recepcionistas", 
@@ -380,6 +394,6 @@ class ventanaAcceso:
                 tk.Button(menu_admin, text="Gestión de Roles", 
                         command=lambda: ventanaCRUDroles()).pack(pady=10)
             else:
-                 messagebox.showinfo("Acceso limitado", "Este usuario no tiene permisos administrativos.") 
+                ventanaCliente(logged_user)
         else:
             messagebox.showinfo("Inicio de sesión inválido", "Usuario o contraseña incorrectos")

@@ -8,6 +8,44 @@ import re
 ARCHIVO_CLIENTES = "clientes.json"
 ARCHIVO_RESERVAS = "reservas.json"
 
+class ventanaCliente:
+    def __init__(self, datos_usuario):
+        self.usuario = datos_usuario
+        self.reservas = self.cargar_reservas()
+
+        self.ventana = tk.Toplevel()
+        self.ventana.title("Panel del Cliente")
+        self.ventana.geometry("500x400")
+
+        tk.Label(self.ventana, text=f"Bienvenido, {self.usuario['email']}", font=("Arial", 14)).pack(pady=10)
+        tk.Button(self.ventana, text="Ver mis datos", command=self.ver_datos).pack(pady=10)
+        tk.Button(self.ventana, text="Ver mis reservas", command=self.ver_reservas).pack(pady=10)
+
+    def cargar_reservas(self):
+        if os.path.exists("reservas.json"):
+            with open("reservas.json", "r") as f:
+                return json.load(f)
+        return {}
+
+    def ver_datos(self):
+        info = f"Correo: {self.usuario['email']}\nContraseña: {self.usuario['password']}\nRol: {self.usuario['rol']}"
+        messagebox.showinfo("Mis datos", info)
+    
+    def ver_reservas(self):
+        lista = [r for r in self.reservas.values() if r["cliente_id"] == self.usuario["email"]]
+
+        if not lista:
+            messagebox.showinfo("Reservas", "No tienes reservas registradas.")
+            return
+
+        ventana = tk.Toplevel(self.ventana)
+        ventana.title("Mis Reservas")
+        ventana.geometry("400x300")
+
+        for reserva in lista:
+            texto = f"Habitación: {reserva['habitacion']}\nEntrada: {reserva['entrada']}\nSalida: {reserva['salida']}"
+            tk.Label(ventana, text=texto, relief="groove", padx=10, pady=5).pack(pady=5, fill="x")
+
 def cargar_clientes():
     if os.path.exists(ARCHIVO_CLIENTES):
         with open(ARCHIVO_CLIENTES, "r") as f:
@@ -169,6 +207,17 @@ class ventanaCRUDclientes:
             except ValueError:
                 messagebox.showwarning("Error", "Formato de fecha inválido.")
                 return
+            entrada_dt = datetime.strptime(entrada, "%Y-%m-%d")
+            salida_dt = datetime.strptime(salida, "%Y-%m-%d")
+
+            for r in self.reservas.values():
+                if r["habitacion"] ==habitacion:
+                    r_entrada=datetime.strftime(r["entrada"], "%Y-%m-%d")
+                    r_salida=datetime.strftime(r["salida"], "%Y-%m-%d")
+                    if not (salida_dt <= r_entrada or entrada_dt >= r_salida):
+                        messagebox.showwarning("Conflicto", "Ya hay una reserva en esa habitación en esas fechas.")
+                        return
+
 
             reserva = {
                 "cliente_id": id_cliente,

@@ -5,7 +5,6 @@ from tkinter import messagebox
 import json
 import os
 
-
 archivo_rol = "roles.json" 
 
 def cargarRoles():
