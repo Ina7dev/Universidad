@@ -3,6 +3,7 @@ from tkinter import ttk, messagebox
 import json
 import os
 from datetime import datetime
+import re
 
 ARCHIVO_CLIENTES = "clientes.json"
 ARCHIVO_RESERVAS = "reservas.json"
@@ -22,6 +23,10 @@ def cargar_reservas():
         with open(ARCHIVO_RESERVAS, "r") as f:
             return json.load(f)
     return {}
+
+def verificacion(correo):
+    regex = r'^[\w\.-]+@[\w\.-]+\.\w{2,}$'
+    return re.match(regex, correo)
 
 def guardar_reservas(data):
     with open(ARCHIVO_RESERVAS, "w") as f:
@@ -71,6 +76,9 @@ class ventanaCRUDclientes:
         seleccion = self.tree.selection()
         if seleccion:
             id_cliente = self.tree.item(seleccion[0])["values"][0]
+            if id_cliente not in self.clientes:
+                messagebox.showerror("Error", f"No se encontró al cliente con ID '{id_cliente}'")
+                return
             if messagebox.askyesno("Confirmar", f"¿Eliminar al cliente {id_cliente}?"):
                 self.clientes.pop(id_cliente)
                 guardar_clientes(self.clientes)
@@ -111,9 +119,15 @@ class ventanaCRUDclientes:
                 "correo": correo_entry.get().strip(),
                 "telefono": tel_entry.get().strip()
             }
+
+            if not verificacion(nuevo["correo"]):
+                messagebox.showwarning("Error", "Correo inválido.")
+                return
+            
             if not id_val or not nuevo["nombre"]:
                 messagebox.showwarning("Error", "ID y nombre son obligatorios.")
                 return
+            
             self.clientes[id_val] = nuevo
             guardar_clientes(self.clientes)
             self.actualizar_tabla()
