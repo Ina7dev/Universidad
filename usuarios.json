@@ -23,5 +23,10 @@
         "email": "asd",
         "password": "a",
         "rol": "usuario"
+    },
+    "carla ": {
+        "rol": "admin",
+        "email": "carlabelen@gmail.com",
+        "password": "HOLA123"
     }
 }
