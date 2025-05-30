@@ -1,16 +1,14 @@
+
 class User(): 
-    def __init__(self, name = "" , email= "" , password = ""):
+    def __init__(self, name="", email="", password="", rol="usuario"):
         self.name = name
         self.email = email
         self.password = password
-        self.__is_admin = False
-
+        self.rol = rol  # Nuevo parámetro para el rol
 
     def get_user(self):
-        usuario = {
-            "rol" :  "admin" if self.__is_admin else "usuario",   
-            "email" : self.email,
-            "password" : self.password 
+        return {
+            "rol": self.rol,
+            "email": self.email,
+            "password": self.password
         }
-        return usuario
-    

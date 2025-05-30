@@ -1,4 +1,5 @@
 from .users import User
+from .gestion_clientes import ventanaCRUDclientes,ventanaCliente
 from .gestion_rol import ventanaCRUDroles, cargarRoles
 import tkinter as tk
 from tkinter import ttk
@@ -84,6 +85,20 @@ class ventanaRegistro:
                     user = User(name=nombre, email=correo, password=contra)
                     usuarios[user.name] = user.get_user()
                     self.user_manager.guardar(usuarios)
+                    try:
+                        with open("clientes.json", "r") as f:
+                            clientes=json.load(f)
+                    except FileNotFoundError:
+                        clientes={}
+
+                    clientes[correo]={
+                        "nombre": nombre,
+                        "correo": correo,
+                        "telefono": "No asignado"
+                    }
+
+                    with open("clientes.json", "w") as f:
+                        json.dump(clientes, f, indent=4)
                     messagebox.showinfo("Éxito", "Cuenta creada exitosamente.")
                     self.window.destroy()
                 else:
@@ -136,6 +151,9 @@ class ventanaCRUDrecepcionistas:
 
         def guardar_nuevo():
             id_recep = id_entry.get().strip()
+            if not verificacion(email_entry.get().strip()):
+                messagebox.showwarning("Error", "Correo inválido")
+                return
             nombre = nombre_entry.get().strip()
             email = email_entry.get().strip()
 
@@ -190,6 +208,10 @@ class ventanaCRUDrecepcionistas:
 
             def guardar_edicion():
                 nuevo_nombre = nombre_entry.get().strip()
+                nuevo_email = email_entry.get().strip()
+                if not verificacion(nuevo_email):
+                    messagebox.showwarning("Error", "Correo inválido")
+                    return
                 nuevo_email = email_entry.get().strip()
 
                 
@@ -263,6 +285,9 @@ class ventanaCRUDusuarios:
         def guardar_nuevo():
             Nombre = Nombre_entry.get()
             correo = correo_entry.get().strip()
+            if not verificacion(correo):
+                messagebox.showwarning("Error", "Correo inválido")
+                return
             contra = contra_entry.get().strip()
             rol = rol_combobox.get()
             if correo and contra and rol and Nombre:
@@ -306,6 +331,9 @@ class ventanaCRUDusuarios:
 
             def guardar_edicion():
                 nueva_contra = contra_entry.get()
+                if not verificacion(datos["email"]):
+                    messagebox.showwarning("Error", "Correo inválido")
+                    return
                 nuevo_rol = rol_combobox.get()
                 self.usuarios[Nombre] = {"email": datos["email"] ,"password": nueva_contra , "rol": nuevo_rol}
                 self.user_manager.guardar(self.usuarios)
@@ -349,13 +377,16 @@ class ventanaAcceso:
                     login = True
                     break
 
-        if login: 
-            messagebox.showinfo("Inicio de sesión correcto", f"Bienvenido ({name})")
-            if logged_user["rol"] == "admin":
+        if login:
+            messagebox.showinfo("Inicio de sesión correcto", f"Bienvenido {name}")
+            for widget in self.parent.winfo_children():
+                widget.destroy()
+            if logged_user.get("rol") == "admin":
                 menu_admin = tk.Toplevel()
                 menu_admin.title("Menú de Administrador")
                 menu_admin.geometry("300x200")
-                
+                tk.Button(menu_admin, text="Gestión de Clientes",
+                        command=ventanaCRUDclientes).pack(pady=10)
                 tk.Button(menu_admin, text="Gestión de Usuarios", 
                         command=lambda: ventanaCRUDusuarios(self.user_manager)).pack(pady=10)
                 tk.Button(menu_admin, text="Gestión de Recepcionistas", 
@@ -363,6 +394,6 @@ class ventanaAcceso:
                 tk.Button(menu_admin, text="Gestión de Roles", 
                         command=lambda: ventanaCRUDroles()).pack(pady=10)
             else:
-                messagebox.showinfo("Acceso limitado", "Este usuario no tiene permisos administrativos.")
+                ventanaCliente(logged_user)
         else:
             messagebox.showinfo("Inicio de sesión inválido", "Usuario o contraseña incorrectos")

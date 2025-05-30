@@ -1,11 +1,9 @@
 from .users import User
-
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 import json
 import os
-
 
 archivo_rol = "roles.json" 
 
@@ -69,6 +67,10 @@ class ventanaCRUDroles:
             self.actualizar()
            
 
+
+
+
+
     def editar(self):
         seleccion = self.listbox.curselection()
         if seleccion: 
@@ -81,6 +83,15 @@ class ventanaCRUDroles:
             tk.Label(ventana, text=f"Nombre:").pack()
             nombre = tk.Entry(ventana)
             nombre.pack()
+            def guardar_edicion():
+                nuevo_nombre = nombre.get()
+                # Actualizar usuarios con el rol antiguo
+                usuarios = gestionUsuarios().cargar()
+                for user, data in usuarios.items():
+                    if data["rol"] == rol_actual:
+                        data["rol"] = nuevo_nombre
+                gestionUsuarios().guardar(usuarios)
+
 
             def guardar_edicion():
                 nuevo_nombre = nombre.get()
