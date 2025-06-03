@@ -8,5 +8,15 @@
         "entrada": "28-02-2025",
         "salida": "04-03-2025",
         "noches": 4
+    },
+    "ina@gmail.com_05-07-3030_301": {
+        "cliente_id": "ina@gmail.com",
+        "piso": "3",
+        "tipo_habitacion": "Suite",
+        "personas": 4,
+        "habitacion": "301",
+        "entrada": "05-07-3030",
+        "salida": "06-07-3030",
+        "noches": 1
     }
 }
