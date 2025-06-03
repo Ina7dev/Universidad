@@ -4,7 +4,6 @@ import json
 import os
 from datetime import datetime
 import re
-from .gestion_reservas import ventanaCRUDreservas
 
 ARCHIVO_CLIENTES = "clientes.json"
 ARCHIVO_RESERVAS = "reservas.json"
@@ -21,11 +20,7 @@ class ventanaCliente:
         tk.Label(self.ventana, text=f"Bienvenido, {self.usuario['email']}", font=("Arial", 14)).pack(pady=10)
         tk.Button(self.ventana, text="Ver mis datos", command=self.ver_datos).pack(pady=10)
         tk.Button(self.ventana, text="Ver mis reservas", command=self.ver_reservas).pack(pady=10)
-        tk.Button(self.ventana, text="Crear Reserva", command=self.abrir_ventana_reservas).pack(pady=10)
-
-    def abrir_ventana_reservas(self):
-        ventanaCRUDreservas()
-
+        
     def cargar_reservas(self):
         if os.path.exists("reservas.json"):
             with open("reservas.json", "r") as f:
@@ -216,13 +211,12 @@ class ventanaCRUDclientes:
             salida_dt = datetime.strptime(salida, "%d-%m-%Y")
 
             for r in self.reservas.values():
-                if r["habitacion"] == habitacion:
-                    r_entrada = datetime.strptime(r["entrada"], "%d-%m-%Y")
-                    r_salida = datetime.strptime(r["salida"], "%d-%m-%Y")
+                if r["habitacion"] ==habitacion:
+                    r_entrada=datetime.strftime(r["entrada"], "%d-%m-%Y")
+                    r_salida=datetime.strftime(r["salida"], "%d-%m-%Y")
                     if not (salida_dt <= r_entrada or entrada_dt >= r_salida):
                         messagebox.showwarning("Conflicto", "Ya hay una reserva en esa habitación en esas fechas.")
                         return
-
 
 
             reserva = {
