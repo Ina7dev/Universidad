@@ -28,5 +28,10 @@
         "rol": "admin",
         "email": "carlabelen@gmail.com",
         "password": "HOLA123"
+    },
+    "ina": {
+        "rol": "usuario",
+        "email": "ina@gmail.com",
+        "password": "inainaina"
     }
 }

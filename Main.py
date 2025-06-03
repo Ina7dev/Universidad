@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from scripts.gestion_usuarios import ventanaAcceso
 
-def Main():
+def main():
     root = tk.Tk()
     root.title("Sistema de Gestión Hotelera")
     root.geometry("1280x720")
@@ -19,4 +19,4 @@ def Main():
     root.mainloop()
 
 if __name__ == "__main__":
-    Main()
+    main()

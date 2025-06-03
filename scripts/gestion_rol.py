@@ -17,6 +17,8 @@ def guardarRol(data):
     with open(archivo_rol, 'w') as f:
         json.dump(data, f, indent=4)
 
+def funcion_que_usa_gestionUsuarios():
+    from .gestion_usuarios import gestionUsuarios
 
 class ventanaCRUDroles:
     def __init__(self):
@@ -65,10 +67,6 @@ class ventanaCRUDroles:
             del self.roles[rol_a_eliminar]
             guardarRol(self.roles)
             self.actualizar()
-           
-
-
-
 
 
     def editar(self):
