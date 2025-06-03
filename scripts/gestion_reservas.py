@@ -169,10 +169,15 @@ class ventanaCRUDreservas:
         try:
             fecha_entrada = datetime.strptime(self.entrada_entry.get(), "%d-%m-%Y")
         except ValueError:
-            messagebox.showwarning("Error", "Formato de fecha inválido (DD-MM-YYY)")
+            messagebox.showwarning("Error", "Formato de fecha inválido (DD-MM-YYYY)")
             return False
 
-        #validar noches
+        hoy = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
+        if fecha_entrada < hoy:
+            messagebox.showwarning("Error", "La fecha de entrada no puede ser anterior a hoy")
+            return False
+
+         #validar noches
         noches = self.noches_var.get()
         if noches < 1:
             messagebox.showwarning("Error", "La cantidad de noches debe ser al menos 1")

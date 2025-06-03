@@ -18,5 +18,15 @@
         "entrada": "05-07-3030",
         "salida": "06-07-3030",
         "noches": 1
+    },
+    "ina@gmail.com_22-06-2025_202": {
+        "cliente_id": "ina@gmail.com",
+        "piso": "2",
+        "tipo_habitacion": "Est\u00e1ndar",
+        "personas": 2,
+        "habitacion": "202",
+        "entrada": "22-06-2025",
+        "salida": "23-06-2025",
+        "noches": 1
     }
 }
