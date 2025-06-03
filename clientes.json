@@ -1,7 +1,16 @@
-{
-    "ina@gmail.com": {
-        "nombre": "ina",
-        "correo": "ina@gmail.com",
-        "telefono": "No asignado"
+[
+    {
+        "N° habitación": "305",
+        "N° Piso": "3",
+        "Tipo": "suite",
+        "Estado": "disponible",
+        "Capacidad": 3
+    },
+    {
+        "N° habitación": "101",
+        "N° Piso": "1",
+        "Tipo": "estándar",
+        "Estado": "ocupado",
+        "Capacidad": 2
     }
-}
+]
