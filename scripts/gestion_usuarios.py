@@ -1,6 +1,7 @@
 from .users import User
-from .gestion_clientes import ventanaCRUDclientes,ventanaCliente
+from .gestion_clientes import ventanaCRUDclientes, ventanaCliente
 from .gestion_rol import ventanaCRUDroles, cargarRoles
+from .gestion_reservas import ventanaCRUDreservas
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
@@ -385,15 +386,18 @@ class ventanaAcceso:
                 menu_admin = tk.Toplevel()
                 menu_admin.title("Menú de Administrador")
                 menu_admin.geometry("300x200")
+
                 tk.Button(menu_admin, text="Gestión de Clientes",
                         command=ventanaCRUDclientes).pack(pady=10)
                 tk.Button(menu_admin, text="Gestión de Usuarios", 
                         command=lambda: ventanaCRUDusuarios(self.user_manager)).pack(pady=10)
-                tk.Button(menu_admin, text="Gestión de Recepcionistas", 
-                        command=lambda: ventanaCRUDrecepcionistas(self.recepcionista_manager)).pack(pady=10)
                 tk.Button(menu_admin, text="Gestión de Roles", 
                         command=lambda: ventanaCRUDroles()).pack(pady=10)
+                tk.Button(menu_admin, text="Gestión de Reservas", 
+                        command=lambda: ventanaCRUDreservas()).pack(pady=10)
+
             else:
                 ventanaCliente(logged_user)
+
         else:
             messagebox.showinfo("Inicio de sesión inválido", "Usuario o contraseña incorrectos")

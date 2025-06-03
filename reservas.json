@@ -1,0 +1,12 @@
+{
+    "ina@gmail.com_28-02-2025_201": {
+        "cliente_id": "ina@gmail.com",
+        "piso": "2",
+        "tipo_habitacion": "Est\u00e1ndar",
+        "personas": 2,
+        "habitacion": "201",
+        "entrada": "28-02-2025",
+        "salida": "04-03-2025",
+        "noches": 4
+    }
+}
