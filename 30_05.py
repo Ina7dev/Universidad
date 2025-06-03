@@ -4,7 +4,7 @@ from scripts.gestion_usuarios import ventanaAcceso
 
 def Main():
     root = tk.Tk()
-    root.title("Sistema de Gestión Hotelera")
+    root.title("Sistema de Gestión Hotelero")
     root.geometry("1280x720")
     root.resizable(False, False)
     root.configure(background="gray")
