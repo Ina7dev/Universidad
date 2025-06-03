@@ -35,57 +35,95 @@ class gestionRecepcionistas:
 
 class gestionUsuarios:
     def __init__(self):
-        self.archivo = "usuarios.json"
+        self.archivo = "usuarios.json" # Archivo para guardar usuarios
 
     def cargar(self):
         try:
             if os.path.exists(self.archivo):
                 with open(self.archivo, 'r') as f:
-                    data = json.load(f)
-                    print(f"DEBUG: Datos cargados de {self.archivo}: {data}") # DEBUG LINE
-                    return data
-            print(f"DEBUG: Archivo {self.archivo} no encontrado o vacío. Retornando {{}}.") # DEBUG LINE
+                    datos = json.load(f)
+                    print(f"DEBUG: Datos cargados de {self.archivo}: {datos}") # Línea de depuración
+                    return datos
+            print(f"DEBUG: Archivo {self.archivo} no encontrado o vacío. Retornando {{}}.") # Línea de depuración
         except json.JSONDecodeError as e:
             messagebox.showerror("Error de JSON", f"Error al decodificar {self.archivo}: {e}")
-            print(f"ERROR: JSONDecodeError en {self.archivo}: {e}") # DEBUG LINE
+            print(f"ERROR: JSONDecodeError en {self.archivo}: {e}") # Línea de depuración
         except Exception as e:
             messagebox.showerror("Error", f"No se pudo cargar el archivo {self.archivo}: {str(e)}")
-            print(f"ERROR: Excepción al cargar {self.archivo}: {e}") # DEBUG LINE
+            print(f"ERROR: Excepción al cargar {self.archivo}: {e}") # Línea de depuración
         return {}
 
-    def guardar(self, data):
+    def guardar(self, datos):
         try:
             with open(self.archivo, 'w') as f:
-                json.dump(data, f, indent=4)
+                json.dump(datos, f, indent=4)
         except Exception as e:
             messagebox.showerror("Error", f"No se pudo guardar el archivo: {str(e)}")
 
-    def crear_usuario(self, email, password, rol="cliente"):
+    def crear_usuario(self, correo, contrasena, rol="cliente"):
         usuarios = self.cargar()
-        if email in usuarios:
-            return False
-        usuarios[email] = {"password": password, "rol": rol, "email": email} 
+        if correo in usuarios:
+            return False # El correo ya está registrado
+        usuarios[correo] = {"password": contrasena, "rol": rol, "email": correo}
         self.guardar(usuarios)
         return True
 
-    def validar_usuario(self, email, password):
+    # Función para actualizar un usuario existente
+    def actualizar_usuario(self, correo_original, nuevo_correo, nueva_contrasena, nuevo_rol):
         usuarios = self.cargar()
-        print(f"DEBUG: Intentando validar usuario: '{email}', contraseña introducida: '{password}'") 
+        if correo_original not in usuarios:
+            return False # El usuario no existe
 
-        if email not in usuarios:
-            print(f"DEBUG: El email '{email}' NO existe como clave en el diccionario de usuarios.") # NUEVA LÍNEA DEBUG
+        # Si el correo cambia, verificar que el nuevo correo no esté ya en uso por otro usuario
+        if correo_original != nuevo_correo and nuevo_correo in usuarios:
+            return False # El nuevo correo ya está en uso
+
+        # Actualizar los datos del usuario
+        usuario_actualizado = {
+            "password": nueva_contrasena,
+            "rol": nuevo_rol,
+            "email": nuevo_correo
+        }
+
+        if correo_original != nuevo_correo:
+            # Si el correo cambió, eliminamos la entrada antigua y agregamos la nueva
+            del usuarios[correo_original]
+            usuarios[nuevo_correo] = usuario_actualizado
+        else:
+            # Si el correo no cambió, simplemente actualizamos la entrada existente
+            usuarios[correo_original] = usuario_actualizado
+
+        self.guardar(usuarios)
+        return True
+
+    # Función para eliminar un usuario
+    def eliminar_usuario(self, correo):
+        usuarios = self.cargar()
+        if correo in usuarios:
+            del usuarios[correo]
+            self.guardar(usuarios)
+            return True
+        return False
+
+
+    def validar_usuario(self, correo, contrasena):
+        usuarios = self.cargar()
+        print(f"DEBUG: Intentando validar usuario: '{correo}', contraseña introducida: '{contrasena}'") # Línea de depuración
+
+        if correo not in usuarios:
+            print(f"DEBUG: El email '{correo}' NO existe como clave en el diccionario de usuarios.") # Línea de depuración
             return None
 
-        # Si el email existe, ahora verificamos la contraseña
-        stored_password = usuarios[email]["password"]
-        print(f"DEBUG: Contraseña almacenada para '{email}': '{stored_password}'") # NUEVA LÍNEA DEBUG
+        # Si el correo existe, ahora verificamos la contraseña
+        contrasena_guardada = usuarios[correo]["password"]
+        print(f"DEBUG: Contraseña almacenada para '{correo}': '{contrasena_guardada}'") # Línea de depuración
 
-        if stored_password == password:
-            print(f"DEBUG: Usuario '{email}' validado correctamente.")
-            return usuarios[email]
+        if contrasena_guardada == contrasena:
+            print(f"DEBUG: Usuario '{correo}' validado correctamente.")
+            return usuarios[correo]
         else:
-            print(f"DEBUG: Las contraseñas NO coinciden para '{email}'.") # NUEVA LÍNEA DEBUG
-            print(f"DEBUG: Tipo contraseña introducida: {type(password)}, Tipo contraseña almacenada: {type(stored_password)}") # NUEVA LÍNEA DEBUG
+            print(f"DEBUG: Las contraseñas NO coinciden para '{correo}'.") # Línea de depuración
+            print(f"DEBUG: Tipo contraseña introducida: {type(contrasena)}, Tipo contraseña almacenada: {type(contrasena_guardada)}") 
             return None
 
 # Nueva ventana para el Recepcionista
@@ -107,60 +145,163 @@ class ventanaRecepcionista:
         ventanaCRUDservicios() 
 
 
-# Nueva ventana para la gestión de recepcionistas por el Admin
+
 class ventanaCRUDrecepcionistas:
-    def __init__(self, user_manager): 
-        self.user_manager = user_manager
+    def __init__(self, gestor_usuarios): 
+        self.gestor_usuarios = gestor_usuarios
         self.ventana = tk.Toplevel()
         self.ventana.title("Gestión de Recepcionistas")
-        self.ventana.geometry("400x300")
+        self.ventana.geometry("600x450") 
 
-        tk.Label(self.ventana, text="Email:").pack(pady=5)
-        self.email_entry = tk.Entry(self.ventana)
-        self.email_entry.pack(pady=5)
+        # Marco para los campos de entrada
+        marco_entradas = tk.Frame(self.ventana)
+        marco_entradas.pack(pady=10)
 
-        tk.Label(self.ventana, text="Contraseña:").pack(pady=5)
-        self.password_entry = tk.Entry(self.ventana, show="*")
-        self.password_entry.pack(pady=5)
+        tk.Label(marco_entradas, text="Correo:").grid(row=0, column=0, padx=5, pady=5, sticky="w")
+        self.entrada_correo = tk.Entry(marco_entradas)
+        self.entrada_correo.grid(row=0, column=1, padx=5, pady=5, sticky="ew")
 
-        tk.Button(self.ventana, text="Crear Recepcionista", command=self.crear_recepcionista).pack(pady=10)
+        tk.Label(marco_entradas, text="Contraseña:").grid(row=1, column=0, padx=5, pady=5, sticky="w")
+        self.entrada_contrasena = tk.Entry(marco_entradas, show="*")
+        self.entrada_contrasena.grid(row=1, column=1, padx=5, pady=5, sticky="ew")
+
+        # Guardar la referencia al correo original cuando se edita
+        self.correo_original_seleccionado = None
+
+        
+        marco_botones = tk.Frame(self.ventana)
+        marco_botones.pack(pady=10)
+
+        tk.Button(marco_botones, text="Crear Recepcionista", command=self.crear_recepcionista).grid(row=0, column=0, padx=5)
+        tk.Button(marco_botones, text="Editar Recepcionista", command=self.editar_recepcionista).grid(row=0, column=1, padx=5)
+        tk.Button(marco_botones, text="Eliminar Recepcionista", command=self.eliminar_recepcionista).grid(row=0, column=2, padx=5)
+        tk.Button(marco_botones, text="Limpiar Campos", command=self.limpiar_campos).grid(row=0, column=3, padx=5)
+
 
         # Mostrar lista de recepcionistas existentes
-        self.tree = ttk.Treeview(self.ventana, columns=("Email",), show="headings")
-        self.tree.heading("Email", text="Email")
-        self.tree.pack(pady=10, fill="both", expand=True)
+        columnas = ("Correo",)
+        self.arbol = ttk.Treeview(self.ventana, columns=columnas, show="headings")
+        self.arbol.heading("Correo", text="Correo")
+        self.arbol.pack(pady=10, fill="both", expand=True)
+
+        # Vincular la selección del Treeview a una función para cargar datos
+        self.arbol.bind("<<TreeviewSelect>>", self.cargar_datos_seleccionados)
+
         self.cargar_recepcionistas_en_tabla()
+
+    def limpiar_campos(self):
+        self.entrada_correo.delete(0, tk.END)
+        self.entrada_contrasena.delete(0, tk.END)
+        self.correo_original_seleccionado = None # Restablecer la referencia al original
 
 
     def crear_recepcionista(self):
-        email = self.email_entry.get()
-        password = self.password_entry.get()
+        correo = self.entrada_correo.get().strip()
+        contrasena = self.entrada_contrasena.get().strip()
 
-        if not re.fullmatch(r"[^@]+@[^@]+\.[^@]+", email):
+        if not re.fullmatch(r"[^@]+@[^@]+\.[^@]+", correo):
             messagebox.showerror("Error", "Formato de correo electrónico inválido.")
             return
 
-        if not email or not password:
+        if not correo or not contrasena:
             messagebox.showerror("Error", "Todos los campos son obligatorios.")
             return
 
-        
-        if self.user_manager.crear_usuario(email, password, "recepcionista"):
+        # Si hay un recepcionista seleccionado, se asume que se quiere actualizar, no crear
+        # Esto previene la creación accidental si se olvidó limpiar los campos
+        if self.correo_original_seleccionado:
+            messagebox.showwarning("Advertencia", "Un recepcionista ya está seleccionado para edición. Limpie los campos si desea crear uno nuevo.")
+            return
+
+        if self.gestor_usuarios.crear_usuario(correo, contrasena, "recepcionista"):
             messagebox.showinfo("Éxito", "Recepcionista creado exitosamente.")
-            self.email_entry.delete(0, tk.END)
-            self.password_entry.delete(0, tk.END)
+            self.limpiar_campos()
             self.cargar_recepcionistas_en_tabla()
         else:
-            messagebox.showerror("Error", "El email ya está registrado.")
+            messagebox.showerror("Error", "El correo ya está registrado.")
+
+    def editar_recepcionista(self):
+        # Obtener el recepcionista seleccionado
+        seleccion = self.arbol.selection()
+        if not seleccion:
+            messagebox.showwarning("Selección requerida", "Por favor, seleccione un recepcionista para editar.")
+            return
+
+        # Obtener los datos actuales de los campos de entrada
+        nuevo_correo = self.entrada_correo.get().strip()
+        nueva_contrasena = self.entrada_contrasena.get().strip()
+
+        if not re.fullmatch(r"[^@]+@[^@]+\.[^@]+", nuevo_correo):
+            messagebox.showerror("Error", "Formato de correo electrónico inválido para la edición.")
+            return
+
+        if not nuevo_correo or not nueva_contrasena:
+            messagebox.showerror("Error", "Los campos de correo y contraseña son obligatorios para la edición.")
+            return
+
+        # Usar la referencia al correo original que se guardó al seleccionar
+        correo_a_editar = self.correo_original_seleccionado
+
+        if not correo_a_editar: # Debería estar establecido por cargar_datos_seleccionados
+             messagebox.showerror("Error interno", "No se pudo determinar el recepcionista original a editar.")
+             return
+
+        # Intentar actualizar el usuario
+        # Asegurarse de que el rol se mantenga como "recepcionista"
+        if self.gestor_usuarios.actualizar_usuario(correo_a_editar, nuevo_correo, nueva_contrasena, "recepcionista"):
+            messagebox.showinfo("Éxito", f"Recepcionista '{correo_a_editar}' editado exitosamente a '{nuevo_correo}'.")
+            self.limpiar_campos()
+            self.cargar_recepcionistas_en_tabla()
+        else:
+            # Aquí, la falla podría ser porque el nuevo correo ya existe (si se cambió)
+            messagebox.showerror("Error de edición", "No se pudo editar el recepcionista. El nuevo correo ya podría estar en uso.")
+
+
+    def eliminar_recepcionista(self):
+        seleccion = self.arbol.selection()
+        if not seleccion:
+            messagebox.showwarning("Selección requerida", "Por favor, seleccione un recepcionista para eliminar.")
+            return
+
+        # Obtener el correo del recepcionista seleccionado
+        correo_a_eliminar = self.arbol.item(seleccion[0], "values")[0]
+
+        if messagebox.askyesno("Confirmar Eliminación", f"¿Está seguro de que desea eliminar al recepcionista '{correo_a_eliminar}'?"):
+            if self.gestor_usuarios.eliminar_usuario(correo_a_eliminar):
+                messagebox.showinfo("Éxito", "Recepcionista eliminado exitosamente.")
+                self.limpiar_campos()
+                self.cargar_recepcionistas_en_tabla()
+            else:
+                messagebox.showerror("Error", "No se pudo eliminar el recepcionista.")
+
+    def cargar_datos_seleccionados(self, event):
+        """
+        Carga los datos del recepcionista seleccionado en los campos de entrada.
+        """
+        seleccion = self.arbol.selection()
+        if seleccion:
+            item = seleccion[0]
+            correo_seleccionado = self.arbol.item(item, "values")[0]
+
+            usuarios = self.gestor_usuarios.cargar()
+            recepcionista_data = usuarios.get(correo_seleccionado)
+
+            if recepcionista_data:
+                self.entrada_correo.delete(0, tk.END)
+                self.entrada_correo.insert(0, recepcionista_data.get("email", ""))
+                self.entrada_contrasena.delete(0, tk.END)
+                self.entrada_contrasena.insert(0, recepcionista_data.get("password", ""))
+                self.correo_original_seleccionado = correo_seleccionado # Guardar la referencia al correo original
+
 
     def cargar_recepcionistas_en_tabla(self):
-        for i in self.tree.get_children():
-            self.tree.delete(i)
+        for i in self.arbol.get_children():
+            self.arbol.delete(i)
 
-        usuarios = self.user_manager.cargar()
-        for email, data in usuarios.items():
-            if data.get("rol") == "recepcionista":
-                self.tree.insert("", "end", values=(email,))
+        usuarios = self.gestor_usuarios.cargar()
+        for correo, datos in usuarios.items():
+            if datos.get("rol") == "recepcionista":
+                self.arbol.insert("", "end", values=(correo,))
 
 class ventanaAcceso:
     def __init__(self, master):
