@@ -2,6 +2,8 @@ from .users import User
 from .gestion_clientes import ventanaCRUDclientes, ventanaCliente
 from .gestion_rol import ventanaCRUDroles, cargarRoles
 from .gestion_reservas import ventanaCRUDreservas
+from .gestion_habitaciones import GestionHabitaciones
+
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
@@ -385,7 +387,7 @@ class ventanaAcceso:
             if logged_user.get("rol") == "admin":
                 menu_admin = tk.Toplevel()
                 menu_admin.title("Menú de Administrador")
-                menu_admin.geometry("300x200")
+                menu_admin.geometry("300x350")
 
                 tk.Button(menu_admin, text="Gestión de Clientes",
                         command=ventanaCRUDclientes).pack(pady=10)
@@ -395,6 +397,8 @@ class ventanaAcceso:
                         command=lambda: ventanaCRUDroles()).pack(pady=10)
                 tk.Button(menu_admin, text="Gestión de Reservas", 
                         command=lambda: ventanaCRUDreservas()).pack(pady=10)
+                tk.Button(menu_admin, text="Gestión de Habitaciones", 
+                        command=lambda: GestionHabitaciones()).pack(pady=10)
 
             else:
                 ventanaCliente(logged_user)
