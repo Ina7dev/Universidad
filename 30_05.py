@@ -1,6 +1,6 @@
 import tkinter as tk 
 from tkinter import ttk
-from gestion_usuarios2 import ventanaAcceso 
+from scripts.gestion_usuarios2 import ventanaAcceso 
 
 def Main():
     root = tk.Tk()

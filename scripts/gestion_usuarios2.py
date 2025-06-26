@@ -1,9 +1,9 @@
-from users import User
-from gestion_clientes import ventanaCRUDclientes, ventanaCliente
-from gestion_rol import ventanaCRUDroles, cargarRoles
-from gestion_reservas import ventanaCRUDreservas
-from gestion_habitaciones import GestionHabitaciones
-from gestion_servicios import ventanaCRUDservicios 
+from .users import User
+from .gestion_clientes import ventanaCRUDclientes, ventanaCliente
+from .gestion_rol import ventanaCRUDroles, cargarRoles
+from .gestion_reservas import ventanaCRUDreservas
+from .gestion_habitaciones import GestionHabitaciones
+from .gestion_servicios import ventanaCRUDservicios 
 
 import tkinter as tk
 from tkinter import ttk

@@ -33,5 +33,10 @@
         "rol": "usuario",
         "email": "ina@gmail.com",
         "password": "inainaina"
+    },
+    "admin@hotel.com": {
+        "password": "admin123",
+        "rol": "admin",
+        "email": "admin@hotel.com"
     }
 }
