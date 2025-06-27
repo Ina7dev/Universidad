@@ -46,7 +46,7 @@ class GestionIncidencias:
         return datetime.now().strftime("INC%d%m%Y%H%M%S")
 
     def crear_incidencia(self, id_habitacion, tipo_incidencia, descripcion):
-        """Crea y guarda una nueva incidencia."""
+       
         if not id_habitacion or not tipo_incidencia or not descripcion:
             return False, "Todos los campos son obligatorios."
 
@@ -175,13 +175,13 @@ class ventanaCRUDMantenimiento:
         ttk.Button(frame_botones, text="Eliminar Incidencia", command=self.eliminar_incidencia).grid(row=0, column=2, padx=5)
         ttk.Button(frame_botones, text="Limpiar Campos", command=self.limpiar_campos).grid(row=0, column=3, padx=5)
 
-        # --- Treeview para mostrar incidencias ---
+        
         columnas = ("ID Incidencia", "ID Habitación", "Tipo", "Descripción", "Fecha Reporte", "Estado", "Notas")
         self.tree = ttk.Treeview(self.ventana, columns=columnas, show="headings")
         for col in columnas:
             self.tree.heading(col, text=col)
-            self.tree.column(col, width=100, anchor="center") # Ancho por defecto
-        # Ajustes de ancho para columnas específicas
+            self.tree.column(col, width=100, anchor="center") 
+        
         self.tree.column("ID Incidencia", width=120)
         self.tree.column("Descripción", width=200)
         self.tree.pack(pady=10, padx=10, fill="both", expand=True)
@@ -262,7 +262,7 @@ class ventanaCRUDMantenimiento:
             self.id_habitacion_var.set(valores[1])
             self.tipo_incidencia_var.set(valores[2])
             self.descripcion_var.set(valores[3])
-            # valores[4] es fecha_reporte, no se carga para edición
+            
             self.estado_var.set(valores[5])
             self.notas_var.set(valores[6])
 
