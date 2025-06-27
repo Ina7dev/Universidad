@@ -4,6 +4,9 @@ from .gestion_rol import ventanaCRUDroles, cargarRoles
 from .gestion_reservas import ventanaCRUDreservas
 from .gestion_habitaciones import GestionHabitaciones
 from .gestion_servicios import ventanaCRUDservicios 
+from .crearespacioevento import GestionEspaciosEvento
+from .reservaevento import ReservaEvento
+
 
 import tkinter as tk
 from tkinter import ttk
@@ -389,6 +392,13 @@ class ventanaAcceso:
 
                     tk.Button(menu_admin, text="Gestión de Servicios Adicionales",
                             command=ventanaCRUDservicios).pack(pady=10) 
+                    
+                    tk.Button(menu_admin, text="Gestión Espacios de Eventos",
+                            command= GestionEspaciosEvento).pack(pady=10)
+                    
+                    tk.Button(menu_admin, text="Reservas de Eventos",
+                            command= ReservaEvento).pack(pady=10)
+                    
 
                 elif logged_user["rol"] == "recepcionista":
                     ventanaRecepcionista(None)
