@@ -5,7 +5,7 @@ import os
 from datetime import datetime, timedelta
 
 ARCHIVO_RESERVAS = "reservas.json"
-ARCHIVO_CLIENTES = "clientes.json"
+ARCHIVO_CLIENTES = "usuarios.json"
 
 def cargar_reservas():
     if os.path.exists(ARCHIVO_RESERVAS):
@@ -33,7 +33,7 @@ class ventanaCRUDreservas:
         self.ventana.geometry("900x600")
 
         #mostrar reservas
-        columns = ("ID", "Cliente", "Piso", "Tipo", "Personas", "Hab.", "Entrada", "Salida", "Noches")
+        columns = ("ID", "Cliente", "Piso", "Tipo", "Personas", "Hab.", "Entrada", "Salida", "Noches", "Cama")
         self.tree = ttk.Treeview(self.ventana, columns=columns, show="headings")
         for col in columns:
             self.tree.heading(col, text=col)
@@ -70,21 +70,36 @@ class ventanaCRUDreservas:
         self.personas_spin = tk.Spinbox(form_frame, from_=1, to=4, textvariable=self.personas_var, width=5)
         self.personas_spin.grid(row=3, column=1)
 
-        #fecha de entrada
-        tk.Label(form_frame, text="Fecha entrada (DD-MM-YYYY):").grid(row=4, column=0, sticky="e")
+     # tipo de cama
+        tk.Label(form_frame, text="Tipo de cama:").grid(row=4, column=0, sticky="e")
+        self.cama_var = tk.StringVar()
+        self.cama_combo = ttk.Combobox(
+            form_frame, 
+            values=["Matrimonial", "Separadas"], 
+            textvariable=self.cama_var, 
+            state="readonly")
+        self.cama_combo.grid(row=4, column=1)
+
+        # fecha de entrada
+        tk.Label(form_frame, text="Fecha entrada (DD-MM-YYYY):").grid(row=5, column=0, sticky="e")
         self.entrada_entry = tk.Entry(form_frame)
-        self.entrada_entry.grid(row=4, column=1)
+        self.entrada_entry.grid(row=5, column=1)
 
-        #cantidad de noches
-        tk.Label(form_frame, text="Cantidad noches:").grid(row=5, column=0, sticky="e")
-        self.noches_var = tk.IntVar(value=1)
-        self.noches_spin = tk.Spinbox(form_frame, from_=1, to=30, textvariable=self.noches_var, width=5)
-        self.noches_spin.grid(row=5, column=1)
+        # cantidad de noches
+        tk.Label(form_frame, text="Cantidad noches:").grid(row=6, column=0, sticky="e")
+        self.salida_var = tk.StringVar()
+        self.salida_entry = tk.Entry(form_frame, textvariable=self.salida_var)
+        self.salida_entry.grid(row=7, column=1)
 
-        #botones
+        # fecha de salida
+        tk.Label(form_frame, text="Fecha salida (DD-MM-YYYY):").grid(row=7, column=0, sticky="e")
+        self.salida_var = tk.StringVar()
+        self.salida_entry = tk.Entry(form_frame, textvariable=self.salida_var)
+        self.salida_entry.grid(row=7, column=1)
+
+        # botones
         btn_frame = tk.Frame(form_frame)
-        btn_frame.grid(row=6, column=0, columnspan=2, pady=10)
-
+        btn_frame.grid(row=8, column=0, columnspan=2, pady=10)
         tk.Button(btn_frame, text="Agregar", command=self.agregar_reserva).grid(row=0, column=0, padx=5)
         tk.Button(btn_frame, text="Editar", command=self.editar_reserva).grid(row=0, column=1, padx=5)
         tk.Button(btn_frame, text="Eliminar", command=self.eliminar_reserva).grid(row=0, column=2, padx=5)
@@ -122,6 +137,17 @@ class ventanaCRUDreservas:
         else:
             self.personas_spin.config(from_=1, to=4)
 
+    def actualizar_salida(self, *args):
+        try:
+            entrada = self.entrada_entry.get()
+            noches = int(self.noches_var.get())
+            entrada_dt = datetime.strptime(entrada, "%d-%m-%Y")
+            salida_dt = entrada_dt + timedelta(days=noches)
+            self.salida_var.set(salida_dt.strftime("%d-%m-%Y"))
+        except Exception:
+            self.salida_var.set("")
+
+
     def actualizar_tabla(self):
         self.tree.delete(*self.tree.get_children())
         for clave, res in self.reservas.items():
@@ -137,6 +163,7 @@ class ventanaCRUDreservas:
                 entrada_fmt,
                 salida_fmt,
                 res["noches"],
+                res.get("tipo_cama", ""),
         ))
 
 
@@ -171,6 +198,19 @@ class ventanaCRUDreservas:
         except ValueError:
             messagebox.showwarning("Error", "Formato de fecha inválido (DD-MM-YYYY)")
             return False
+
+        #validar fecha salida
+        try:
+            fecha_salida = datetime.strptime(self.salida_entry.get(), "%d-%m-%Y")
+        except ValueError:
+            messagebox.showwarning("Error", "Formato de fecha de salida inválido (DD-MM-YYYY)")
+            return False
+
+        if fecha_salida <= fecha_entrada:
+            messagebox.showwarning("Error", "La fecha de salida debe ser posterior a la de entrada")
+            return False
+
+
 
         hoy = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
         if fecha_entrada < hoy:
@@ -215,8 +255,27 @@ class ventanaCRUDreservas:
                 if not (salida_dt <= res_entrada or entrada_dt >= res_salida):
                     return True
         return False
+    
+
+    def puede_reservar_en_piso(self, piso, entrada_dt, salida_dt):
+    #"Valida si hay menos de 4 reservas en el piso para el rango de fechas dado."
+        contador = 0
+        for res in self.reservas.values():
+            if res["piso"] == piso:
+                res_entrada = datetime.strptime(res["entrada"], "%d-%m-%Y")
+                res_salida = datetime.strptime(res["salida"], "%d-%m-%Y")
+            # Verifica si los rangos de fechas se superponen
+                if entrada_dt < res_salida and salida_dt > res_entrada:
+                    contador += 1
+        return contador < 4
+
+
 
     def agregar_reserva(self):
+
+        entrada = self.entrada_entry.get()
+        salida = self.salida_entry.get()
+
         if not self.validar_formulario():
             return
 
@@ -226,11 +285,20 @@ class ventanaCRUDreservas:
         personas = self.personas_var.get()
         entrada = self.entrada_entry.get()
         noches = self.noches_var.get()
+        cama = self.cama_var.get()
 
         #calcular fecha salida
         entrada_dt = datetime.strptime(entrada, "%d-%m-%Y")
         salida_dt = entrada_dt + timedelta(days=noches)
         salida = salida_dt.strftime("%d-%m-%Y")
+
+        # Validar límite de reservas por piso y rango de fechas
+        if not self.puede_reservar_en_piso(piso, entrada_dt, salida_dt):
+            messagebox.showwarning(
+                f"""Ya existen 4 reservas para el piso {piso} en las fechas seleccionadas.
+                No se pueden reservar más habitaciones en ese piso para ese periodo."""
+            )
+            return
 
         habitacion = self.generar_habitacion(piso, tipo)
         if habitacion is None:
@@ -251,8 +319,10 @@ class ventanaCRUDreservas:
             "habitacion": habitacion,
             "entrada": entrada,
             "salida": salida,
-            "noches": noches
+            "noches": noches,
+            "tipo_cama": cama
         }
+
 
         self.reservas[clave] = reserva
         guardar_reservas(self.reservas)
@@ -268,6 +338,11 @@ class ventanaCRUDreservas:
 
         clave = seleccion[0]
 
+        if not self.cama_var.get():
+            messagebox.showwarning("Error", "Selecciona un tipo de cama")
+            return False
+
+
         if not self.validar_formulario():
             return
 
@@ -278,9 +353,9 @@ class ventanaCRUDreservas:
         entrada = self.entrada_entry.get()
         noches = self.noches_var.get()
 
-        entrada_dt = datetime.strptime(entrada, "%Y-%m-%d")
+        entrada_dt = datetime.strptime(entrada, "%d-%m-%Y")
         salida_dt = entrada_dt + timedelta(days=noches)
-        salida = salida_dt.strftime("%Y-%m-%d")
+        salida = salida_dt.strftime("%d-%m-%Y")
 
         habitacion = self.reservas[clave]["habitacion"]  # mantengo habitación asignada
 
@@ -346,4 +421,5 @@ class ventanaCRUDreservas:
         self.entrada_entry.delete(0, tk.END)
         self.entrada_entry.insert(0, res["entrada"])
         self.noches_var.set(res["noches"])
+        res.get("tipo_cama", "")
         self.tree.bind("<<TreeviewSelect>>", self.cargar_datos_form)
