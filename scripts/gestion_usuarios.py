@@ -3,6 +3,7 @@ from .gestion_clientes import ventanaCRUDclientes, ventanaCliente
 from .gestion_rol import ventanaCRUDroles, cargarRoles
 from .gestion_reservas import ventanaCRUDreservas
 from .gestion_habitaciones import GestionHabitaciones
+from .crearespacioevento import GestionEspaciosEvento
 
 import tkinter as tk
 from tkinter import ttk
@@ -391,14 +392,17 @@ class ventanaAcceso:
 
                 tk.Button(menu_admin, text="Gestión de Clientes",
                         command=ventanaCRUDclientes).pack(pady=10)
-                tk.Button(menu_admin, text="Gestión de Usuarios", 
-                        command=lambda: ventanaCRUDusuarios(self.user_manager)).pack(pady=10)
+                tk.Button(menu_admin, text="Gestión de Clientes",
+                        command=lambda: ventanaCRUDclientes()).pack(pady=10)
                 tk.Button(menu_admin, text="Gestión de Roles", 
                         command=lambda: ventanaCRUDroles()).pack(pady=10)
                 tk.Button(menu_admin, text="Gestión de Reservas", 
                         command=lambda: ventanaCRUDreservas()).pack(pady=10)
                 tk.Button(menu_admin, text="Gestión de Habitaciones", 
                         command=lambda: GestionHabitaciones()).pack(pady=10)
+                tk.Button(menu_admin, text="Gestión de Espacios para Eventos",
+                        command=lambda: GestionEspaciosEvento(menu_admin)).pack(pady=10)
+
 
             else:
                 ventanaCliente(logged_user)

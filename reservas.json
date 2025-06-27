@@ -1,32 +1,57 @@
 {
-    "ina@gmail.com_28-02-2025_201": {
-        "cliente_id": "ina@gmail.com",
-        "piso": "2",
-        "tipo_habitacion": "Est\u00e1ndar",
-        "personas": 2,
-        "habitacion": "201",
-        "entrada": "28-02-2025",
-        "salida": "04-03-2025",
-        "noches": 4
-    },
-    "ina@gmail.com_05-07-3030_301": {
-        "cliente_id": "ina@gmail.com",
+    "ina_29-06-2025_301": {
+        "cliente_id": "ina",
         "piso": "3",
         "tipo_habitacion": "Suite",
         "personas": 4,
         "habitacion": "301",
-        "entrada": "05-07-3030",
-        "salida": "06-07-3030",
-        "noches": 1
+        "entrada": "29-06-2025",
+        "salida": "30-06-2025",
+        "noches": 1,
+        "tipo_cama": "Separadas"
     },
-    "ina@gmail.com_22-06-2025_202": {
-        "cliente_id": "ina@gmail.com",
+    "carla _29-06-2025_302": {
+        "cliente_id": "carla ",
+        "piso": "3",
+        "tipo_habitacion": "Suite",
+        "personas": 2,
+        "habitacion": "302",
+        "entrada": "29-06-2025",
+        "salida": "30-06-2025",
+        "noches": 1,
+        "tipo_cama": "Matrimonial"
+    },
+    "cliente_29-06-2025_303": {
+        "cliente_id": "cliente",
+        "piso": "3",
+        "tipo_habitacion": "Suite",
+        "personas": 4,
+        "habitacion": "303",
+        "entrada": "29-06-2025",
+        "salida": "30-06-2025",
+        "noches": 1,
+        "tipo_cama": "Separadas"
+    },
+    "ina_29-06-2025_304": {
+        "cliente_id": "ina",
+        "piso": "3",
+        "tipo_habitacion": "Suite",
+        "personas": 1,
+        "habitacion": "304",
+        "entrada": "29-06-2025",
+        "salida": "30-06-2025",
+        "noches": 1,
+        "tipo_cama": "Matrimonial"
+    },
+    "ina_29-06-2025_201": {
+        "cliente_id": "ina",
         "piso": "2",
         "tipo_habitacion": "Est\u00e1ndar",
-        "personas": 2,
-        "habitacion": "202",
-        "entrada": "22-06-2025",
-        "salida": "23-06-2025",
-        "noches": 1
+        "personas": 1,
+        "habitacion": "201",
+        "entrada": "29-06-2025",
+        "salida": "30-06-2025",
+        "noches": 1,
+        "tipo_cama": "Matrimonial"
     }
 }
