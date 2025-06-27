@@ -392,8 +392,6 @@ class ventanaAcceso:
 
                 tk.Button(menu_admin, text="Gestión de Clientes",
                         command=ventanaCRUDclientes).pack(pady=10)
-                tk.Button(menu_admin, text="Gestión de Clientes",
-                        command=lambda: ventanaCRUDclientes()).pack(pady=10)
                 tk.Button(menu_admin, text="Gestión de Roles", 
                         command=lambda: ventanaCRUDroles()).pack(pady=10)
                 tk.Button(menu_admin, text="Gestión de Reservas", 
