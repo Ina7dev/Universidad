@@ -43,7 +43,7 @@ class GestionIncidencias:
 
     def generar_id_incidencia(self):
         
-        return datetime.now().strftime("INC%Y%m%d%H%M%S%f")
+        return datetime.now().strftime("INC%d%m%Y%H%M%S")
 
     def crear_incidencia(self, id_habitacion, tipo_incidencia, descripcion):
         """Crea y guarda una nueva incidencia."""
