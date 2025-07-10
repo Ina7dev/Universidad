@@ -24,8 +24,38 @@ class GestionHabitaciones(tk.Toplevel):
     def __init__(self, master=None):
         super().__init__(master)
         self.title("Gestión de Habitaciones")
-        self.geometry("750x610")
-        self.resizable(True, True)
+        menu_width = 950
+        menu_height = 700
+        self.geometry(f"{menu_width}x{menu_height}")
+        self.update_idletasks()
+        screen_width = self.winfo_screenwidth()
+        screen_height = self.winfo_screenheight()
+        x = (screen_width // 2) - (menu_width // 2)
+        y = (screen_height // 2) - (menu_height // 2)
+        self.geometry(f"{menu_width}x{menu_height}+{x}+{y}")
+        self.configure(bg="#add8e6")
+
+        estilo = ttk.Style(self)
+        estilo.configure("Azul.TButton",
+                        background="#add8e6",
+                        foreground="#0d47a1",
+                        font=("Arial", 12, "bold"),
+                        padding=8,
+                        borderwidth=1)
+        estilo.map("Azul.TButton",
+                  background=[("active", "#90caf9")])
+        estilo.configure("Azul.TLabelframe",
+                        background="#add8e6",
+                        borderwidth=2,
+                        relief="ridge")
+        estilo.configure("Azul.TLabelframe.Label",
+                        background="#add8e6",
+                        foreground="#0d47a1",
+                        font=("Arial", 12, "bold"))
+        estilo.configure("Azul.TFrame",
+                        background="#add8e6",
+                        borderwidth=2,
+                        relief="ridge")
 
         self.habitaciones = cargar_habitaciones()
         self.ids_permitidos = {
@@ -37,7 +67,6 @@ class GestionHabitaciones(tk.Toplevel):
         self.mostrar_habitaciones()
 
     def crear_widgets(self):
-        # Treeview para mostrar habitaciones
         columnas = ("id", "piso", "tipo", "estado", "capacidad")
         self.tree = ttk.Treeview(self, columns=columnas, show="headings", height=15)
         for col in columnas:
@@ -45,54 +74,49 @@ class GestionHabitaciones(tk.Toplevel):
             self.tree.column(col, width=120, anchor="center")
         self.tree.pack(pady=10, padx=10, fill="both", expand=True)
         
-        # Frame de botones superiores
-        btn_top_frame = tk.Frame(self)
-        btn_top_frame.pack(pady=5)
+        btn_top_frame = ttk.Frame(self, style="Azul.TFrame")
+        btn_top_frame.pack(pady=5, fill="x")
         
-        btn_cambiar_estado = tk.Button(btn_top_frame, text="Cambiar Estado", command=self.cambiar_estado)
+        btn_cambiar_estado = ttk.Button(btn_top_frame, text="Cambiar Estado", style="Azul.TButton", command=self.cambiar_estado)
         btn_cambiar_estado.pack(side=tk.LEFT, padx=5)
         
-        btn_eliminar = tk.Button(btn_top_frame, text="Eliminar Habitación", command=self.eliminar_habitacion)
+        btn_eliminar = ttk.Button(btn_top_frame, text="Eliminar Habitación", style="Azul.TButton", command=self.eliminar_habitacion)
         btn_eliminar.pack(side=tk.LEFT, padx=5)
 
-        # Formulario para agregar habitación
-        form_frame = tk.LabelFrame(self, text="Agregar Nueva Habitación")
+        form_frame = ttk.LabelFrame(self, text="Agregar Nueva Habitación", style="Azul.TLabelframe")
         form_frame.pack(pady=10, padx=10, fill="x", expand=True)
 
-        # Campos del formulario
-        tk.Label(form_frame, text="Piso:").grid(row=0, column=0, padx=5, pady=5, sticky="e")
+        tk.Label(form_frame, text="Piso:", font=("Arial", 12), fg="#0d47a1", bg="#add8e6").grid(row=0, column=0, padx=5, pady=5, sticky="e")
         self.combo_piso = ttk.Combobox(form_frame, values=["Piso 1", "Piso 2", "Piso 3"], state="readonly")
         self.combo_piso.grid(row=0, column=1, padx=5, pady=5, sticky="we")
         self.combo_piso.bind("<<ComboboxSelected>>", self.actualizar_ids)
 
-        tk.Label(form_frame, text="ID Habitación:").grid(row=1, column=0, padx=5, pady=5, sticky="e")
+        tk.Label(form_frame, text="ID Habitación:", font=("Arial", 12), fg="#0d47a1", bg="#add8e6").grid(row=1, column=0, padx=5, pady=5, sticky="e")
         self.combo_id = ttk.Combobox(form_frame, state="readonly")
         self.combo_id.grid(row=1, column=1, padx=5, pady=5, sticky="we")
 
-        tk.Label(form_frame, text="Tipo:").grid(row=2, column=0, padx=5, pady=5, sticky="e")
+        tk.Label(form_frame, text="Tipo:", font=("Arial", 12), fg="#0d47a1", bg="#add8e6").grid(row=2, column=0, padx=5, pady=5, sticky="e")
         self.entry_tipo = tk.Entry(form_frame, state="readonly")
         self.entry_tipo.grid(row=2, column=1, padx=5, pady=5, sticky="we")
 
-        tk.Label(form_frame, text="Estado:").grid(row=3, column=0, padx=5, pady=5, sticky="e")
+        tk.Label(form_frame, text="Estado:", font=("Arial", 12), fg="#0d47a1", bg="#add8e6").grid(row=3, column=0, padx=5, pady=5, sticky="e")
         self.combo_estado = ttk.Combobox(form_frame, values=["Disponible", "Ocupado"], state="readonly")
         self.combo_estado.grid(row=3, column=1, padx=5, pady=5, sticky="we")
         self.combo_estado.current(0)
 
-        tk.Label(form_frame, text="Capacidad:").grid(row=4, column=0, padx=5, pady=5, sticky="e")
+        tk.Label(form_frame, text="Capacidad:", font=("Arial", 12), fg="#0d47a1", bg="#add8e6").grid(row=4, column=0, padx=5, pady=5, sticky="e")
         self.entry_capacidad = tk.Entry(form_frame, state="readonly")
         self.entry_capacidad.grid(row=4, column=1, padx=5, pady=5, sticky="we")
 
-        # Botones inferiores
-        btn_bottom_frame = tk.Frame(form_frame)
+        btn_bottom_frame = ttk.Frame(form_frame, style="Azul.TFrame")
         btn_bottom_frame.grid(row=5, column=0, columnspan=2, pady=10, sticky="ew")
         
-        btn_agregar = tk.Button(btn_bottom_frame, text="Agregar Habitación", command=self.agregar_habitacion)
+        btn_agregar = ttk.Button(btn_bottom_frame, text="Agregar Habitación", style="Azul.TButton", command=self.agregar_habitacion)
         btn_agregar.pack(side=tk.LEFT, padx=5)
         
-        btn_limpiar = tk.Button(btn_bottom_frame, text="Limpiar Formulario", command=self.limpiar_form)
+        btn_limpiar = ttk.Button(btn_bottom_frame, text="Limpiar Formulario", style="Azul.TButton", command=self.limpiar_form)
         btn_limpiar.pack(side=tk.LEFT, padx=5)
 
-        # Inicializar valores
         self.combo_piso.current(0)
         self.actualizar_ids()
 

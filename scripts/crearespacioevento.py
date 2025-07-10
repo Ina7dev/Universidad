@@ -24,33 +24,58 @@ class GestionEspaciosEvento(tk.Toplevel):
     def __init__(self, master=None):
         super().__init__(master)
         self.title("Gestión de Espacios para Eventos")
-        self.geometry("800x600")
-        self.resizable(False, False)
-        
+        menu_width = 950
+        menu_height = 700
+        self.geometry(f"{menu_width}x{menu_height}")
+        self.update_idletasks()
+        screen_width = self.winfo_screenwidth()
+        screen_height = self.winfo_screenheight()
+        x = (screen_width // 2) - (menu_width // 2)
+        y = (screen_height // 2) - (menu_height // 2)
+        self.geometry(f"{menu_width}x{menu_height}+{x}+{y}")
+        self.configure(bg="#add8e6")
+
+        estilo = ttk.Style(self)
+        estilo.configure("Azul.TButton",
+                        background="#add8e6",
+                        foreground="#0d47a1",
+                        font=("Arial", 12, "bold"),
+                        padding=8,
+                        borderwidth=1)
+        estilo.map("Azul.TButton",
+                  background=[("active", "#90caf9")])
+        estilo.configure("Azul.TLabelframe",
+                        background="#add8e6",
+                        borderwidth=2,
+                        relief="ridge")
+        estilo.configure("Azul.TLabelframe.Label",
+                        background="#add8e6",
+                        foreground="#0d47a1",
+                        font=("Arial", 12, "bold"))
+        estilo.configure("Azul.TFrame",
+                        background="#add8e6",
+                        borderwidth=2,
+                        relief="ridge")
+
         self.espacios = cargar_espacios()
         self.crear_widgets()
         self.mostrar_espacios()
 
     def crear_widgets(self):
-        # Treeview para mostrar espacios
         columnas = ("id", "nombre", "tipo", "capacidad", "ubicacion")
-        self.tree = ttk.Treeview(self, columns=columnas, show="headings", height=10)
-        
+        self.tree = ttk.Treeview(self, columns=columnas, show="headings", height=15)
         for col in columnas:
             self.tree.heading(col, text=col.capitalize())
             self.tree.column(col, width=150, anchor="center")
-        
         self.tree.pack(pady=10, padx=10, fill=tk.BOTH, expand=True)
         
-        # Frame de botones
-        btn_frame = tk.Frame(self)
-        btn_frame.pack(pady=10)
+        btn_frame = ttk.Frame(self, style="Azul.TFrame")
+        btn_frame.pack(pady=10, fill="x")
         
-        tk.Button(btn_frame, text="Editar", command=self.editar_espacio).pack(side=tk.LEFT, padx=5)
-        tk.Button(btn_frame, text="Eliminar", command=self.eliminar_espacio).pack(side=tk.LEFT, padx=5)
+        ttk.Button(btn_frame, text="Editar", style="Azul.TButton", command=self.editar_espacio).pack(side=tk.LEFT, padx=5)
+        ttk.Button(btn_frame, text="Eliminar", style="Azul.TButton", command=self.eliminar_espacio).pack(side=tk.LEFT, padx=5)
         
-        # Formulario
-        form_frame = tk.LabelFrame(self, text="Nuevo Espacio")
+        form_frame = ttk.LabelFrame(self, text="Nuevo Espacio", style="Azul.TLabelframe")
         form_frame.pack(pady=10, padx=10, fill=tk.X)
         
         campos = [
@@ -63,12 +88,12 @@ class GestionEspaciosEvento(tk.Toplevel):
         
         self.entries = {}
         for i, (label, var_name) in enumerate(campos):
-            tk.Label(form_frame, text=label).grid(row=i, column=0, padx=5, pady=5, sticky="e")
+            tk.Label(form_frame, text=label, font=("Arial", 12), fg="#0d47a1", bg="#add8e6").grid(row=i, column=0, padx=5, pady=5, sticky="e")
             entry = tk.Entry(form_frame)
             entry.grid(row=i, column=1, padx=5, pady=5, sticky="we")
             self.entries[var_name] = entry
         
-        btn_agregar = tk.Button(form_frame, text="Agregar Espacio", command=self.agregar_espacio)
+        btn_agregar = ttk.Button(form_frame, text="Agregar Espacio", style="Azul.TButton", command=self.agregar_espacio)
         btn_agregar.grid(row=len(campos), column=0, columnspan=2, pady=10)
 
     def mostrar_espacios(self):

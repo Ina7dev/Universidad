@@ -1,11 +1,11 @@
-from users import User
-from gestion_clientes import ventanaCRUDclientes, ventanaCliente
-from gestion_rol import ventanaCRUDroles, cargarRoles
-from gestion_reservas import ventanaCRUDreservas
-from gestion_habitaciones import GestionHabitaciones
-from gestion_servicios import ventanaCRUDservicios 
-from gestion_mantenimiento import ventanaCRUDMantenimiento
-
+from scripts.users import User
+from scripts.gestion_clientes import ventanaCRUDclientes, ventanaCliente
+from scripts.gestion_rol import ventanaCRUDroles, cargarRoles
+from scripts.gestion_reservas import ventanaCRUDreservas
+from scripts.gestion_habitaciones import GestionHabitaciones
+from scripts.gestion_servicios import ventanaCRUDservicios 
+from scripts.gestion_mantenimiento import ventanaCRUDMantenimiento
+from scripts.crearespacioevento import GestionEspaciosEvento
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
@@ -307,40 +307,40 @@ class ventanaCRUDrecepcionistas:
 class ventanaAcceso:
     def __init__(self, master):
         self.master = master
-        self.user_manager = gestionUsuarios()
-        #  NUEVA LÓGICA PARA ASEGURAR QUE EL ADMIN EXISTA 
-        # Cargar usuarios para verificar si el admin ya existe
-        usuarios_existentes = self.user_manager.cargar() # Esto intenta cargar el JSON
+        self.gestor_usuarios = gestionUsuarios()
+        usuarios_existentes = self.gestor_usuarios.cargar()
         if "admin@hotel.com" not in usuarios_existentes or \
            usuarios_existentes.get("admin@hotel.com", {}).get("rol") != "admin":
-            # Si el admin no existe o su rol no es 'admin', lo creamos
-            self.user_manager.crear_usuario("admin@hotel.com", "admin123", "admin")
-            print("DEBUG: Admin user 'admin@hotel.com' created/ensured.")
-        
+            self.gestor_usuarios.crear_usuario("admin@hotel.com", "admin123", "admin")
 
-        self.frame = tk.Frame(master, bg="lightgray", bd=5)
-        self.frame.place(relx=0.5, rely=0.5, anchor="center")
-        
+        self.marco = tk.Frame(master, bg="lightgray", bd=5)
+        self.marco.place(relx=0.5, rely=0.5, anchor="center")
 
-        self.frame = tk.Frame(master, bg="lightgray", bd=5)
-        self.frame.place(relx=0.5, rely=0.5, anchor="center")
+        estilo = ttk.Style()
+        estilo.configure("Azul.TButton",
+                        background="#add8e6",
+                        foreground="#0d47a1",
+                        font=("Arial", 11, "bold"),
+                        padding=6,
+                        borderwidth=1)
+        estilo.map("Azul.TButton",
+                  background=[("active", "#90caf9")])
 
-        tk.Label(self.frame, text="Iniciar Sesión", font=("Arial", 16)).pack(pady=10)
+        tk.Label(self.marco, text="Iniciar Sesión", font=("Arial", 18, "bold"), bg="lightgray", fg="#1565c0").pack(pady=10)
+        tk.Label(self.marco, text="Correo Electrónico:", font=("Arial", 12), bg="lightgray").pack(pady=5)
+        self.entrada_correo = tk.Entry(self.marco, font=("Arial", 11))
+        self.entrada_correo.pack(pady=5, ipadx=3, ipady=2)
 
-        tk.Label(self.frame, text="Correo Electrónico:").pack(pady=5)
-        self.email_entry = tk.Entry(self.frame)
-        self.email_entry.pack(pady=5)
+        tk.Label(self.marco, text="Contraseña:", font=("Arial", 12), bg="lightgray").pack(pady=5)
+        self.entrada_contrasena = tk.Entry(self.marco, show="*", font=("Arial", 11))
+        self.entrada_contrasena.pack(pady=5, ipadx=3, ipady=2)
 
-        tk.Label(self.frame, text="Contraseña:").pack(pady=5)
-        self.password_entry = tk.Entry(self.frame, show="*")
-        self.password_entry.pack(pady=5)
-
-        tk.Button(self.frame, text="Iniciar Sesión", command=self.login).pack(pady=10)
-        tk.Button(self.frame, text="Registrarse", command=self.register).pack(pady=5)
+        ttk.Button(self.marco, text="Iniciar Sesión", style="Azul.TButton", width=18, command=self.login).pack(pady=10)
+        ttk.Button(self.marco, text="Registrarse", style="Azul.TButton", width=18, command=self.register).pack(pady=6)
 
     def register(self):
-        email = self.email_entry.get()
-        password = self.password_entry.get()
+        email = self.entrada_correo.get()
+        password = self.entrada_contrasena.get()
 
         if not re.fullmatch(r"[^@]+@[^@]+\.[^@]+", email):
             messagebox.showerror("Error", "Formato de correo electrónico inválido.")
@@ -350,49 +350,74 @@ class ventanaAcceso:
             messagebox.showerror("Error", "Todos los campos son obligatorios.")
             return
 
-        if self.user_manager.crear_usuario(email, password, "cliente"):
+        if self.gestor_usuarios.crear_usuario(email, password, "cliente"):
             messagebox.showinfo("Éxito", "Usuario registrado exitosamente como cliente.")
-            self.email_entry.delete(0, tk.END)
-            self.password_entry.delete(0, tk.END)
+            self.entrada_correo.delete(0, tk.END)
+            self.entrada_contrasena.delete(0, tk.END)
         else:
             messagebox.showerror("Error", "El email ya está registrado.")
 
     def login(self):
-        email = self.email_entry.get()
-        password = self.password_entry.get()
+        email = self.entrada_correo.get()
+        password = self.entrada_contrasena.get()
 
         try:
-            logged_user = self.user_manager.validar_usuario(email, password)
+            logged_user = self.gestor_usuarios.validar_usuario(email, password)
 
             if logged_user:
                 messagebox.showinfo("Éxito", f"Bienvenido, {logged_user.get('email', email)}")
-                self.master.destroy()  # Cierra la ventana de login
+                self.master.destroy()  
 
                 if logged_user["rol"] == "admin":
                     menu_admin = tk.Toplevel()
                     menu_admin.title("Menú de Administrador")
-                    menu_admin.geometry("300x350")
+                    menu_admin_width = 400
+                    menu_admin_height = 600
+                    menu_admin.geometry(f"{menu_admin_width}x{menu_admin_height}")
 
-                    tk.Button(menu_admin, text="Gestión de Recepcionistas",
-                            command=lambda: ventanaCRUDrecepcionistas(self.user_manager)).pack(pady=10) 
+                    menu_admin.update_idletasks()
+                    screen_width = menu_admin.winfo_screenwidth()
+                    screen_height = menu_admin.winfo_screenheight()
+                    x = (screen_width // 2) - (menu_admin_width // 2)
+                    y = (screen_height // 2) - (menu_admin_height // 2)
+                    menu_admin.geometry(f"{menu_admin_width}x{menu_admin_height}+{x}+{y}")
 
-                    tk.Button(menu_admin, text="Gestión de Clientes",
-                            command=ventanaCRUDclientes).pack(pady=10)
+                    menu_admin.configure(bg="lightgray")
 
-                    tk.Button(menu_admin, text="Gestión de Roles",
-                            command=ventanaCRUDroles).pack(pady=10)
+                    estilo = ttk.Style()
+                    estilo.configure("Azul.TButton",
+                                    background="#add8e6",
+                                    foreground="#0d47a1",
+                                    font=("Arial", 12, "bold"),
+                                    padding=8,
+                                    borderwidth=1)
+                    estilo.map("Azul.TButton",
+                              background=[("active", "#90caf9")])
 
-                    tk.Button(menu_admin, text="Gestión de Reservas",
-                            command=ventanaCRUDreservas).pack(pady=10)
-
-                    tk.Button(menu_admin, text="Gestión de Habitaciones",
-                            command=GestionHabitaciones).pack(pady=10)
-
-                    tk.Button(menu_admin, text="Gestión de Servicios Adicionales",
-                            command=ventanaCRUDservicios).pack(pady=10) 
-                    
-                    tk.Button(menu_admin, text="Gestión de Mantenimiento",
-                            command=ventanaCRUDMantenimiento).pack(pady=10)
+                    ttk.Button(menu_admin, text="Gestión de Recepcionistas",
+                            style="Azul.TButton", width=28,
+                            command=lambda: ventanaCRUDrecepcionistas(self.gestor_usuarios)).pack(pady=12)
+                    ttk.Button(menu_admin, text="Gestión de Clientes",
+                            style="Azul.TButton", width=28,
+                            command=ventanaCRUDclientes).pack(pady=12)
+                    ttk.Button(menu_admin, text="Gestión de Roles",
+                            style="Azul.TButton", width=28,
+                            command=ventanaCRUDroles).pack(pady=12)
+                    ttk.Button(menu_admin, text="Gestión de Reservas",
+                            style="Azul.TButton", width=28,
+                            command=ventanaCRUDreservas).pack(pady=12)
+                    ttk.Button(menu_admin, text="Gestión de Habitaciones",
+                            style="Azul.TButton", width=28,
+                            command=GestionHabitaciones).pack(pady=12)
+                    ttk.Button(menu_admin, text="Gestión de Servicios Adicionales",
+                            style="Azul.TButton", width=28,
+                            command=ventanaCRUDservicios).pack(pady=12)
+                    ttk.Button(menu_admin, text="Gestión de Mantenimiento",
+                            style="Azul.TButton", width=28,
+                            command=ventanaCRUDMantenimiento).pack(pady=12)
+                    ttk.Button(menu_admin, text="Gestión de Espacios para Eventos",
+                            style="Azul.TButton", width=28,
+                            command=lambda: GestionEspaciosEvento(menu_admin)).pack(pady=12)
 
                 elif logged_user["rol"] == "recepcionista":
                     ventanaRecepcionista(None)

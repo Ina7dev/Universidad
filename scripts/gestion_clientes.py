@@ -72,29 +72,59 @@ def guardar_reservas(data):
 
 class ventanaCRUDclientes:
     def __init__(self):
+        estilo = ttk.Style()
+        estilo.configure("Azul.TButton",
+                        background="#add8e6",
+                        foreground="#0d47a1",
+                        font=("Arial", 12, "bold"),
+                        padding=8,
+                        borderwidth=1)
+        estilo.map("Azul.TButton",
+                  background=[("active", "#90caf9")])
+        estilo.configure("Azul.TLabelframe",
+                        background="#add8e6",
+                        borderwidth=2,
+                        relief="ridge")
+        estilo.configure("Azul.TLabelframe.Label",
+                        background="#add8e6",
+                        foreground="#0d47a1",
+                        font=("Arial", 12, "bold"))
+        estilo.configure("Azul.TFrame",
+                        background="#add8e6",
+                        borderwidth=2,
+                        relief="ridge")
+
         self.clientes = cargar_clientes()
         self.reservas = cargar_reservas()
 
         self.ventana = tk.Toplevel()
         self.ventana.title("Gestión de Clientes")
-        self.ventana.geometry("900x500")
+        menu_width = 950
+        menu_height = 700
+        self.ventana.geometry(f"{menu_width}x{menu_height}")
+        self.ventana.update_idletasks()
+        screen_width = self.ventana.winfo_screenwidth()
+        screen_height = self.ventana.winfo_screenheight()
+        x = (screen_width // 2) - (menu_width // 2)
+        y = (screen_height // 2) - (menu_height // 2)
+        self.ventana.geometry(f"{menu_width}x{menu_height}+{x}+{y}")
+        self.ventana.configure(bg="#add8e6")
 
-        self.tree = ttk.Treeview(self.ventana, columns=("ID", "Nombre", "Correo", "Teléfono"), show="headings")
+        self.tree = ttk.Treeview(self.ventana, columns=("ID", "Nombre", "Correo", "Teléfono"), show="headings", height=15)
         self.tree.heading("ID", text="ID")
         self.tree.heading("Nombre", text="Nombre")
         self.tree.heading("Correo", text="Correo")
         self.tree.heading("Teléfono", text="Teléfono")
         self.tree.pack(pady=10, fill="both", expand=True)
-
         self.actualizar_tabla()
 
-        frame_botones = tk.Frame(self.ventana)
-        frame_botones.pack(pady=10)
+        frame_botones = ttk.Frame(self.ventana, style="Azul.TFrame")
+        frame_botones.pack(pady=10, fill="x")
 
-        tk.Button(frame_botones, text="Agregar", command=self.agregar_cliente).grid(row=0, column=0, padx=5)
-        tk.Button(frame_botones, text="Editar", command=self.editar_cliente).grid(row=0, column=1, padx=5)
-        tk.Button(frame_botones, text="Eliminar", command=self.eliminar_cliente).grid(row=0, column=2, padx=5)
-        tk.Button(frame_botones, text="Reservar", command=self.hacer_reserva).grid(row=0, column=3, padx=5)
+        ttk.Button(frame_botones, text="Agregar", style="Azul.TButton", command=self.agregar_cliente).grid(row=0, column=0, padx=5)
+        ttk.Button(frame_botones, text="Editar", style="Azul.TButton", command=self.editar_cliente).grid(row=0, column=1, padx=5)
+        ttk.Button(frame_botones, text="Eliminar", style="Azul.TButton", command=self.eliminar_cliente).grid(row=0, column=2, padx=5)
+        ttk.Button(frame_botones, text="Reservar", style="Azul.TButton", command=self.hacer_reserva).grid(row=0, column=3, padx=5)
 
     def actualizar_tabla(self):
         self.tree.delete(*self.tree.get_children())

@@ -29,12 +29,43 @@ class ventanaCRUDservicios:
     Permite agregar, editar y eliminar servicios como Yoga, Spa, Tour, etc.
     """
     def __init__(self):
+        estilo = ttk.Style()
+        estilo.configure("Azul.TButton",
+                        background="#add8e6",
+                        foreground="#0d47a1",
+                        font=("Arial", 12, "bold"),
+                        padding=8,
+                        borderwidth=1)
+        estilo.map("Azul.TButton",
+                  background=[("active", "#90caf9")])
+        estilo.configure("Azul.TLabelframe",
+                        background="#add8e6",
+                        borderwidth=2,
+                        relief="ridge")
+        estilo.configure("Azul.TLabelframe.Label",
+                        background="#add8e6",
+                        foreground="#0d47a1",
+                        font=("Arial", 12, "bold"))
+        estilo.configure("Azul.TFrame",
+                        background="#add8e6",
+                        borderwidth=2,
+                        relief="ridge")
+
         # Carga los servicios existentes
         self.servicios = cargar_servicios()
         # Crea una nueva ventana secundaria
         self.ventana = tk.Toplevel()
-        self.ventana.title("Gestión de Servicios Adicionales")
-        self.ventana.geometry("800x400")
+        self.ventana.title("Gestión de Servicios")
+        menu_width = 950
+        menu_height = 700
+        self.ventana.geometry(f"{menu_width}x{menu_height}")
+        self.ventana.update_idletasks()
+        screen_width = self.ventana.winfo_screenwidth()
+        screen_height = self.ventana.winfo_screenheight()
+        x = (screen_width // 2) - (menu_width // 2)
+        y = (screen_height // 2) - (menu_height // 2)
+        self.ventana.geometry(f"{menu_width}x{menu_height}+{x}+{y}")
+        self.ventana.configure(bg="#add8e6")
 
         # Crea el Treeview para mostrar los servicios en forma de tabla
         self.tree = ttk.Treeview(
@@ -59,11 +90,11 @@ class ventanaCRUDservicios:
         frame_botones.pack(pady=10)
 
         # Botón para agregar un nuevo servicio
-        tk.Button(frame_botones, text="Agregar", command=self.agregar_servicio).grid(row=0, column=0, padx=5)
+        tk.Button(frame_botones, text="Agregar", command=self.agregar_servicio, style="Azul.TButton").grid(row=0, column=0, padx=5)
         # Botón para editar el servicio seleccionado
-        tk.Button(frame_botones, text="Editar", command=self.editar_servicio).grid(row=0, column=1, padx=5)
+        tk.Button(frame_botones, text="Editar", command=self.editar_servicio, style="Azul.TButton").grid(row=0, column=1, padx=5)
         # Botón para eliminar el servicio seleccionado
-        tk.Button(frame_botones, text="Eliminar", command=self.eliminar_servicio).grid(row=0, column=2, padx=5)
+        tk.Button(frame_botones, text="Eliminar", command=self.eliminar_servicio, style="Azul.TButton").grid(row=0, column=2, padx=5)
 
     def actualizar_tabla(self):
         """
@@ -190,4 +221,4 @@ class ventanaCRUDservicios:
             ventana.destroy()
 
         # Botón para guardar los datos del formulario
-        tk.Button(ventana, text="Guardar", command=guardar).pack(pady=10)
+        tk.Button(ventana, text="Guardar", command=guardar, style="Azul.TButton").pack(pady=10)

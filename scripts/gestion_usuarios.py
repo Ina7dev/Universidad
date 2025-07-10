@@ -352,20 +352,33 @@ class ventanaAcceso:
         self.user_manager = gestionUsuarios()
         self.recepcionista_manager = gestionRecepcionistas()
 
-        self.frame = ttk.Frame(parent)
+        # Frame con fondo azul claro y borde
+        self.frame = tk.Frame(parent, bg="#e3f2fd", bd=3, relief="ridge")
         self.frame.place(relx=0.5, rely=0.5, anchor="center")
 
-        ttk.Label(self.frame, text="Inicio", font=("Arial", 18)).grid(column=0, row=0, columnspan=2, pady=10)
-        ttk.Label(self.frame, text="Usuario", font=("Arial", 12)).grid(column=0, row=1, columnspan=2, pady=10)
+        # Estilo personalizado para botones
+        style = ttk.Style()
+        style.configure("Blue.TButton",
+                        background="#90caf9",
+                        foreground="#0d47a1",
+                        font=("Arial", 12, "bold"),
+                        padding=8,
+                        borderwidth=2)
+        style.map("Blue.TButton",
+                  background=[("active", "#64b5f6")])
+
+        ttk.Label(self.frame, text="Inicio", font=("Arial", 20, "bold"), background="#e3f2fd", foreground="#1565c0").grid(column=0, row=0, columnspan=2, pady=10)
+        ttk.Label(self.frame, text="Usuario", font=("Arial", 13), background="#e3f2fd").grid(column=0, row=1, columnspan=2, pady=10)
         self.user_entry = ttk.Entry(self.frame, width=30)
-        self.user_entry.grid(row=2, column=1, pady=5)
+        self.user_entry.grid(row=2, column=1, pady=5, padx=10)
 
-        ttk.Label(self.frame, text="Contraseña", font=("Arial", 12)).grid(column=0, row=3, columnspan=2, pady=10)
+        ttk.Label(self.frame, text="Contraseña", font=("Arial", 13), background="#e3f2fd").grid(column=0, row=3, columnspan=2, pady=10)
         self.pass_entry = ttk.Entry(self.frame, width=30, show="*")
-        self.pass_entry.grid(row=4, column=1, pady=5)
+        self.pass_entry.grid(row=4, column=1, pady=5, padx=10)
 
-        ttk.Button(self.frame, text="Aceptar", command=self.verificar).grid(column=0, row=5, columnspan=2, pady=10)
-        ttk.Button(self.frame, text="Registrarse", command=lambda: ventanaRegistro(self.user_manager)).grid(column=0, row=6, columnspan=2, pady=5)
+        # Botones con estilo y padding
+        ttk.Button(self.frame, text="Aceptar", style="Blue.TButton", width=22, command=self.verificar).grid(column=0, row=5, columnspan=2, pady=12)
+        ttk.Button(self.frame, text="Registrarse", style="Blue.TButton", width=22, command=lambda: ventanaRegistro(self.user_manager)).grid(column=0, row=6, columnspan=2, pady=6)
 
     def verificar(self):
         usuarios = self.user_manager.cargar()
