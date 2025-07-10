@@ -3,7 +3,7 @@ from tkinter import ttk, messagebox
 import json
 import os
 from datetime import datetime
-from scripts.gestion_habitaciones import cargar_habitaciones, guardar_habitaciones
+from gestion_habitaciones import cargar_habitaciones, guardar_habitaciones
 
 
 ARCHIVO_INCIDENCIAS = "incidencias.json"
@@ -127,41 +127,10 @@ class GestionIncidencias:
 
 class ventanaCRUDMantenimiento:
     def __init__(self):
-        estilo = ttk.Style()
-        estilo.configure("Azul.TButton",
-                        background="#add8e6",
-                        foreground="#0d47a1",
-                        font=("Arial", 12, "bold"),
-                        padding=8,
-                        borderwidth=1)
-        estilo.map("Azul.TButton",
-                  background=[("active", "#90caf9")])
-        estilo.configure("Azul.TLabelframe",
-                        background="#add8e6",
-                        borderwidth=2,
-                        relief="ridge")
-        estilo.configure("Azul.TLabelframe.Label",
-                        background="#add8e6",
-                        foreground="#0d47a1",
-                        font=("Arial", 12, "bold"))
-        estilo.configure("Azul.TFrame",
-                        background="#add8e6",
-                        borderwidth=2,
-                        relief="ridge")
-
         self.gestor_incidencias = GestionIncidencias()
         self.ventana = tk.Toplevel()
         self.ventana.title("Gestión de Mantenimiento / Incidencias")
-        menu_width = 950
-        menu_height = 700
-        self.ventana.geometry(f"{menu_width}x{menu_height}")
-        self.ventana.update_idletasks()
-        screen_width = self.ventana.winfo_screenwidth()
-        screen_height = self.ventana.winfo_screenheight()
-        x = (screen_width // 2) - (menu_width // 2)
-        y = (screen_height // 2) - (menu_height // 2)
-        self.ventana.geometry(f"{menu_width}x{menu_height}+{x}+{y}")
-        self.ventana.configure(bg="#add8e6")
+        self.ventana.geometry("850x650")
 
        
         self.id_habitacion_var = tk.StringVar()
@@ -174,35 +143,35 @@ class ventanaCRUDMantenimiento:
         self.habitaciones_ids = [h["id"] for h in cargar_habitaciones()]
 
         
-        frame_form = ttk.LabelFrame(self.ventana, text="Detalles de la Incidencia", style="Azul.TLabelframe")
+        frame_form = ttk.LabelFrame(self.ventana, text="Detalles de la Incidencia")
         frame_form.pack(pady=10, padx=10, fill="x")
 
-        ttk.Label(frame_form, text="ID Habitación / Área:", background="#add8e6", foreground="#0d47a1", font=("Arial", 12)).grid(row=0, column=0, padx=5, pady=5, sticky="w")
+        ttk.Label(frame_form, text="ID Habitación / Área:").grid(row=0, column=0, padx=5, pady=5, sticky="w")
         ttk.Combobox(frame_form, textvariable=self.id_habitacion_var,
                      values=self.habitaciones_ids + ["General"]).grid(row=0, column=1, padx=5, pady=5, sticky="ew")
 
-        ttk.Label(frame_form, text="Tipo de Incidencia:", background="#add8e6", foreground="#0d47a1", font=("Arial", 12)).grid(row=1, column=0, padx=5, pady=5, sticky="w")
+        ttk.Label(frame_form, text="Tipo de Incidencia:").grid(row=1, column=0, padx=5, pady=5, sticky="w")
         ttk.Combobox(frame_form, textvariable=self.tipo_incidencia_var,
                      values=["Fontanería", "Eléctrica", "Limpieza", "Mobilario", "Otro"]).grid(row=1, column=1, padx=5, pady=5, sticky="ew")
 
-        ttk.Label(frame_form, text="Descripción:", background="#add8e6", foreground="#0d47a1", font=("Arial", 12)).grid(row=2, column=0, padx=5, pady=5, sticky="w")
+        ttk.Label(frame_form, text="Descripción:").grid(row=2, column=0, padx=5, pady=5, sticky="w")
         ttk.Entry(frame_form, textvariable=self.descripcion_var).grid(row=2, column=1, padx=5, pady=5, sticky="ew")
 
-        ttk.Label(frame_form, text="Estado:", background="#add8e6", foreground="#0d47a1", font=("Arial", 12)).grid(row=3, column=0, padx=5, pady=5, sticky="w")
+        ttk.Label(frame_form, text="Estado:").grid(row=3, column=0, padx=5, pady=5, sticky="w")
         ttk.Combobox(frame_form, textvariable=self.estado_var,
                      values=["Pendiente", "En Proceso", "Resuelta", "Cancelada"]).grid(row=3, column=1, padx=5, pady=5, sticky="ew")
 
-        ttk.Label(frame_form, text="Notas de Resolución:", background="#add8e6", foreground="#0d47a1", font=("Arial", 12)).grid(row=4, column=0, padx=5, pady=5, sticky="w")
+        ttk.Label(frame_form, text="Notas de Resolución:").grid(row=4, column=0, padx=5, pady=5, sticky="w")
         ttk.Entry(frame_form, textvariable=self.notas_var).grid(row=4, column=1, padx=5, pady=5, sticky="ew")
 
         
-        frame_botones = ttk.Frame(self.ventana, style="Azul.TFrame")
+        frame_botones = ttk.Frame(self.ventana)
         frame_botones.pack(pady=5)
 
-        ttk.Button(frame_botones, text="Crear Incidencia", command=self.crear_incidencia, style="Azul.TButton").grid(row=0, column=0, padx=5)
-        ttk.Button(frame_botones, text="Actualizar Incidencia", command=self.actualizar_incidencia, style="Azul.TButton").grid(row=0, column=1, padx=5)
-        ttk.Button(frame_botones, text="Eliminar Incidencia", command=self.eliminar_incidencia, style="Azul.TButton").grid(row=0, column=2, padx=5)
-        ttk.Button(frame_botones, text="Limpiar Campos", command=self.limpiar_campos, style="Azul.TButton").grid(row=0, column=3, padx=5)
+        ttk.Button(frame_botones, text="Crear Incidencia", command=self.crear_incidencia).grid(row=0, column=0, padx=5)
+        ttk.Button(frame_botones, text="Actualizar Incidencia", command=self.actualizar_incidencia).grid(row=0, column=1, padx=5)
+        ttk.Button(frame_botones, text="Eliminar Incidencia", command=self.eliminar_incidencia).grid(row=0, column=2, padx=5)
+        ttk.Button(frame_botones, text="Limpiar Campos", command=self.limpiar_campos).grid(row=0, column=3, padx=5)
 
         
         columnas = ("ID Incidencia", "ID Habitación", "Tipo", "Descripción", "Fecha Reporte", "Estado", "Notas")

@@ -27,39 +27,9 @@ class ReservaEvento(tk.Toplevel):
     def __init__(self, master=None):
         super().__init__(master)
         self.title("Reserva de Espacios para Eventos")
-        menu_width = 950
-        menu_height = 700
-        self.geometry(f"{menu_width}x{menu_height}")
-        self.update_idletasks()
-        screen_width = self.winfo_screenwidth()
-        screen_height = self.winfo_screenheight()
-        x = (screen_width // 2) - (menu_width // 2)
-        y = (screen_height // 2) - (menu_height // 2)
-        self.geometry(f"{menu_width}x{menu_height}+{x}+{y}")
-        self.configure(bg="#add8e6")
-
-        estilo = ttk.Style(self)
-        estilo.configure("Azul.TButton",
-                        background="#add8e6",
-                        foreground="#0d47a1",
-                        font=("Arial", 12, "bold"),
-                        padding=8,
-                        borderwidth=1)
-        estilo.map("Azul.TButton",
-                  background=[("active", "#90caf9")])
-        estilo.configure("Azul.TLabelframe",
-                        background="#add8e6",
-                        borderwidth=2,
-                        relief="ridge")
-        estilo.configure("Azul.TLabelframe.Label",
-                        background="#add8e6",
-                        foreground="#0d47a1",
-                        font=("Arial", 12, "bold"))
-        estilo.configure("Azul.TFrame",
-                        background="#add8e6",
-                        borderwidth=2,
-                        relief="ridge")
-
+        self.geometry("800x500")
+        self.resizable(False, False)
+        
         self.espacios = cargar_datos(ARCHIVO_ESPACIOS)
         self.reservas = cargar_datos(ARCHIVO_RESERVAS)
         self.crear_widgets()
@@ -68,12 +38,12 @@ class ReservaEvento(tk.Toplevel):
 
     def crear_widgets(self):
         # Frame principal
-        main_frame = ttk.Frame(self, style="Azul.TFrame")
+        main_frame = ttk.Frame(self)
         main_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
         
         # Lista de reservas
         columnas = ("id_espacio", "nombre_evento", "fecha", "personas", "contacto")
-        self.tree = ttk.Treeview(main_frame, columns=columnas, show="headings", height=15)
+        self.tree = ttk.Treeview(main_frame, columns=columnas, show="headings", height=10)
         
         for col in columnas:
             self.tree.heading(col, text=col.capitalize().replace("_", " "))
@@ -82,7 +52,7 @@ class ReservaEvento(tk.Toplevel):
         self.tree.grid(row=0, column=0, sticky="nsew", pady=(0, 10))
         
         # Frame de formulario
-        form_frame = ttk.LabelFrame(main_frame, text="Nueva Reserva", style="Azul.TLabelframe")
+        form_frame = ttk.LabelFrame(main_frame, text="Nueva Reserva")
         form_frame.grid(row=0, column=1, sticky="nsew", padx=(10, 0))
         
         # Campos del formulario
@@ -96,7 +66,7 @@ class ReservaEvento(tk.Toplevel):
         
         self.widgets = {}
         for i, (label, name) in enumerate(campos):
-            tk.Label(form_frame, text=label, font=("Arial", 12), fg="#0d47a1", bg="#add8e6").grid(row=i, column=0, padx=5, pady=5, sticky="e")
+            ttk.Label(form_frame, text=label).grid(row=i, column=0, padx=5, pady=5, sticky="e")
             
             if name == "combo_espacio":
                 combo = ttk.Combobox(form_frame, state="readonly")
@@ -107,18 +77,18 @@ class ReservaEvento(tk.Toplevel):
                 cal.grid(row=i, column=1, padx=5, pady=5, sticky="we")
                 self.widgets[name] = cal
             else:
-                entry = tk.Entry(form_frame)
+                entry = ttk.Entry(form_frame)
                 entry.grid(row=i, column=1, padx=5, pady=5, sticky="we")
                 self.widgets[name] = entry
         
-        ttk.Button(form_frame, text="Crear Reserva", style="Azul.TButton", command=self.crear_reserva).grid(
+        ttk.Button(form_frame, text="Crear Reserva", command=self.crear_reserva).grid(
             row=len(campos), column=0, columnspan=2, pady=10)
         
         # Botones de acciones
-        btn_frame = ttk.Frame(main_frame, style="Azul.TFrame")
+        btn_frame = ttk.Frame(main_frame)
         btn_frame.grid(row=1, column=0, columnspan=2, pady=10)
         
-        ttk.Button(btn_frame, text="Cancelar Reserva", style="Azul.TButton", command=self.cancelar_reserva).pack(side=tk.LEFT, padx=5)
+        ttk.Button(btn_frame, text="Cancelar Reserva", command=self.cancelar_reserva).pack(side=tk.LEFT, padx=5)
 
     def actualizar_combos(self):
         espacios_ids = [e["id"] for e in self.espacios]
