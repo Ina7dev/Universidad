@@ -33,6 +33,11 @@ class ventanaCRUDreservas:
         self.clientes = cargar_clientes()
 
         self.ventana = tk.Toplevel()
+
+        self.ventana.transient()
+        self.ventana.grab_set()
+        self.ventana.focus_set()
+
         self.ventana.title("Gestión de Reservas")
         self.ventana.geometry("900x600")
         self.ventana.state("zoomed")  

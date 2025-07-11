@@ -60,6 +60,11 @@ class ventanaRegistro:
     def __init__(self, user_manager):
         self.user_manager = user_manager
         self.window = tk.Toplevel()
+
+        self.ventana.transient()
+        self.ventana.grab_set()
+        self.ventana.focus_set()
+
         self.window.title("Registrarse")
         self.window.geometry("350x300")
         self.window.resizable(False, False)
@@ -133,6 +138,11 @@ class ventanaCRUDrecepcionistas:
     def __init__(self, recepcionista_manager):
         self.recepcionista_manager = recepcionista_manager
         self.ventana = tk.Toplevel()
+
+        self.ventana.transient()
+        self.ventana.grab_set()
+        self.ventana.focus_set()
+
         self.ventana.title("Gestión de Recepcionistas")
         self.ventana.geometry("800x500")
         self.recepcionistas = self.recepcionista_manager.cargar()

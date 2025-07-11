@@ -21,6 +21,11 @@ def guardarRol(data):
 class ventanaCRUDroles:
     def __init__(self):
         self.ventana = tk.Toplevel()
+
+        self.ventana.transient()
+        self.ventana.grab_set()
+        self.ventana.focus_set()
+
         self.ventana.title("Gestión de rol")
         self.ventana.geometry("300x250")
         self.roles = cargarRoles()

@@ -19,6 +19,12 @@ class ventanaCliente:
         self.on_close = on_close
 
         self.ventana = tk.Toplevel()
+
+        self.ventana.transient()      
+        self.ventana.grab_set()          
+        self.ventana.focus_set()          
+
+
         self.ventana.title("Panel del Cliente")
         self.ventana.geometry("500x400")
         self.ventana.protocol("WM_DELETE_WINDOW", self._on_close)

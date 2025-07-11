@@ -91,6 +91,11 @@ class ventanaCRUDservicios:
         self.on_close = on_close
         # Crea una nueva ventana secundaria
         self.ventana = tk.Toplevel()
+
+        self.ventana.transient()
+        self.ventana.grab_set()
+        self.ventana.focus_set()
+
         self.ventana.title("Gestión de Servicios Adicionales")
         self.ventana.geometry("1300x400")
 

@@ -22,6 +22,11 @@ class ventanaCRUDfeedback:
     def __init__(self):
         self.feedback = cargar_feedback()
         self.ventana = tk.Toplevel()
+
+        self.ventana.transient()
+        self.ventana.grab_set()
+        self.ventana.focus_set()
+        
         self.ventana.title("Gestión de Sugerencias y Reclamos")
         self.ventana.geometry("900x500")
 

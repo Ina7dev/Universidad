@@ -130,7 +130,12 @@ class gestionUsuarios:
 class ventanaRecepcionista:
     def __init__(self, master=None):
         self.master = master
-        self.ventana = tk.Toplevel(master) 
+        self.ventana = tk.Toplevel(master)
+
+        self.ventana.transient()
+        self.ventana.grab_set()
+        self.ventana.focus_set()
+
         self.ventana.title("Menú de Recepcionista")
         self.ventana.geometry("300x200")
 

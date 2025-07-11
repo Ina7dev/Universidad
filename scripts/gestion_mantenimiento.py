@@ -130,6 +130,11 @@ class ventanaCRUDMantenimiento:
     def __init__(self):
         self.gestor_incidencias = GestionIncidencias()
         self.ventana = tk.Toplevel()
+
+        self.ventana.transient()
+        self.ventana.grab_set()
+        self.ventana.focus_set()
+                
         self.ventana.title("Gestión de Mantenimiento / Incidencias")
         self.ventana.geometry("850x650")
 
