@@ -787,11 +787,12 @@ class ventanaAcceso:
                         command=lambda: ventanaCRUDMantenimiento()).grid(row=8, column=0, pady=6, sticky="nsew")
                 ttk.Button(admin_frame, text="Gestión de Espacios para Eventos",
                         command=lambda: GestionEventos()).grid(row=9, column=0, pady=6, sticky="nsew")
+
             elif logged_user.get("rol") == "recepcionista":
                 ventanaRecepcionista(self.parent)
+
             else:
                 ventanaCliente(logged_user, on_close=self.on_all_closed)
-                # Botón para feedback de cliente
                 feedback_btn = tk.Button(self.parent, text="Mis Sugerencias y Reclamos", 
                                          command=lambda: ventanaFeedbackCliente(logged_user))
                 feedback_btn.place(relx=0.5, rely=0.9, anchor="center")
