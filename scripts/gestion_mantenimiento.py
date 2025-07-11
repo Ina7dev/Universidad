@@ -3,7 +3,7 @@ from tkinter import ttk, messagebox
 import json
 import os
 from datetime import datetime
-from .gestion_habitaciones import cargar_habitaciones, guardar_habitaciones
+from gestion_habitaciones import cargar_habitaciones, guardar_habitaciones
 
 
 ARCHIVO_INCIDENCIAS = "incidencias.json"
