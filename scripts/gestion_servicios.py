@@ -92,7 +92,8 @@ class ventanaCRUDservicios:
         # Crea una nueva ventana secundaria
         self.ventana = tk.Toplevel()
         self.ventana.title("Gestión de Servicios Adicionales")
-        self.ventana.geometry("800x400")
+        self.ventana.geometry("1300x400")
+
         self.ventana.protocol("WM_DELETE_WINDOW", self._on_close)
         self.ventana.bind("<Escape>", lambda e: self.ventana.destroy())
 
@@ -243,6 +244,8 @@ class ventanaCRUDservicios:
 
             if not id_val:
                 return error_response("El ID del servicio es obligatorio.")
+            if not id_val.isdigit():
+                return error_response("El ID debe ser un número entero.")
             if not nombre:
                 return error_response("El nombre del servicio es obligatorio.")
             if not horario:

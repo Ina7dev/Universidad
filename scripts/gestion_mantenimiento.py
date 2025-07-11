@@ -44,7 +44,7 @@ class GestionIncidencias:
         return datetime.now().strftime("INC%d%m%Y%H%M%S")
 
     def crear_incidencia(self, id_habitacion, tipo_incidencia, descripcion):
-       
+        """Crea y guarda una nueva incidencia."""
         if not id_habitacion or not tipo_incidencia or not descripcion:
             return False, "Todos los campos son obligatorios."
 
@@ -60,7 +60,8 @@ class GestionIncidencias:
         guardar_incidencias(self.incidencias)
 
         
-        self._actualizar_estado_habitacion(id_habitacion, "en_mantenimiento")
+        if id_habitacion != "General":
+            self._actualizar_estado_habitacion(id_habitacion, "en_mantenimiento")
 
         return True, "Incidencia creada exitosamente."
 
@@ -87,12 +88,13 @@ class GestionIncidencias:
 
         guardar_incidencias(self.incidencias)
 
- 
-        if nuevo_estado == "Resuelta":
-            self._actualizar_estado_habitacion(incidencia["id_habitacion"], "disponible")
         
-        elif nuevo_estado in ["Pendiente", "En Proceso"]:
-            self._actualizar_estado_habitacion(incidencia["id_habitacion"], "en_mantenimiento")
+        if incidencia["id_habitacion"] != "General":
+            if nuevo_estado == "Resuelta":
+                self._actualizar_estado_habitacion(incidencia["id_habitacion"], "disponible")
+            
+            elif nuevo_estado in ["Pendiente", "En Proceso"]:
+                self._actualizar_estado_habitacion(incidencia["id_habitacion"], "en_mantenimiento")
 
 
         return True, "Incidencia actualizada exitosamente."
@@ -104,8 +106,7 @@ class GestionIncidencias:
             del self.incidencias[id_incidencia]
             guardar_incidencias(self.incidencias)
             
-            if incidencia["estado"] in ["Pendiente", "En Proceso"]:
-                pass
+            
             return True, "Incidencia eliminada exitosamente."
         return False, "Incidencia no encontrada."
 
@@ -140,6 +141,7 @@ class ventanaCRUDMantenimiento:
         self.notas_var = tk.StringVar()
 
        
+        # Cargar IDs de habitaciones sin "General"
         self.habitaciones_ids = [h["id"] for h in cargar_habitaciones()]
 
         
@@ -147,19 +149,20 @@ class ventanaCRUDMantenimiento:
         frame_form.pack(pady=10, padx=10, fill="x")
 
         ttk.Label(frame_form, text="ID Habitación / Área:").grid(row=0, column=0, padx=5, pady=5, sticky="w")
+        # Combobox ahora solo con habitaciones existentes
         ttk.Combobox(frame_form, textvariable=self.id_habitacion_var,
-                     values=self.habitaciones_ids + ["General"]).grid(row=0, column=1, padx=5, pady=5, sticky="ew")
+                     values=self.habitaciones_ids, state="readonly").grid(row=0, column=1, padx=5, pady=5, sticky="ew")
 
         ttk.Label(frame_form, text="Tipo de Incidencia:").grid(row=1, column=0, padx=5, pady=5, sticky="w")
         ttk.Combobox(frame_form, textvariable=self.tipo_incidencia_var,
-                     values=["Fontanería", "Eléctrica", "Limpieza", "Mobilario", "Otro"]).grid(row=1, column=1, padx=5, pady=5, sticky="ew")
+                     values=["Fontanería", "Eléctrica", "Limpieza", "Mobilario", "Otro"], state="readonly").grid(row=1, column=1, padx=5, pady=5, sticky="ew")
 
         ttk.Label(frame_form, text="Descripción:").grid(row=2, column=0, padx=5, pady=5, sticky="w")
         ttk.Entry(frame_form, textvariable=self.descripcion_var).grid(row=2, column=1, padx=5, pady=5, sticky="ew")
 
         ttk.Label(frame_form, text="Estado:").grid(row=3, column=0, padx=5, pady=5, sticky="w")
         ttk.Combobox(frame_form, textvariable=self.estado_var,
-                     values=["Pendiente", "En Proceso", "Resuelta", "Cancelada"]).grid(row=3, column=1, padx=5, pady=5, sticky="ew")
+                     values=["Pendiente", "En Proceso", "Resuelta", "Cancelada"], state="readonly").grid(row=3, column=1, padx=5, pady=5, sticky="ew")
 
         ttk.Label(frame_form, text="Notas de Resolución:").grid(row=4, column=0, padx=5, pady=5, sticky="w")
         ttk.Entry(frame_form, textvariable=self.notas_var).grid(row=4, column=1, padx=5, pady=5, sticky="ew")
@@ -173,13 +176,13 @@ class ventanaCRUDMantenimiento:
         ttk.Button(frame_botones, text="Eliminar Incidencia", command=self.eliminar_incidencia).grid(row=0, column=2, padx=5)
         ttk.Button(frame_botones, text="Limpiar Campos", command=self.limpiar_campos).grid(row=0, column=3, padx=5)
 
-        
+       
         columnas = ("ID Incidencia", "ID Habitación", "Tipo", "Descripción", "Fecha Reporte", "Estado", "Notas")
         self.tree = ttk.Treeview(self.ventana, columns=columnas, show="headings")
         for col in columnas:
             self.tree.heading(col, text=col)
-            self.tree.column(col, width=100, anchor="center") 
-        
+            self.tree.column(col, width=100, anchor="center") # Ancho por defecto
+        # Ajustes de ancho para columnas específicas
         self.tree.column("ID Incidencia", width=120)
         self.tree.column("Descripción", width=200)
         self.tree.pack(pady=10, padx=10, fill="both", expand=True)
@@ -260,7 +263,7 @@ class ventanaCRUDMantenimiento:
             self.id_habitacion_var.set(valores[1])
             self.tipo_incidencia_var.set(valores[2])
             self.descripcion_var.set(valores[3])
-            
+            # valores[4] es fecha_reporte, no se carga para edición
             self.estado_var.set(valores[5])
             self.notas_var.set(valores[6])
 
@@ -283,8 +286,8 @@ class ventanaCRUDMantenimiento:
                 datos.get("notas", "")
             ))
         
+        # Actualizar la lista de habitaciones disponibles en el combobox
         self.habitaciones_ids = [h["id"] for h in cargar_habitaciones()]
-        self.habitaciones_ids.append("General") # Asegurarse que "General" siempre esté
         self.id_habitacion_var.set("") # Limpiar la selección actual
         
         for widget in self.ventana.winfo_children():
