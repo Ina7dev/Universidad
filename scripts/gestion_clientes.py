@@ -9,8 +9,8 @@ from .gestion_feedback import ventanaFeedbackCliente
 ARCHIVO_CLIENTES = "clientes.json"
 ARCHIVO_RESERVAS = "reservas.json"
 
-def error_response(msg):
-    messagebox.showwarning("Error", msg)
+def error_response(msg, parent=None):
+    messagebox.showwarning("Error", msg, parent=parent)
 
 class ventanaCliente:
     def __init__(self, datos_usuario, on_close=None):
@@ -55,13 +55,13 @@ class ventanaCliente:
 
     def ver_datos(self):
         info = f"Correo: {self.usuario['email']}\nContraseña: {self.usuario['password']}\nRol: {self.usuario['rol']}"
-        messagebox.showinfo("Mis datos", info)
+        messagebox.showinfo("Mis datos", info, parent=self.ventana)
     
     def ver_reservas(self):
         lista = [r for r in self.reservas.values() if r["cliente_id"] == self.usuario["email"]]
 
         if not lista:
-            messagebox.showinfo("Reservas", "No tienes reservas registradas.")
+            messagebox.showinfo("Reservas", "No tienes reservas registradas.", parent=self.ventana)
             return
 
         ventana = tk.Toplevel(self.ventana)
@@ -110,6 +110,11 @@ class ventanaCRUDclientes:
         self.on_close = on_close
 
         self.ventana = tk.Toplevel()
+
+        self.ventana.transient()
+        self.ventana.grab_set()
+        self.ventana.focus_set()
+
         self.ventana.title("Gestión de Clientes")
         self.ventana.geometry("900x500")
         self.ventana.protocol("WM_DELETE_WINDOW", self._on_close)
@@ -179,15 +184,20 @@ class ventanaCRUDclientes:
             id_cliente = self.tree.item(seleccion[0])["values"][0]
             idx = next((i for i, c in enumerate(self.clientes) if c.get("N° habitación", "") == id_cliente), None)
             if idx is None:
-                messagebox.showerror("Error", f"No se encontró al cliente con ID '{id_cliente}'")
+                messagebox.showerror("Error", f"No se encontró al cliente con ID '{id_cliente}'", parent=self.ventana)
                 return
-            if messagebox.askyesno("Confirmar", f"¿Eliminar al cliente {id_cliente}?"):
+            if messagebox.askyesno("Confirmar", f"¿Eliminar al cliente {id_cliente}?", parent=self.ventana):
                 self.clientes.pop(idx)
                 guardar_clientes(self.clientes)
                 self.actualizar_tabla()
 
     def ventana_formulario(self, titulo, id_cliente=None):
         ventana = tk.Toplevel(self.ventana)
+
+        self.ventana.transient()
+        self.ventana.grab_set()
+        self.ventana.focus_set()
+
         ventana.title(titulo)
         ventana.bind("<Escape>", lambda e: ventana.destroy())
 
@@ -225,15 +235,15 @@ class ventanaCRUDclientes:
             correo_val = correo_entry.get().strip()
             tel_val = tel_entry.get().strip()
             if not id_val:
-                return error_response("El campo 'ID' es obligatorio.")
+                return error_response("El campo 'ID' es obligatorio.", parent=self.ventana)
             if not nombre_val:
-                return error_response("El campo 'Nombre' es obligatorio.")
+                return error_response("El campo 'Nombre' es obligatorio.", parent=self.ventana)
             if not correo_val:
-                return error_response("El campo 'Correo' es obligatorio.")
+                return error_response("El campo 'Correo' es obligatorio.", parent=self.ventana)
             if not verificacion(correo_val):
-                return error_response("El correo electrónico no es válido.")
+                return error_response("El correo electrónico no es válido.", parent=self.ventana)
             if tel_val and not validar_telefono(tel_val):
-                return error_response("El teléfono debe contener solo números y tener entre 7 y 15 dígitos.")
+                return error_response("El teléfono debe contener solo números y tener entre 7 y 15 dígitos.", parent=self.ventana)
             nuevo = {
                 "N° habitación": id_val,
                 "Nombre": nombre_val,
@@ -270,6 +280,11 @@ class ventanaCRUDclientes:
                     ]
 
         ventana = tk.Toplevel(self.ventana)
+
+        self.ventana.transient()
+        self.ventana.grab_set()
+        self.ventana.focus_set()
+
         ventana.title("Nueva Reserva")
 
         ttk.Label(ventana, text="Habitación:", style="Login.TLabel", font=("Arial", 12, "bold")).pack()

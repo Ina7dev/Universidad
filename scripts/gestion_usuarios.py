@@ -169,6 +169,11 @@ class ventanaCRUDrecepcionistas:
 
     def agregar_recepcionista(self):
         ventana = tk.Toplevel(self.ventana)
+
+        self.ventana.transient()
+        self.ventana.grab_set()
+        self.ventana.focus_set()
+
         ventana.title("Agregar Recepcionista")
 
         tk.Label(ventana, text="ID:").pack()
@@ -225,6 +230,11 @@ class ventanaCRUDrecepcionistas:
             datos = self.recepcionistas[id_recep]
 
             ventana = tk.Toplevel(self.ventana)
+
+            self.ventana.transient()
+            self.ventana.grab_set()
+            self.ventana.focus_set()
+
             ventana.title("Editar Recepcionista")
 
             tk.Label(ventana, text=f"ID: {id_recep}").pack()
@@ -269,6 +279,11 @@ class ventanaCRUDusuarios:
     def __init__(self, user_manager):
         self.user_manager = user_manager
         self.ventana = tk.Toplevel()
+
+        self.ventana.transient()
+        self.ventana.grab_set()
+        self.ventana.focus_set()
+
         self.ventana.title("Gestión de Usuarios")
         self.ventana.geometry("800x400")
         self.usuarios = self.user_manager.cargar()
@@ -297,6 +312,11 @@ class ventanaCRUDusuarios:
 
     def agregar_usuario(self):
         ventana = tk.Toplevel(self.ventana)
+
+        self.ventana.transient()
+        self.ventana.grab_set()
+        self.ventana.focus_set()
+
         ventana.title("Agregar Usuario")
 
 
@@ -354,6 +374,11 @@ class ventanaCRUDusuarios:
             datos = self.usuarios[Nombre]
 
             ventana = tk.Toplevel(self.ventana)
+
+            self.ventana.transient()
+            self.ventana.grab_set()
+            self.ventana.focus_set()
+
             ventana.title("Editar Usuario")
 
             tk.Label(ventana, text=f"Nombre: {Nombre}").pack()
@@ -576,6 +601,7 @@ class GestionEventos(tk.Toplevel):
 
     def _agregar_reserva(self):
         ventana = tk.Toplevel(self.tab_reservas)
+        
         ventana.title("Agregar Reserva de Evento")
 
         tk.Label(ventana, text="Espacio:").pack()
@@ -750,6 +776,7 @@ class ventanaAcceso:
                     self.on_all_closed()
             if logged_user.get("rol") == "admin":
                 menu_admin = tk.Toplevel()
+                
                 menu_admin.title("Menú de Administrador")
                 menu_admin.geometry("350x420")
                 menu_admin.resizable(False, False)

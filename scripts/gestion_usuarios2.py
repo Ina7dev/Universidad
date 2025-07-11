@@ -149,12 +149,15 @@ class ventanaRecepcionista:
     def abrir_gestion_servicios(self):
         ventanaCRUDservicios() 
 
-
-
 class ventanaCRUDrecepcionistas:
     def __init__(self, gestor_usuarios): 
         self.gestor_usuarios = gestor_usuarios
         self.ventana = tk.Toplevel()
+
+        self.ventana.transient()
+        self.ventana.grab_set()
+        self.ventana.focus_set()
+
         self.ventana.title("Gestión de Recepcionistas")
         self.ventana.geometry("600x450") 
 
@@ -374,6 +377,11 @@ class ventanaAcceso:
 
                 if logged_user["rol"] == "admin":
                     menu_admin = tk.Toplevel()
+
+                    self.ventana.transient()
+                    self.ventana.grab_set()
+                    self.ventana.focus_set()
+
                     menu_admin.title("Menú de Administrador")
                     menu_admin.geometry("300x350")
 

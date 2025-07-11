@@ -89,6 +89,11 @@ class ventanaCRUDfeedback:
 
     def ventana_formulario(self, titulo, fid=None):
         ventana = tk.Toplevel(self.ventana)
+
+        self.ventana.transient()
+        self.ventana.grab_set()
+        self.ventana.focus_set()
+
         ventana.title(titulo)
         ventana.geometry("400x400")
         form_frame = ttk.Frame(ventana, style="Login.TFrame", width=380, height=380)
@@ -158,6 +163,11 @@ class ventanaFeedbackCliente:
         self.usuario = usuario
         self.feedback = cargar_feedback()
         self.ventana = tk.Toplevel()
+
+        self.ventana.transient()
+        self.ventana.grab_set()
+        self.ventana.focus_set()
+
         self.ventana.title("Mis Sugerencias y Reclamos")
         self.ventana.geometry("900x500")
 
@@ -219,6 +229,11 @@ class ventanaFeedbackCliente:
 
     def ventana_formulario(self, titulo, fid=None):
         ventana = tk.Toplevel(self.ventana)
+
+        self.ventana.transient()
+        self.ventana.grab_set()
+        self.ventana.focus_set()
+
         ventana.title(titulo)
         ventana.geometry("400x400")
         # Aplica el estilo Login.TFrame al fondo
