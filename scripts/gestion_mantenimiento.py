@@ -32,7 +32,7 @@ def guardar_incidencias(incidencias):
         with open(ARCHIVO_INCIDENCIAS, "w", encoding="utf-8") as f:
             json.dump(incidencias, f, indent=4, ensure_ascii=False)
     except Exception as e:
-        messagebox.showerror("Error", f"Error al guardar incidencias: {e}")
+        messagebox.showerror("Error", f"Error al guardar incidencias: {e}",)
 
 
 class GestionIncidencias:
@@ -122,7 +122,7 @@ class GestionIncidencias:
         if encontrada:
             guardar_habitaciones(habitaciones)
         else:
-            messagebox.showwarning("Advertencia", f"Habitación {id_habitacion} no encontrada para actualizar su estado.")
+            messagebox.showwarning("Advertencia", f"Habitación {id_habitacion} no encontrada para actualizar su estado.", parent=self.ventana)
 
 
 
@@ -213,16 +213,16 @@ class ventanaCRUDMantenimiento:
 
         exito, mensaje = self.gestor_incidencias.crear_incidencia(id_habitacion, tipo, descripcion)
         if exito:
-            messagebox.showinfo("Éxito", mensaje)
+            messagebox.showinfo("Éxito", mensaje, parent=self.ventana)
             self.limpiar_campos()
             self.actualizar_tabla()
         else:
-            messagebox.showerror("Error", mensaje)
+            messagebox.showerror("Error", mensaje, parent=self.ventana)
 
     def actualizar_incidencia(self):
         seleccion = self.tree.selection()
         if not seleccion:
-            messagebox.showwarning("Advertencia", "Seleccione una incidencia de la tabla para actualizar.")
+            messagebox.showwarning("Advertencia", "Seleccione una incidencia de la tabla para actualizar.", parent=self.ventana)
             return
 
         id_incidencia = self.tree.item(seleccion[0], "values")[0] # Obtener el ID de la incidencia seleccionada
@@ -235,28 +235,28 @@ class ventanaCRUDMantenimiento:
             id_incidencia, nuevo_tipo, nueva_descripcion, nuevo_estado, nuevas_notas
         )
         if exito:
-            messagebox.showinfo("Éxito", mensaje)
+            messagebox.showinfo("Éxito", mensaje, parent=self.ventana)
             self.limpiar_campos()
             self.actualizar_tabla()
         else:
-            messagebox.showerror("Error", mensaje)
+            messagebox.showerror("Error", mensaje, parent=self.ventana)
 
     def eliminar_incidencia(self):
         seleccion = self.tree.selection()
         if not seleccion:
-            messagebox.showwarning("Advertencia", "Seleccione una incidencia de la tabla para eliminar.")
+            messagebox.showwarning("Advertencia", "Seleccione una incidencia de la tabla para eliminar.", parent=self.ventana)
             return
 
         id_incidencia = self.tree.item(seleccion[0], "values")[0]
 
-        if messagebox.askyesno("Confirmar Eliminación", f"¿Está seguro de que desea eliminar la incidencia {id_incidencia}?"):
+        if messagebox.askyesno("Confirmar Eliminación", f"¿Está seguro de que desea eliminar la incidencia {id_incidencia}?", parent=self.ventana):
             exito, mensaje = self.gestor_incidencias.eliminar_incidencia(id_incidencia)
             if exito:
-                messagebox.showinfo("Éxito", mensaje)
+                messagebox.showinfo("Éxito", mensaje, parent=self.ventana)
                 self.limpiar_campos()
                 self.actualizar_tabla()
             else:
-                messagebox.showerror("Error", mensaje)
+                messagebox.showerror("Error", mensaje, parent=self.ventana)
 
     def cargar_datos_seleccionados(self, event):
         
