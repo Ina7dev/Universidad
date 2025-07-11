@@ -2,14 +2,14 @@
     {
         "id": "101",
         "piso": "1",
-        "tipo": "suite",
+        "tipo": "estandar",
         "estado": "disponible",
         "capacidad": 2
     },
     {
         "id": "102",
         "piso": "1",
-        "tipo": "doble",
+        "tipo": "estandar",
         "estado": "ocupado",
         "capacidad": 3
     },
@@ -23,21 +23,21 @@
     {
         "id": "104",
         "piso": "1",
-        "tipo": "suite",
+        "tipo": "estandar",
         "estado": "en_mantenimiento",
         "capacidad": 2
     },
     {
         "id": "201",
         "piso": "2",
-        "tipo": "doble",
+        "tipo": "estandar",
         "estado": "ocupado",
         "capacidad": 3
     },
     {
         "id": "202",
         "piso": "2",
-        "tipo": "suite",
+        "tipo": "estandar",
         "estado": "disponible",
         "capacidad": 4
     },
@@ -51,7 +51,7 @@
     {
         "id": "204",
         "piso": "2",
-        "tipo": "doble",
+        "tipo": "estandar",
         "estado": "disponible",
         "capacidad": 3
     },
@@ -65,7 +65,21 @@
     {
         "id": "302",
         "piso": "3",
-        "tipo": "estandar",
+        "tipo": "suite",
+        "estado": "disponible",
+        "capacidad": 1
+    },
+    {
+        "id": "303",
+        "piso": "3",
+        "tipo": "suite",
+        "estado": "disponible",
+        "capacidad": 1
+    },
+    {
+        "id": "304",
+        "piso": "3",
+        "tipo": "suite",
         "estado": "disponible",
         "capacidad": 1
     }
