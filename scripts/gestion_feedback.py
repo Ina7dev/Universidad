@@ -61,7 +61,7 @@ class ventanaCRUDfeedback:
     def editar_feedback(self):
         seleccionado = self.tree.selection()
         if not seleccionado:
-            messagebox.showwarning("Seleccionar", "Seleccione un feedback para editar/responder.")
+            messagebox.showwarning("Seleccionar", "Seleccione un feedback para editar/responder.", parent=self.ventana)
             return
         fid = seleccionado[0]
         self.ventana_formulario("Responder/Editar Feedback", fid)
@@ -69,10 +69,10 @@ class ventanaCRUDfeedback:
     def eliminar_feedback(self):
         seleccionado = self.tree.selection()
         if not seleccionado:
-            messagebox.showwarning("Seleccionar", "Seleccione un feedback para eliminar.")
+            messagebox.showwarning("Seleccionar", "Seleccione un feedback para eliminar.", parent=self.ventana)
             return
         fid = seleccionado[0]
-        if messagebox.askyesno("Eliminar", "¿Está seguro de eliminar este feedback?"):
+        if messagebox.askyesno("Eliminar", "¿Está seguro de eliminar este feedback?", parent=self.ventana):
             del self.feedback[fid]
             guardar_feedback(self.feedback)
             self.actualizar_tabla()
@@ -80,7 +80,7 @@ class ventanaCRUDfeedback:
     def marcar_resuelto(self):
         seleccionado = self.tree.selection()
         if not seleccionado:
-            messagebox.showwarning("Seleccionar", "Seleccione un feedback para marcar como resuelto.")
+            messagebox.showwarning("Seleccionar", "Seleccione un feedback para marcar como resuelto.", parent=self.ventana)
             return
         fid = seleccionado[0]
         self.feedback[fid]["estado"] = "resuelto"
@@ -139,7 +139,7 @@ class ventanaCRUDfeedback:
                 tipo = tipo_var.get()
                 mensaje = mensaje_text.get("1.0", "end").strip()
                 if not email or not mensaje:
-                    messagebox.showerror("Error", "Email y mensaje son obligatorios.")
+                    messagebox.showerror("Error", "Email y mensaje son obligatorios.", parent=self.ventana)
                     return
                 nuevo_id = f"{email}_{datetime.now().strftime('%Y%m%d%H%M%S')}"
                 self.feedback[nuevo_id] = {
@@ -214,18 +214,18 @@ class ventanaFeedbackCliente:
     def eliminar_feedback(self):
         seleccionado = self.tree.selection()
         if not seleccionado:
-            messagebox.showwarning("Seleccionar", "Seleccione un feedback para eliminar.")
+            messagebox.showwarning("Seleccionar", "Seleccione un feedback para eliminar.", parent=self.ventana)
             return
         fid = seleccionado[0]
         data = self.feedback.get(fid)
         # Validación backend: solo puede eliminar si es suyo y no ha sido respondido
         if data and data.get("email") == self.usuario.get("email") and data.get("estado") == "pendiente" and not data.get("respuesta"):
-            if messagebox.askyesno("Eliminar", "¿Está seguro de eliminar este feedback?"):
+            if messagebox.askyesno("Eliminar", "¿Está seguro de eliminar este feedback?", parent=self.ventana):
                 del self.feedback[fid]
                 guardar_feedback(self.feedback)
                 self.actualizar_tabla()
         else:
-            messagebox.showwarning("No permitido", "Solo puede eliminar feedbacks propios que no han sido respondidos.")
+            messagebox.showwarning("No permitido", "Solo puede eliminar feedbacks propios que no han sido respondidos.", parent=self.ventana)
 
     def ventana_formulario(self, titulo, fid=None):
         ventana = tk.Toplevel(self.ventana)
@@ -261,7 +261,7 @@ class ventanaFeedbackCliente:
         def guardar():
             mensaje = mensaje_text.get("1.0", "end").strip()
             if not mensaje:
-                messagebox.showerror("Error", "El mensaje es obligatorio.")
+                messagebox.showerror("Error", "El mensaje es obligatorio.", parent=self.ventana)
                 return
             nuevo_id = f"{self.usuario.get('email')}_{datetime.now().strftime('%Y%m%d%H%M%S')}"
             self.feedback[nuevo_id] = {
