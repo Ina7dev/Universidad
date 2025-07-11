@@ -72,6 +72,7 @@ class ventanaCRUDroles:
 
 
     def editar(self):
+        from .gestion_usuarios import gestionUsuarios
         seleccion = self.listbox.curselection()
         if seleccion: 
             index = seleccion[0]
@@ -123,5 +124,5 @@ class ventanaCRUDroles:
                 ventana.destroy()
 
         tk.Button(ventana, text="Guardar", command=guardar_nuevo).pack(pady=5)
-        
+
 

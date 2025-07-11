@@ -4,34 +4,69 @@
         "password": "admin123",
         "rol": "admin"
     },
-    "cliente": {
-        "email": "cliente@hotel.com",
-        "password": "cliente456",
+    "lucia@ejemplo.cl": {
+        "email": "lucia@ejemplo.cl",
+        "password": "lucia123",
         "rol": "usuario"
     },
-    "hola@gmail.com": {
-        "email": "hola@gmail.com",
-        "password": "1234",
+    "tomas@ejemplo.cl": {
+        "email": "tomas@ejemplo.cl",
+        "password": "tomas123",
         "rol": "usuario"
     },
-    "ad": {
-        "email": "asd",
-        "password": "a",
-        "rol": "admin"
+    "maria@ejemplo.cl": {
+        "email": "maria@ejemplo.cl",
+        "password": "maria123",
+        "rol": "usuario"
     },
-    "carla ": {
-        "rol": "admin",
-        "email": "carlabelen@gmail.com",
-        "password": "HOLA123"
+    "pedro@ejemplo.cl": {
+        "email": "pedro@ejemplo.cl",
+        "password": "pedro123",
+        "rol": "usuario"
     },
-    "ina": {
-        "rol": "usuario",
-        "email": "ina@gmail.com",
-        "password": "inainaina"
+    "ana@ejemplo.cl": {
+        "email": "ana@ejemplo.cl",
+        "password": "ana123",
+        "rol": "usuario"
+    },
+    "javier@ejemplo.cl": {
+        "email": "javier@ejemplo.cl",
+        "password": "javier123",
+        "rol": "usuario"
+    },
+    "valeria@ejemplo.cl": {
+        "email": "valeria@ejemplo.cl",
+        "password": "valeria123",
+        "rol": "usuario"
+    },
+    "matias@ejemplo.cl": {
+        "email": "matias@ejemplo.cl",
+        "password": "matias123",
+        "rol": "usuario"
+    },
+    "sofia@ejemplo.cl": {
+        "email": "sofia@ejemplo.cl",
+        "password": "sofia123",
+        "rol": "usuario"
+    },
+    "felipe@ejemplo.cl": {
+        "email": "felipe@ejemplo.cl",
+        "password": "felipe123",
+        "rol": "usuario"
     },
     "admin@hotel.com": {
         "password": "admin123",
         "rol": "admin",
         "email": "admin@hotel.com"
+    },
+    "asd": {
+        "password": "a",
+        "rol": "admin",
+        "email": "asd"
+    },
+    "a": {
+        "email": "asd@gmail.com",
+        "password": "123456789",
+        "rol": "recepcionista"
     }
 }

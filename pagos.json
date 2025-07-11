@@ -1,0 +1,14 @@
+{
+  "pagos": [
+    {"id": 1, "reserva_id": "lucia@ejemplo.cl_10-07-2025_101", "monto": 170000, "fecha": "2025-07-10", "metodo": "tarjeta"},
+    {"id": 2, "reserva_id": "tomas@ejemplo.cl_15-07-2025_102", "monto": 165000, "fecha": "2025-07-15", "metodo": "transferencia"},
+    {"id": 3, "reserva_id": "maria@ejemplo.cl_20-07-2025_103", "monto": 90000, "fecha": "2025-07-20", "metodo": "efectivo"},
+    {"id": 4, "reserva_id": "pedro@ejemplo.cl_25-07-2025_104", "monto": 255000, "fecha": "2025-07-25", "metodo": "tarjeta"},
+    {"id": 5, "reserva_id": "ana@ejemplo.cl_30-07-2025_201", "monto": 255000, "fecha": "2025-07-30", "metodo": "tarjeta"},
+    {"id": 6, "reserva_id": "javier@ejemplo.cl_05-08-2025_202", "monto": 340000, "fecha": "2025-08-05", "metodo": "transferencia"},
+    {"id": 7, "reserva_id": "valeria@ejemplo.cl_10-08-2025_203", "monto": 120000, "fecha": "2025-08-10", "metodo": "efectivo"},
+    {"id": 8, "reserva_id": "matias@ejemplo.cl_15-08-2025_204", "monto": 195000, "fecha": "2025-08-15", "metodo": "tarjeta"},
+    {"id": 9, "reserva_id": "sofia@ejemplo.cl_20-08-2025_301", "monto": 340000, "fecha": "2025-08-20", "metodo": "transferencia"},
+    {"id": 10, "reserva_id": "felipe@ejemplo.cl_25-08-2025_302", "monto": 90000, "fecha": "2025-08-25", "metodo": "efectivo"}
+  ]
+}

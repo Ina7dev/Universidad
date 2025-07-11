@@ -1,0 +1,34 @@
+{
+    "INC27062025024148": {
+        "id_habitacion": "104",
+        "tipo_incidencia": "Limpieza",
+        "descripcion": "Problema",
+        "fecha_reporte": "27-06-2025 02:41",
+        "estado": "Pendiente",
+        "notas": ""
+    },
+    "INC10072025181348": {
+        "id_habitacion": "General",
+        "tipo_incidencia": "Eléctrica",
+        "descripcion": "a",
+        "fecha_reporte": "10-07-2025 18:13",
+        "estado": "Pendiente",
+        "notas": ""
+    },
+    "INC10072025185637": {
+        "id_habitacion": "201",
+        "tipo_incidencia": "Eléctrica",
+        "descripcion": "a",
+        "fecha_reporte": "10-07-2025 18:56",
+        "estado": "Pendiente",
+        "notas": ""
+    },
+    "INC10072025185651": {
+        "id_habitacion": "General",
+        "tipo_incidencia": "Fontanería",
+        "descripcion": "a",
+        "fecha_reporte": "10-07-2025 18:56",
+        "estado": "Pendiente",
+        "notas": ""
+    }
+}
