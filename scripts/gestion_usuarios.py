@@ -780,28 +780,10 @@ class ventanaAcceso:
             elif logged_user.get("rol") == "recepcionista":
                 ventanaRecepcionista(self.parent)
             else:
-                menu_usuario = tk.Toplevel()
-                menu_usuario.title("Menú de Usuario")
-                menu_usuario.geometry("350x260")
-                menu_usuario.resizable(False, False)
-                menu_usuario.update_idletasks()
-                x = (menu_usuario.winfo_screenwidth() // 2) - (350 // 2)
-                y = (menu_usuario.winfo_screenheight() // 2) - (260 // 2)
-                menu_usuario.geometry(f"+{x}+{y}")
-                menu_usuario.protocol("WM_DELETE_WINDOW", lambda: [menu_usuario.destroy(), on_child_close()])
-
-                user_frame = ttk.Frame(menu_usuario, width=340, height=250)
-                user_frame.pack(expand=True, fill="both")
-                user_frame.grid_propagate(False)
-
-                for i in range(4):
-                    user_frame.rowconfigure(i, weight=1)
-                for j in range(1):
-                    user_frame.columnconfigure(j, weight=1)
-
-                ttk.Label(user_frame, text="Menú de Usuario", font=("Arial", 15, "bold")).grid(row=0, column=0, pady=10, sticky="nsew")
-                ttk.Button(user_frame, text="Mis Datos", command=lambda: ventanaCliente(logged_user, on_close=self.on_all_closed)).grid(row=1, column=0, pady=8, sticky="nsew")
-                ttk.Button(user_frame, text="Mis Sugerencias y Reclamos", command=lambda: ventanaFeedbackCliente(logged_user)).grid(row=2, column=0, pady=8, sticky="nsew")
-                ttk.Button(user_frame, text="Cerrar Sesión", command=lambda: [menu_usuario.destroy(), on_child_close()]).grid(row=3, column=0, pady=8, sticky="nsew")
+                ventanaCliente(logged_user, on_close=self.on_all_closed)
+                # Botón para feedback de cliente
+                feedback_btn = tk.Button(self.parent, text="Mis Sugerencias y Reclamos", 
+                                         command=lambda: ventanaFeedbackCliente(logged_user))
+                feedback_btn.place(relx=0.5, rely=0.9, anchor="center")
         else:
             messagebox.showinfo("Inicio de sesión inválido", "Usuario o contraseña incorrectos")

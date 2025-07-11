@@ -65,8 +65,8 @@
         "email": "asd"
     },
     "a": {
-        "email": "asd@gmail.com",
-        "password": "123456789",
-        "rol": "recepcionista"
+        "email": "asd2",
+        "password": "a",
+        "rol": "usuario"
     }
 }
