@@ -592,13 +592,20 @@ class GestionEventos(tk.Toplevel):
         entry_contacto.pack()
 
         def guardar():
-            datos = {
-                "id_espacio": combo_espacio.get(),
-                "nombre_evento": entry_nombre.get().strip(),
-                "fecha": entry_fecha.get().strip(),
-                "personas": entry_personas.get().strip(),
-                "contacto": entry_contacto.get().strip()
-            }
+            
+            if not combo_espacio.get().isdigit:
+                messagebox.showwarning("Error", "El id tiene que ser numerico")
+                return
+            else:
+                    
+                datos = {
+                    "id_espacio": combo_espacio.get(),
+                    "nombre_evento": entry_nombre.get().strip(),
+                    "fecha": entry_fecha.get().strip(),
+                    "personas": entry_personas.get().strip(),
+                    "contacto": entry_contacto.get().strip()
+                }
+            
             if not all(datos.values()):
                 messagebox.showwarning("Error", "Todos los campos son obligatorios")
                 return
@@ -759,7 +766,7 @@ class ventanaAcceso:
                 ttk.Button(admin_frame, text="Gestión de Roles", 
                         command=lambda: ventanaCRUDroles()).grid(row=3, column=0, pady=6, sticky="nsew")
                 ttk.Button(admin_frame, text="Gestión de Reservas", 
-                        command=lambda: ventanaCRUDreservas(on_close=on_child_close)).grid(row=4, column=0, pady=6, sticky="nsew")
+                        command=lambda: ventanaCRUDreservas()).grid(row=4, column=0, pady=6, sticky="nsew")
                 ttk.Button(admin_frame, text="Gestión de Habitaciones", 
                         command=lambda: GestionHabitaciones(on_close=on_child_close)).grid(row=5, column=0, pady=6, sticky="nsew")
                 ttk.Button(admin_frame, text="Gestión de Servicios",

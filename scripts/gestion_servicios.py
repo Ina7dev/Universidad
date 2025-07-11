@@ -196,6 +196,7 @@ class ventanaCRUDservicios:
         tk.Label(ventana, text="ID:").pack()
         id_entry = tk.Entry(ventana)
         id_entry.pack()
+            
         if id_servicio:
             id_entry.insert(0, id_servicio)
             id_entry.config(state="disabled")  # No permite modificar el ID al editar
@@ -236,11 +237,13 @@ class ventanaCRUDservicios:
             Si es válido, actualiza el diccionario y el archivo JSON.
             """
             id_val = id_servicio if id_servicio else id_entry.get().strip()
+            id_form = id_entry.get()
             nombre = nombre_entry.get().strip()
             horario = horario_entry.get().strip()
             precio = precio_entry.get().strip()
             personas = personas_entry.get().strip()
             limite = limite_entry.get().strip().capitalize() or "No"
+
 
             if not id_val:
                 return error_response("El ID del servicio es obligatorio.")
