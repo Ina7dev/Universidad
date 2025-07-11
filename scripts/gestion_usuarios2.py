@@ -208,7 +208,7 @@ class ventanaCRUDrecepcionistas:
         contrasena = self.entrada_contrasena.get().strip()
 
         if not re.fullmatch(r"[^@]+@[^@]+\.[^@]+", correo):
-            messagebox.showerror("Error", "Formato de correo electrónico inválido.")
+            messagebox.showerror("Error", "Formato de correo electrónico inválido.", parent=self.ventana)
             return
 
         if not correo or not contrasena:
@@ -218,21 +218,21 @@ class ventanaCRUDrecepcionistas:
         # Si hay un recepcionista seleccionado, se asume que se quiere actualizar, no crear
         # Esto previene la creación accidental si se olvidó limpiar los campos
         if self.correo_original_seleccionado:
-            messagebox.showwarning("Advertencia", "Un recepcionista ya está seleccionado para edición. Limpie los campos si desea crear uno nuevo.")
+            messagebox.showwarning("Advertencia", "Un recepcionista ya está seleccionado para edición. Limpie los campos si desea crear uno nuevo.", parent=self.ventana)
             return
 
         if self.gestor_usuarios.crear_usuario(correo, contrasena, "recepcionista"):
-            messagebox.showinfo("Éxito", "Recepcionista creado exitosamente.")
+            messagebox.showinfo("Éxito", "Recepcionista creado exitosamente.", parent=self.ventana)
             self.limpiar_campos()
             self.cargar_recepcionistas_en_tabla()
         else:
-            messagebox.showerror("Error", "El correo ya está registrado.")
+            messagebox.showerror("Error", "El correo ya está registrado.", parent=self.ventana)
 
     def editar_recepcionista(self):
         # Obtener el recepcionista seleccionado
         seleccion = self.arbol.selection()
         if not seleccion:
-            messagebox.showwarning("Selección requerida", "Por favor, seleccione un recepcionista para editar.")
+            messagebox.showwarning("Selección requerida", "Por favor, seleccione un recepcionista para editar.", parent=self.ventana)
             return
 
         # Obtener los datos actuales de los campos de entrada
@@ -240,18 +240,18 @@ class ventanaCRUDrecepcionistas:
         nueva_contrasena = self.entrada_contrasena.get().strip()
 
         if not re.fullmatch(r"[^@]+@[^@]+\.[^@]+", nuevo_correo):
-            messagebox.showerror("Error", "Formato de correo electrónico inválido para la edición.")
+            messagebox.showerror("Error", "Formato de correo electrónico inválido para la edición.", parent=self.ventana)
             return
 
         if not nuevo_correo or not nueva_contrasena:
-            messagebox.showerror("Error", "Los campos de correo y contraseña son obligatorios para la edición.")
+            messagebox.showerror("Error", "Los campos de correo y contraseña son obligatorios para la edición.", parent=self.ventana)
             return
 
         # Usar la referencia al correo original que se guardó al seleccionar
         correo_a_editar = self.correo_original_seleccionado
 
         if not correo_a_editar: # Debería estar establecido por cargar_datos_seleccionados
-             messagebox.showerror("Error interno", "No se pudo determinar el recepcionista original a editar.")
+             messagebox.showerror("Error interno", "No se pudo determinar el recepcionista original a editar.", parent=self.ventana)
              return
 
         # Intentar actualizar el usuario
@@ -262,13 +262,13 @@ class ventanaCRUDrecepcionistas:
             self.cargar_recepcionistas_en_tabla()
         else:
             # Aquí, la falla podría ser porque el nuevo correo ya existe (si se cambió)
-            messagebox.showerror("Error de edición", "No se pudo editar el recepcionista. El nuevo correo ya podría estar en uso.")
+            messagebox.showerror("Error de edición", "No se pudo editar el recepcionista. El nuevo correo ya podría estar en uso.", parent=self.ventana)
 
 
     def eliminar_recepcionista(self):
         seleccion = self.arbol.selection()
         if not seleccion:
-            messagebox.showwarning("Selección requerida", "Por favor, seleccione un recepcionista para eliminar.")
+            messagebox.showwarning("Selección requerida", "Por favor, seleccione un recepcionista para eliminar.", parent=self.ventana)
             return
 
         # Obtener el correo del recepcionista seleccionado
@@ -276,11 +276,11 @@ class ventanaCRUDrecepcionistas:
 
         if messagebox.askyesno("Confirmar Eliminación", f"¿Está seguro de que desea eliminar al recepcionista '{correo_a_eliminar}'?"):
             if self.gestor_usuarios.eliminar_usuario(correo_a_eliminar):
-                messagebox.showinfo("Éxito", "Recepcionista eliminado exitosamente.")
+                messagebox.showinfo("Éxito", "Recepcionista eliminado exitosamente.", parent=self.ventana)
                 self.limpiar_campos()
                 self.cargar_recepcionistas_en_tabla()
             else:
-                messagebox.showerror("Error", "No se pudo eliminar el recepcionista.")
+                messagebox.showerror("Error", "No se pudo eliminar el recepcionista.", parent=self.ventana)
 
     def cargar_datos_seleccionados(self, event):
         """

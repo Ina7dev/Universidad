@@ -61,9 +61,9 @@ class ventanaRegistro:
         self.user_manager = user_manager
         self.window = tk.Toplevel()
 
-        self.ventana.transient()
-        self.ventana.grab_set()
-        self.ventana.focus_set()
+        self.window.transient()
+        self.window.grab_set()
+        self.window.focus_set()
 
         self.window.title("Registrarse")
         self.window.geometry("350x300")
