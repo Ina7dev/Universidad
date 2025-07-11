@@ -7,8 +7,8 @@ from datetime import datetime, timedelta
 ARCHIVO_HABITACIONES = "habitaciones.json"
 ARCHIVO_RESERVAS = "reservas.json"
 
-def error_response(msg):
-    messagebox.showwarning("Error", msg)
+def error_response(msg, parent=None):
+    messagebox.showwarning("Error", msg, parent=parent)
 
 def cargar_habitaciones():
     if not os.path.exists(ARCHIVO_HABITACIONES):
@@ -210,12 +210,12 @@ class GestionHabitaciones(tk.Toplevel):
             capacidad = entry_capacidad.get().strip()
 
             if not id_hab or not piso or not tipo or not capacidad:
-                return error_response("Todos los campos son obligatorios.")
+                return error_response("Todos los campos son obligatorios.", parent=self)
             if not capacidad.isdigit() or int(capacidad) <= 0 or int(capacidad) > 10:
-                return error_response("La capacidad debe ser un número entero positivo (máximo 10).")
+                return error_response("La capacidad debe ser un número entero positivo (máximo 10).", parent=self)
             habitaciones = cargar_habitaciones()
             if any(h["id"] == id_hab for h in habitaciones):
-                return error_response("Ya existe una habitación con ese ID.")
+                return error_response("Ya existe una habitación con ese ID.", parent=self)
             nueva_habitacion = {
                 "id": id_hab,
                 "piso": piso,
@@ -233,11 +233,11 @@ class GestionHabitaciones(tk.Toplevel):
     def eliminar_habitacion(self):
         seleccion = self.tree.selection()
         if not seleccion:
-            error_response("Seleccione una habitación para eliminar.")
+            error_response("Seleccione una habitación para eliminar.", parent=self)
             return
         id_hab = self.tree.item(seleccion[0], "values")[0]
         if estado_actual_habitacion(id_hab) == "ocupado":
-            error_response("No se puede eliminar una habitación con reservas activas.")
+            error_response("No se puede eliminar una habitación con reservas activas.", parent=self)
             return
         habitaciones = cargar_habitaciones()
         habitaciones = [h for h in habitaciones if h.get("id") != id_hab]
@@ -247,7 +247,7 @@ class GestionHabitaciones(tk.Toplevel):
     def ver_historial_habitacion(self):
         seleccion = self.tree.selection()
         if not seleccion:
-            error_response("Seleccione una habitación.")
+            error_response("Seleccione una habitación.", parent=self)
             return
         id_hab = self.tree.item(seleccion[0], "values")[0]
         historial = historial_reservas_habitacion(id_hab)
@@ -335,11 +335,11 @@ class GestionHabitaciones(tk.Toplevel):
         id_hab = self.hab_var.get()
         personas = self.personas_entry.get().strip()
         if not cliente or not entrada or not salida or not tipo or not piso or not id_hab or not personas:
-            return error_response("Todos los campos son obligatorios.")
+            return error_response("Todos los campos son obligatorios.", parent=self)
         if not validar_fechas(entrada, salida):
-            return error_response("Fechas inválidas.")
+            return error_response("Fechas inválidas.", parent=self)
         if not personas.isdigit() or int(personas) <= 0:
-            return error_response("Personas debe ser un número positivo.")
+            return error_response("Personas debe ser un número positivo.", parent=self)
         datos_reserva = {
             "cliente_id": cliente,
             "entrada": entrada,
@@ -350,7 +350,7 @@ class GestionHabitaciones(tk.Toplevel):
         }
         ok, msg = reservar_habitacion(id_hab, datos_reserva)
         if ok:
-            messagebox.showinfo("Éxito", "Reserva agregada correctamente.")
+            messagebox.showinfo("Éxito", "Reserva agregada correctamente.", parent=self)
             self.actualizar_tabla_reservas()
             self._actualizar_habs_disponibles()
         else:
@@ -359,15 +359,15 @@ class GestionHabitaciones(tk.Toplevel):
     def eliminar_reserva(self):
         seleccion = self.tree_res.selection()
         if not seleccion:
-            error_response("Seleccione una reserva para cancelar.")
+            error_response("Seleccione una reserva para cancelar.", parent=self)
             return
         id_reserva = self.tree_res.item(seleccion[0], "values")[0]
         if cancelar_reserva(id_reserva):
-            messagebox.showinfo("Éxito", "Reserva cancelada.")
+            messagebox.showinfo("Éxito", "Reserva cancelada.", parent=self)
             self.actualizar_tabla_reservas()
             self._actualizar_habs_disponibles()
         else:
-            error_response("No se pudo cancelar la reserva.")
+            error_response("No se pudo cancelar la reserva.", parent=self)
 
     def actualizar_tabla_reservas(self):
         self.tree_res.delete(*self.tree_res.get_children())
