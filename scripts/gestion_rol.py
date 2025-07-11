@@ -59,7 +59,7 @@ class ventanaCRUDroles:
             index = seleccion[0]
             rol_a_eliminar = self.lista_roles[index]
             if rol_a_eliminar == "admin":
-                messagebox.showinfo("Atencion", "El rol a eliminar tiene permisos especiales")
+                messagebox.showinfo("Atencion", "El rol a eliminar tiene permisos especiales", parent=self.ventana)
             usuarios = gestion.cargar()
             for usuario , datos in usuarios.items():
                 if datos["rol"] == rol_a_eliminar:

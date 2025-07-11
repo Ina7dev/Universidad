@@ -140,33 +140,33 @@ class ventanaCRUDreservas:
 
     def validar_formulario(self):
         if not self.cliente_var.get():
-            messagebox.showwarning("Error", "Selecciona un cliente")
+            messagebox.showwarning("Error", "Selecciona un cliente", parent=self.ventana)
             return False
         if self.piso_var.get() not in ["1", "2", "3"]:
-            messagebox.showwarning("Error", "Selecciona un piso válido")
+            messagebox.showwarning("Error", "Selecciona un piso válido", parent=self.ventana)
             return False
         if self.tipo_var.get() not in ["Estándar", "Suite"]:
-            messagebox.showwarning("Error", "Selecciona un tipo de habitación válido")
+            messagebox.showwarning("Error", "Selecciona un tipo de habitación válido", parent=self.ventana)
             return False
         personas = self.personas_var.get()
         if self.tipo_var.get() == "Estándar" and (personas < 1 or personas > 2):
-            messagebox.showwarning("Error", "Estándar admite máximo 2 personas")
+            messagebox.showwarning("Error", "Estándar admite máximo 2 personas", parent=self.ventana)
             return False
         if self.tipo_var.get() == "Suite" and (personas < 1 or personas > 4):
-            messagebox.showwarning("Error", "Suite admite máximo 4 personas")
+            messagebox.showwarning("Error", "Suite admite máximo 4 personas", parent=self.ventana)
             return False
         try:
             fecha_entrada = datetime.strptime(self.entrada_entry.get(), "%d-%m-%Y")
         except ValueError:
-            messagebox.showwarning("Error", "Formato de fecha inválido (DD-MM-YYYY)")
+            messagebox.showwarning("Error", "Formato de fecha inválido (DD-MM-YYYY)", parent=self.ventana)
             return False
         hoy = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
         if fecha_entrada < hoy:
-            messagebox.showwarning("Error", "La fecha de entrada no puede ser anterior a hoy")
+            messagebox.showwarning("Error", "La fecha de entrada no puede ser anterior a hoy", parent=self.ventana)
             return False
         noches = self.noches_var.get()
         if noches < 1:
-            messagebox.showwarning("Error", "La cantidad de noches debe ser al menos 1")
+            messagebox.showwarning("Error", "La cantidad de noches debe ser al menos 1", parent=self.ventana)
             return False
         return True
 
@@ -209,10 +209,10 @@ class ventanaCRUDreservas:
         salida = salida_dt.strftime("%d-%m-%Y")
         habitacion = self.generar_habitacion(piso, tipo)
         if habitacion is None:
-            messagebox.showerror("Error", "No hay habitaciones libres para ese piso y tipo")
+            messagebox.showerror("Error", "No hay habitaciones libres para ese piso y tipo", parent=self.ventana)
             return
         if self.validar_conflicto_reserva(habitacion, entrada, salida):
-            messagebox.showwarning("Conflicto", "Ya hay una reserva en esa habitación en esas fechas")
+            messagebox.showwarning("Conflicto", "Ya hay una reserva en esa habitación en esas fechas", parent=self.ventana)
             return
         clave = f"{cliente}_{entrada}_{habitacion}"
         reserva = {
@@ -234,7 +234,7 @@ class ventanaCRUDreservas:
     def editar_reserva(self):
         seleccion = self.tree.selection()
         if not seleccion:
-            messagebox.showwarning("Error", "Selecciona una reserva para editar")
+            messagebox.showwarning("Error", "Selecciona una reserva para editar", parent=self.ventana)
             return
         clave = seleccion[0]
         if not self.validar_formulario():
@@ -248,13 +248,13 @@ class ventanaCRUDreservas:
         try:
             entrada_dt = datetime.strptime(entrada, "%d-%m-%Y")
         except ValueError:
-            messagebox.showwarning("Error", "Formato de fecha de entrada inválido (DD-MM-YYYY).")
+            messagebox.showwarning("Error", "Formato de fecha de entrada inválido (DD-MM-YYYY).", parent=self.ventana)
             return
         salida_dt = entrada_dt + timedelta(days=noches)
         salida = salida_dt.strftime("%d-%m-%Y")
         habitacion = self.reservas[clave]["habitacion"]
         if self.validar_conflicto_reserva(habitacion, entrada, salida, clave_actual=clave):
-            messagebox.showwarning("Conflicto", "Ya hay una reserva en esa habitación en esas fechas")
+            messagebox.showwarning("Conflicto", "Ya hay una reserva en esa habitación en esas fechas", parent=self.ventana)
             return
         reserva = {
             "cliente_id": cliente,
@@ -275,10 +275,10 @@ class ventanaCRUDreservas:
     def eliminar_reserva(self):
         seleccion = self.tree.selection()
         if not seleccion:
-            messagebox.showwarning("Error", "Selecciona una reserva para eliminar")
+            messagebox.showwarning("Error", "Selecciona una reserva para eliminar", parent=self.ventana)
             return
         clave = seleccion[0]
-        if messagebox.askyesno("Confirmar", "¿Eliminar la reserva seleccionada?"):
+        if messagebox.askyesno("Confirmar", "¿Eliminar la reserva seleccionada?", parent=self.ventana):
             self.reservas.pop(clave, None)
             guardar_reservas(self.reservas)
             self.actualizar_tabla()

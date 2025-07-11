@@ -24,59 +24,54 @@ def guardar_servicios(data):
     with open(ARCHIVO_SERVICIOS, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=4, ensure_ascii=False)
 
-def error_response(msg):
-    """
-    Muestra un mensaje de error al usuario.
-    """
-    messagebox.showwarning("Error", msg)
+def error_response(msg, parent=None):
+    messagebox.showwarning("Error", msg, parent=parent)
 
-def validar_precio(precio):
-    """
-    Valida que el precio ingresado sea un número entero positivo y esté dentro de un rango razonable.
-    """
+def validar_precio(precio, parent=None):
     if not precio.isdigit():
-        error_response("El precio debe ser un número entero.")
+        error_response("El precio debe ser un número entero.", parent=parent)
         return False
     precio_val = int(precio)
     if precio_val < 0:
-        error_response("El precio no puede ser negativo.")
+        error_response("El precio no puede ser negativo.", parent=parent)
         return False
     if precio_val > 99999:
-        error_response("El precio no puede superar 99.999.")
+        error_response("El precio no puede superar 99.999.", parent=parent)
         return False
     return True
 
-def validar_personas(personas):
+
+def validar_personas(personas, parent=None):
     """
     Valida que la cantidad de personas ingresada sea un número entero positivo y esté dentro de un rango razonable.
     """
     if not personas.isdigit():
-        error_response("La cantidad de personas debe ser un número entero.")
+        error_response("La cantidad de personas debe ser un número entero.", parent=parent)
         return False
     cantidad = int(personas)
     if cantidad < 0:
-        error_response("La cantidad no puede ser negativa.")
+        error_response("La cantidad no puede ser negativa.", parent=parent)
         return False
     if cantidad > 1000000:
-        error_response("La cantidad es excesivamente alta.")
+        error_response("La cantidad es excesivamente alta.", parent=parent)
         return False
     return True
 
-def validar_horario(horario):
+def validar_horario(horario, parent=None):
     """
     Valida que el horario esté en formato HH:MM-HH:MM, 24 horas, minutos 0-59, horas 0-23, y rango válido.
     """
     if not isinstance(horario, str):
-        error_response("El horario debe ser texto.")
+        error_response("El horario debe ser texto.", parent=parent)
         return False
     patron = r"^([01]?\d|2[0-3]):([0-5]\d)-([01]?\d|2[0-3]):([0-5]\d)$"
     match = re.match(patron, horario)
     if not match:
-        error_response("El horario debe tener formato HH:MM-HH:MM (24h). Ejemplo: 09:00-18:30")
+        error_response("El horario debe tener formato HH:MM-HH:MM (24h). Ejemplo: 09:00-18:30", parent=parent)
         return False
     h1, m1, h2, m2 = map(int, match.groups())
     if (h1, m1) >= (h2, m2):
-        error_response("La hora de inicio debe ser menor que la de fin.")
+        error_response("La hora de inicio debe ser menor que la de fin.", parent=parent)
         return False
     return True
 
@@ -184,7 +179,7 @@ class ventanaCRUDservicios:
                     guardar_servicios(self.servicios)
                     self.actualizar_tabla()
                 else:
-                    error_response(f"No se encontró el servicio con ID '{id_serv_str}'.")
+                    error_response(f"No se encontró el servicio con ID '{id_serv_str}'.", parent=self.ventana)
 
     def ventana_formulario(self, titulo, id_servicio=None):
         """
@@ -251,13 +246,13 @@ class ventanaCRUDservicios:
 
 
             if not id_val:
-                return error_response("El ID del servicio es obligatorio.")
+                return error_response("El ID del servicio es obligatorio.", parent=self.ventana)
             if not id_val.isdigit():
-                return error_response("El ID debe ser un número entero.")
+                return error_response("El ID debe ser un número entero.", parent=self.ventana)
             if not nombre:
-                return error_response("El nombre del servicio es obligatorio.")
+                return error_response("El nombre del servicio es obligatorio.", parent=self.ventana)
             if not horario:
-                return error_response("El horario es obligatorio.")
+                return error_response("El horario es obligatorio.", parent=self.ventana)
             if not validar_horario(horario):
                 return
             if not validar_precio(precio):
@@ -265,7 +260,7 @@ class ventanaCRUDservicios:
             if not validar_personas(personas):
                 return
             if limite not in ["Sí", "No", "Si", "No"]:
-                return error_response("El campo límite debe ser 'Sí' o 'No'.")
+                return error_response("El campo límite debe ser 'Sí' o 'No'.", parent=self.ventana)
 
             nuevo = {
                 "nombre": nombre,

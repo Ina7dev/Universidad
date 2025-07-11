@@ -68,12 +68,5 @@
         "precio": "6000",
         "personas": "8",
         "limite": "Sí"
-    },
-    "11": {
-        "nombre": "a",
-        "horario": "10:12-10:20",
-        "precio": "12",
-        "personas": "1",
-        "limite": "Sí"
     }
 }
