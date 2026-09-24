@@ -1,0 +1,203 @@
+/* HEADER*/
+
+.header{
+    background-color: #6FA1D3;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.menu-container {
+    display: flex;
+    align-items: center;
+    padding: 20px 20px 20px 20px;
+    justify-content: center;
+}
+.menu-logo{
+    width: 6rem;
+    height: 6rem;
+    padding-left: 10px;
+}
+
+.titulo-logo {
+    width: 14rem;
+    height: 5rem;
+    margin-top: 2rem;
+    padding-right: 10px;
+}
+
+/* CUERPO DE PAGINA*/
+body {
+    background-color: #C6D4EA;
+    margin: 0px;
+
+}
+
+
+
+.container-general{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+}
+
+.container-qs {
+    position: flex;
+    margin-left: 5%;
+    margin-top: 5%;
+    display: inline-block;
+    background-color: white;
+    width: 500px;
+    height: 500px;
+    margin-right: 5%;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.container-qs h1 {
+    font-size: 2.5rem;
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+    text-align: center;
+    margin-top: 6rem;
+}
+
+.container-qs p {
+    font-size: 1.2rem;
+    text-align: justify;
+    font-family: 'Poppins', sans-serif;
+    margin-left: 8%;
+    margin-right: 8%;
+    line-height: 200%;
+    
+}
+
+
+.container-login {
+    position: flex;
+    margin-right: 5%;
+    margin-left: 5%;
+    margin-top: 5%;
+    display: inline-block;
+    background-color: white;
+    vertical-align: top;
+    width: 500px;
+    height: 500px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+}
+
+.container-login h2{
+    font-size: 2.5rem;
+    text-align: center;
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+    margin-top: 4rem;
+}
+
+
+.container-login label {
+    font-size: 1.2rem;
+    text-align: justify;
+    display: flex;
+    align-items: center;
+    font-family: 'Poppins', sans-serif;
+    
+}
+
+.container-login form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Poppins', sans-serif;
+}
+input {
+    width: 60%;
+    height: 25px;
+    margin-bottom: 30px;
+    
+}
+
+form .boton-1{
+    background: #6FA1D3;
+    height: 40px;
+    width: 180px;
+    font-size: 18px;
+    font-family: "Inter", sans-serif;
+    border-color: black;
+    border-radius: 10px;
+}
+
+.boton-1 {
+    color: white;
+}
+
+
+/* FOOTER CHAVAAL */
+
+#footer {
+    margin: 0;
+    background-color: #6FA1D3;
+    list-style: none;
+}
+.texto_footer {
+    margin-left: 1rem;
+    text-align: justify;
+    padding: 60px 0px 0px 60px;
+    margin: 0;
+}
+
+#texto_terminos {
+    margin-right: 1rem;
+    padding: 20px;
+}
+
+.lista_contactos {
+    margin: 0;
+    padding: 0px 0px 10px 60px;
+}
+
+.texto_terminos{
+    margin: 0;
+    padding: 20px 0px 0px 60px;
+}
+
+footer h3{
+    margin: 0;
+    padding: 20px 0px 20px 60px;
+}
+
+
+
+
+/* Lineas */
+ #hr1{
+    background: #ffff;
+    height: 2px;
+    border: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+hr{
+    background: #ffff;
+    height: 2px;
+    border: 0;
+    width: 100%;
+    margin-top: 8rem;
+    margin-bottom: 0;
+}
+footer hr {
+    background: #ffff;
+    height: 2px;
+    border: 0;
+    width: 100%;
+    margin-top: 2rem;
+    margin-bottom: 0;
+}
