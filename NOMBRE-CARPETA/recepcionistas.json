@@ -1,0 +1,42 @@
+{
+    "1": {
+        "nombre": "Valeria Pinto",
+        "email": "valeria@hotel.cl"
+    },
+    "2": {
+        "nombre": "Matías Paredes",
+        "email": "matias@hotel.cl"
+    },
+    "3": {
+        "nombre": "Camila Ruiz",
+        "email": "camila@hotel.cl"
+    },
+    "4": {
+        "nombre": "Ignacio Silva",
+        "email": "ignacio@hotel.cl"
+    },
+    "5": {
+        "nombre": "Fernanda Díaz",
+        "email": "fernanda@hotel.cl"
+    },
+    "6": {
+        "nombre": "Cristóbal Rojas",
+        "email": "cristobal@hotel.cl"
+    },
+    "7": {
+        "nombre": "Daniela Fuentes",
+        "email": "daniela@hotel.cl"
+    },
+    "8": {
+        "nombre": "Jorge Morales",
+        "email": "jorge@hotel.cl"
+    },
+    "9": {
+        "nombre": "Paula Reyes",
+        "email": "paula@hotel.cl"
+    },
+    "10": {
+        "nombre": "Sebastián Vega",
+        "email": "sebastian@hotel.cl"
+    }
+}
