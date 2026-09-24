@@ -1,0 +1,68 @@
+[
+    {
+        "N° habitación": "1",
+        "Nombre": "Fernando",
+        "Correo": "briofer1423@gmail.com",
+        "Teléfono": "+56938813402"
+    },
+    {
+        "N° habitación": "101",
+        "Nombre": "Lucía Hernández",
+        "Correo": "lucia@ejemplo.cl",
+        "Teléfono": "+56911111111"
+    },
+    {
+        "N° habitación": "102",
+        "Nombre": "Tomás Vidal",
+        "Correo": "tomas@ejemplo.cl",
+        "Teléfono": "+56922222222"
+    },
+    {
+        "N° habitación": "103",
+        "Nombre": "María López",
+        "Correo": "maria@ejemplo.cl",
+        "Teléfono": "+56933333333"
+    },
+    {
+        "N° habitación": "104",
+        "Nombre": "Pedro González",
+        "Correo": "pedro@ejemplo.cl",
+        "Teléfono": "+56944444444"
+    },
+    {
+        "N° habitación": "105",
+        "Nombre": "Ana Torres",
+        "Correo": "ana@ejemplo.cl",
+        "Teléfono": "+56955555555"
+    },
+    {
+        "N° habitación": "201",
+        "Nombre": "Javier Soto",
+        "Correo": "javier@ejemplo.cl",
+        "Teléfono": "+56966666666"
+    },
+    {
+        "N° habitación": "202",
+        "Nombre": "Valeria Pinto",
+        "Correo": "valeria@ejemplo.cl",
+        "Teléfono": "+56977777777"
+    },
+    {
+        "N° habitación": "203",
+        "Nombre": "Matías Paredes",
+        "Correo": "matias@ejemplo.cl",
+        "Teléfono": "+56988888888"
+    },
+    {
+        "N° habitación": "204",
+        "Nombre": "Sofía Rivas",
+        "Correo": "sofia@ejemplo.cl",
+        "Teléfono": "+56999999999"
+    },
+    {
+        "N° habitación": "205",
+        "Nombre": "Felipe Castro",
+        "Correo": "felipe@ejemplo.cl",
+        "Teléfono": "+56910101010"
+    }
+]
