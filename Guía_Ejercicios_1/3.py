@@ -2,20 +2,18 @@ from math import cos, pi, factorial
 
 x = 0.3 * pi
 cifras = 8
-valor_verdadero = cos(x)  # valor verdadero de cos(0.3π)
+valor_verdadero = cos(x)
 
-# Criterio de Scarborough q garantiza 'cifras' cifras significativas
-error_tolerado = 0.5 * 10 ** (2 - cifras)  # en porcentaje
+# error tolerado para 8 cifras significativas, en porcentaje
+error_tolerado = 0.5 * 10 ** (2 - cifras)
 
-print(f"x = {x}")
-print(f"Valor verdadero cos(x): {valor_verdadero}")
-print(f"Error tolerado (es): {error_tolerado} %\n")
-print(f"{'Términos':>8} {'Aproximación':>18} {'Error verdadero %':>18} {'Error aprox %':>15}")
+print(f"Valor verdadero: {valor_verdadero}")
+print(f"Error tolerado: {error_tolerado}")
 
 suma = 0.0
 anterior = 0.0
 i = 0
-error_aprox = 100  # valor inicial grande para que entre al while
+error_aprox = 100  # parte en 100 para que entre al while
 
 while error_aprox >= error_tolerado:
     termino = ((-1) ** i) * (x ** (2 * i)) / factorial(2 * i)
@@ -24,13 +22,13 @@ while error_aprox >= error_tolerado:
     error_verdadero = abs((valor_verdadero - suma) / valor_verdadero) * 100
 
     if i == 0:
-        print(f"{i + 1:>8} {suma:>18.12f} {error_verdadero:>18.4e} {'---':>15}")
+        print(f"Termino {i + 1}: {suma}  Error verdadero: {error_verdadero}")
     else:
         error_aprox = abs((suma - anterior) / suma) * 100
-        print(f"{i + 1:>8} {suma:>18.12f} {error_verdadero:>18.4e} {error_aprox:>15.4e}")
+        print(f"Termino {i + 1}: {suma}  Error verdadero: {error_verdadero}  Error aproximado: {error_aprox}")
 
     anterior = suma
     i += 1
 
-print(f"\nSe necesitaron {i} términos")
-print(f"cos({x}) ≈ {suma}")
+print(f"Se necesitaron {i} terminos")
+print(f"Resultado: {suma}")

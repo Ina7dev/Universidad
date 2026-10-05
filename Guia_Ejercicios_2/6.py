@@ -1,104 +1,66 @@
-from math import log, exp
+from math import exp
 import numpy as np
 import matplotlib.pyplot as plt
 
 
-def biseccion(f, xl, xu, es=None, iteraciones=None, valor_verdadero=None):
-    """Método de bisección. Se detiene por número de iteraciones o cuando ea < es."""
-    print(f"{'It':>3} {'xl':>10} {'xu':>10} {'xr':>10} {'f(xr)':>11} {'ea %':>9} {'et %':>9}")
-    xr_anterior = None
-    n = 0
-    while True:
-        n += 1
-        xr = (xl + xu) / 2
-
-        if xr_anterior is None:
-            ea = None
-        else:
-            ea = abs((xr - xr_anterior) / xr) * 100
-
-        et = abs((valor_verdadero - xr) / valor_verdadero) * 100 if valor_verdadero else None
-
-        texto_ea = f"{ea:>9.4f}" if ea is not None else f"{'---':>9}"
-        texto_et = f"{et:>9.4f}" if et is not None else f"{'---':>9}"
-        print(f"{n:>3} {xl:>10.6f} {xu:>10.6f} {xr:>10.6f} {f(xr):>11.6f} {texto_ea} {texto_et}")
-
-        # se elige el subintervalo donde cambia el signo
-        if f(xl) * f(xr) < 0:
-            xu = xr
-        elif f(xl) * f(xr) > 0:
-            xl = xr
-        else:
-            break  # f(xr) = 0, raíz exacta
-
-        xr_anterior = xr
-        if iteraciones is not None and n >= iteraciones:
-            break
-        if es is not None and ea is not None and ea < es:
-            break
-    return xr
+def f(x):
+    return np.log(x**2) - 0.7
 
 
-def falsa_posicion(f, xl, xu, es=None, iteraciones=None, valor_verdadero=None):
-    """Método de la falsa posición. Igual que bisección pero xr sale de la recta entre (xl, f(xl)) y (xu, f(xu))."""
-    print(f"{'It':>3} {'xl':>10} {'xu':>10} {'xr':>10} {'f(xr)':>11} {'ea %':>9} {'et %':>9}")
-    xr_anterior = None
-    n = 0
-    while True:
-        n += 1
-        xr = xu - f(xu) * (xl - xu) / (f(xl) - f(xu))
+# a) grafico
+x = np.linspace(0.2, 3, 200)
+plt.plot(x, f(x))
+plt.axhline(0, color="black")  # eje x
+plt.title("f(x) = ln(x²) - 0.7")
+plt.xlabel("x")
+plt.ylabel("f(x)")
+plt.grid(True)
+plt.show()
 
-        if xr_anterior is None:
-            ea = None
-        else:
-            ea = abs((xr - xr_anterior) / xr) * 100
+# despejando queda x = e^0.35
+valor_verdadero = exp(0.35)
+print(f"Valor verdadero: {valor_verdadero}")
 
-        et = abs((valor_verdadero - xr) / valor_verdadero) * 100 if valor_verdadero else None
+# b) biseccion con 3 iteraciones
+print("Biseccion")
+xl = 0.5
+xu = 2
+xr_anterior = 0
+for i in range(3):
+    xr = (xl + xu) / 2
+    error_verdadero = abs((valor_verdadero - xr) / valor_verdadero) * 100
 
-        texto_ea = f"{ea:>9.4f}" if ea is not None else f"{'---':>9}"
-        texto_et = f"{et:>9.4f}" if et is not None else f"{'---':>9}"
-        print(f"{n:>3} {xl:>10.6f} {xu:>10.6f} {xr:>10.6f} {f(xr):>11.6f} {texto_ea} {texto_et}")
+    if i == 0:
+        print(f"Iteracion {i + 1}: xl = {xl}  xu = {xu}  xr = {xr}  Error verdadero: {error_verdadero}")
+    else:
+        error_aprox = abs((xr - xr_anterior) / xr) * 100
+        print(f"Iteracion {i + 1}: xl = {xl}  xu = {xu}  xr = {xr}  Error aproximado: {error_aprox}  Error verdadero: {error_verdadero}")
 
-        if f(xl) * f(xr) < 0:
-            xu = xr
-        elif f(xl) * f(xr) > 0:
-            xl = xr
-        else:
-            break
+    # se revisa en que lado queda la raiz
+    if f(xl) * f(xr) < 0:
+        xu = xr
+    else:
+        xl = xr
+    xr_anterior = xr
 
-        xr_anterior = xr
-        if iteraciones is not None and n >= iteraciones:
-            break
-        if es is not None and ea is not None and ea < es:
-            break
-    return xr
+# c) falsa posicion con 3 iteraciones
+print("\nFalsa posicion")
+xl = 0.5
+xu = 2
+xr_anterior = 0
+for i in range(3):
+    xr = xu - f(xu) * (xl - xu) / (f(xl) - f(xu))
+    error_verdadero = abs((valor_verdadero - xr) / valor_verdadero) * 100
 
+    if i == 0:
+        print(f"Iteracion {i + 1}: xl = {xl}  xu = {xu}  xr = {xr}  Error verdadero: {error_verdadero}")
+    else:
+        error_aprox = abs((xr - xr_anterior) / xr) * 100
+        print(f"Iteracion {i + 1}: xl = {xl}  xu = {xu}  xr = {xr}  Error aproximado: {error_aprox}  Error verdadero: {error_verdadero}")
 
-def graficar(f, a, b, titulo, archivo):
-    x = np.linspace(a, b, 1000)
-    y = [f(valor) for valor in x]
-    plt.figure(figsize=(7, 4))
-    plt.plot(x, y, label="f(x)")
-    plt.axhline(0, color="black", linewidth=0.8)  # eje x, donde están las raíces
-    plt.title(titulo)
-    plt.xlabel("x")
-    plt.ylabel("f(x)")
-    plt.grid(True)
-    plt.legend()
-    plt.savefig(archivo, dpi=120, bbox_inches="tight")
-    plt.show()
-
-
-# EJERCICIO 6
-f6 = lambda x: log(x**2) - 0.7
-
-graficar(f6, 0.2, 3, "Ejercicio 6: f(x) = ln(x²) - 0.7", "ej6.png")
-
-raiz6 = exp(0.7 / 2)  # ln(x²) = 0.7 -> x = e^0.35
-print(f"Valor verdadero x = e^0.35 = {raiz6:.6f}")
-
-print("b) Bisección [0.5, 2], 3 iteraciones")
-biseccion(f6, 0.5, 2, iteraciones=3, valor_verdadero=raiz6)
-
-print("c) Falsa posición [0.5, 2], 3 iteraciones")
-falsa_posicion(f6, 0.5, 2, iteraciones=3, valor_verdadero=raiz6)
+    # se revisa en que lado queda la raiz
+    if f(xl) * f(xr) < 0:
+        xu = xr
+    else:
+        xl = xr
+    xr_anterior = xr
