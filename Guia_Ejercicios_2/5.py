@@ -1,68 +1,50 @@
-from math import sin
 import numpy as np
 import matplotlib.pyplot as plt
 
 
-def biseccion(f, xl, xu, es=None, iteraciones=None, valor_verdadero=None):
-    """Método de bisección. Se detiene por número de iteraciones o cuando ea < es."""
-    print(f"{'It':>3} {'xl':>10} {'xu':>10} {'xr':>10} {'f(xr)':>11} {'ea %':>9} {'et %':>9}")
-    xr_anterior = None
-    n = 0
-    while True:
-        n += 1
-        xr = (xl + xu) / 2
-
-        if xr_anterior is None:
-            ea = None
-        else:
-            ea = abs((xr - xr_anterior) / xr) * 100
-
-        et = abs((valor_verdadero - xr) / valor_verdadero) * 100 if valor_verdadero else None
-
-        texto_ea = f"{ea:>9.4f}" if ea is not None else f"{'---':>9}"
-        texto_et = f"{et:>9.4f}" if et is not None else f"{'---':>9}"
-        print(f"{n:>3} {xl:>10.6f} {xu:>10.6f} {xr:>10.6f} {f(xr):>11.6f} {texto_ea} {texto_et}")
-
-        # se elige el subintervalo donde cambia el signo
-        if f(xl) * f(xr) < 0:
-            xu = xr
-        elif f(xl) * f(xr) > 0:
-            xl = xr
-        else:
-            break  # f(xr) = 0, raíz exacta
-
-        xr_anterior = xr
-        if iteraciones is not None and n >= iteraciones:
-            break
-        if es is not None and ea is not None and ea < es:
-            break
-    return xr
+# sen(x) = x^2 se pasa todo a un lado y queda sen(x) - x^2 = 0
+def f(x):
+    return np.sin(x) - x**2
 
 
-def graficar(f, a, b, titulo, archivo):
-    x = np.linspace(a, b, 1000)
-    y = [f(valor) for valor in x]
-    plt.figure(figsize=(7, 4))
-    plt.plot(x, y, label="f(x)")
-    plt.axhline(0, color="black", linewidth=0.8)  # eje x, donde están las raíces
-    plt.title(titulo)
-    plt.xlabel("x")
-    plt.ylabel("f(x)")
-    plt.grid(True)
-    plt.legend()
-    plt.savefig(archivo, dpi=120, bbox_inches="tight")
-    plt.show()
+# grafico
+x = np.linspace(-0.5, 1.5, 200)
+plt.plot(x, f(x))
+plt.axhline(0, color="black")  # eje x
+plt.title("f(x) = sen(x) - x²")
+plt.xlabel("x")
+plt.ylabel("f(x)")
+plt.grid(True)
+plt.show()
 
+# biseccion hasta que el error aproximado sea menor que 2%
+xl = 0.5
+xu = 1
+error_tolerado = 2
+xr_anterior = 0
+error_aprox = 100
+iteracion = 0
 
-# EJERCICIO 5
-f5 = lambda x: sin(x) - x**2  # sen(x) = x²  ->  sen(x) - x² = 0
+while error_aprox > error_tolerado:
+    iteracion += 1
+    xr = (xl + xu) / 2
 
-graficar(f5, -0.5, 1.5, "Ejercicio 5: f(x) = sen(x) - x²", "ej5.png")
+    if iteracion == 1:
+        print(f"Iteracion {iteracion}: xl = {xl}  xu = {xu}  xr = {xr}")
+    else:
+        error_aprox = abs((xr - xr_anterior) / xr) * 100
+        print(f"Iteracion {iteracion}: xl = {xl}  xu = {xu}  xr = {xr}  Error aproximado: {error_aprox}")
 
-print("Bisección [0.5, 1] con es = 2 %")
-raiz5 = biseccion(f5, 0.5, 1, es=2, valor_verdadero=0.876726215)
+    # se revisa en que lado queda la raiz
+    if f(xl) * f(xr) < 0:
+        xu = xr
+    else:
+        xl = xr
+    xr_anterior = xr
 
-print(f"Prueba de error con x = {raiz5}:")
-print(f"  sen(x) = {sin(raiz5):.6f}")
-print(f"  x²     = {raiz5**2:.6f}")
-print(f"  diferencia sen(x) - x² = {f5(raiz5):.6f}")
+print(f"Raiz aproximada: {xr}")
+
+# prueba reemplazando el resultado en la ecuacion original
+print(f"sen(x) = {np.sin(xr)}")
+print(f"x^2 = {xr**2}")
+print(f"Diferencia: {np.sin(xr) - xr**2}")
