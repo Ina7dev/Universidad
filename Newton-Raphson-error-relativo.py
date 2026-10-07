@@ -3,7 +3,7 @@ import sympy as sp
 x = sp.symbols("x")
 
 pedir_funcion = input("Ingrese la funcion f(x), ej:x^3-2*x-5: ") #funcion como texto
-funcion = sp.sympify(pedir_funcion) #texto pasad a funcion
+funcion = sp.sympify(pedir_funcion) #texto pasa a funcion
 derivada = sp.diff(funcion, x)  #diff es para q derive sola
 
 print(f"f(x) = {funcion}")
@@ -20,4 +20,4 @@ while error > error_relativo:
     xi = x_nuevo   #el x_nuevo pasa a ser el actual xi
     print(xi, error)
 
-print("Raíz aproximada:", xi)
+print (f"Raiz aprox: {xi} con un error de {error}%")
