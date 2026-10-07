@@ -2,7 +2,7 @@ import sympy as sp
 
 x = sp.symbols("x")
 
-pedir_funcion = input("Ingrese la funcino f(x): ") #funcin como texto
+pedir_funcion = input("Ingrese la funcion f(x), ej:x^3-2*x-5: ") #funcion como texto
 funcion = sp.sympify(pedir_funcion) #texto pasad a funcion
 derivada = sp.diff(funcion, x)  #diff es para q derive sola
 
