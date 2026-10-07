@@ -14,7 +14,7 @@ error_relativo = float(input("Ingrese el error relativo %: "))
 
 error = 100 #parte del  100%
 
-with error > error_relativo:
+while error > error_relativo:
     x_nuevo = xi - float(funcion.subs(x, xi)) / float(derivada.subs(x, xi))  #la formula
     error = abs((x_nuevo - xi) / x_nuevo) * 100
     xi = x_nuevo   #el x_nuevo pasa a ser el actual xi
