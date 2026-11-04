@@ -7,6 +7,8 @@ asub0 = ȳ -asub1 x̄
 
 n= numero de datos."""
 
+import numpy as np
+import matplotlib.pyplot as plt
 
 n = int(input("Cuantos datos son?: "))
 x = []
@@ -44,3 +46,18 @@ a_0 = promedio_y - a_1 * promedio_x
 print("a_1 =", a_1)
 print("a_0 =", a_0)
 print("y =", round(a_0, 4), "+", round(a_1, 4), "x")
+
+
+#codigo para ver la recta
+
+# puntos para dibujar la recta
+xx = np.linspace(min(x), max(x), 300)
+
+plt.plot(x, y, 'ko', label='datos')
+plt.plot(xx, a_0 + a_1 * xx, label='recta de regresion')
+plt.xlabel('x')
+plt.ylabel('y')
+plt.legend(); plt.grid(); plt.show()
+
+# comparo con polyfit para ver si da lo mismo
+print("polyfit:", np.polyfit(x, y, 1))
