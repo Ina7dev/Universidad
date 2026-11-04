@@ -9,6 +9,8 @@ n= numero de datos."""
 
 import numpy as np
 import matplotlib.pyplot as plt
+import os
+
 
 n = int(input("Cuantos datos son?: "))
 x = []
@@ -57,7 +59,12 @@ plt.plot(x, y, 'ko', label='datos')
 plt.plot(xx, a_0 + a_1 * xx, label='recta de regresion')
 plt.xlabel('x')
 plt.ylabel('y')
-plt.legend(); plt.grid(); plt.show()
+plt.legend(); plt.grid()
+
+os.makedirs("figuras", exist_ok=True)
+plt.savefig(os.path.join("figuras", "regresion_lineal.png"))
+
+plt.show()
 
 # comparo con polyfit para ver si da lo mismo
 print("polyfit:", np.polyfit(x, y, 1))
